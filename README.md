@@ -17,54 +17,6 @@ A web application built with the MERN stack (MongoDB, Express, React, Node.js) f
 - **Database**: MongoDB
 - **File Conversion**: ExcelJS
 
-## Installation
-
-1. **Clone the repository:**
-
-    ```bash
-    git clone https://github.com/your-username/employee-data-management-system.git
-    cd employee-data-management-system
-    ```
-
-2. **Install Backend Dependencies:**
-
-    ```bash
-    cd server
-    npm install
-    ```
-
-3. **Install Frontend Dependencies:**
-
-    ```bash
-    cd ../client
-    npm install
-    ```
-
-4. **Setup Environment Variables:**
-
-    Create a `.env` file in the `server` directory with:
-
-    ```plaintext
-    MONGODB_URI=your_mongodb_connection_string
-    JWT_SECRET=your_jwt_secret
-    ```
-
-5. **Start the Servers:**
-
-    - **Backend:**
-
-      ```bash
-      cd server
-      npm start
-      ```
-
-    - **Frontend:**
-
-      ```bash
-      cd ../client
-      npm start
-      ```
-
 ## Usage
 
 1. **Upload an Excel File**: Use the upload feature to convert an Excel file to JSON.
@@ -80,16 +32,7 @@ A web application built with the MERN stack (MongoDB, Express, React, Node.js) f
 - **PUT /api/data**: Update data in the database.
 - **GET /api/download**: Download data as an Excel file.
 
-## Contributing
-
-To contribute:
-
-1. Fork the repository.
-2. Create a new branch.
-3. Make changes and commit them.
-4. Open a pull request.
-
-## License
+<!--## License
 
 MIT License. See [LICENSE](LICENSE) for details.
 
@@ -98,4 +41,4 @@ MIT License. See [LICENSE](LICENSE) for details.
 For questions, contact:
 
 - **Your Name** - [your-email@example.com](mailto:your-email@example.com)
-- **Repository**: [https://github.com/your-username/employee-data-management-system](https://github.com/your-username/employee-data-management-system)
+- **Repository**: [https://github.com/your-username/employee-data-management-system](https://github.com/your-username/employee-data-management-system)-->
