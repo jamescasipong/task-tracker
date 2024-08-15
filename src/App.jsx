@@ -5,6 +5,9 @@ import Dashboard from './components/Dashboard';
 import ExcelToJson from './components/ExcelToJson';
 import Table from './components/Table';
 import TaskTracker from './components/TaskTracker';
+import axios from "axios";
+axios.defaults.baseURL = "https://tasktracker-server.vercel.app";
+axios.defaults.withCredentials = true;
 
 function App() {
   return (

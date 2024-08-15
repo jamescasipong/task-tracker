@@ -27,7 +27,7 @@ const Table = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/");
+        const response = await axios.get("/");
         const fetchedData = response.data;
 
 
@@ -75,7 +75,7 @@ const Table = () => {
 
   const updateDevice = async (id, updatedData) => {
     try {
-      await axios.put(`http://localhost:5000/update-device/${id}`, updatedData);
+      await axios.put(`/update-device/${id}`, updatedData);
     } catch (error) {
       console.error('Failed to update device:', error);
     }
@@ -83,7 +83,7 @@ const Table = () => {
 
   const addNewRows = async () => {
     try {
-      const responses = await Promise.all(newRows.map(row => axios.post('http://localhost:5000/add-device', row)));
+      const responses = await Promise.all(newRows.map(row => axios.post('/add-device', row)));
       setData([...data, ...responses.map(response => response.data)]);
       
       setNewRows([
@@ -108,7 +108,7 @@ const Table = () => {
 
   const deleteDevice = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/delete-device/${id}`);
+      await axios.delete(`/delete-device/${id}`);
       setData(data.filter(device => device._id !== id));
     } catch (error) {
       console.error('Failed to delete device:', error);
