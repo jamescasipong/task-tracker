@@ -1,0 +1,1140 @@
+[
+  {
+    "No": 1,
+    "SerialNumber": "FVFJ10SZQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Maricon Obusan",
+    "Department": "Human Resources"
+  },
+  {
+    "No": 2,
+    "SerialNumber": "HXJLC00U1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "RJ Cabrera",
+    "Department": "Internal Audit"
+  },
+  {
+    "No": 3,
+    "SerialNumber": "FVHH9V4DQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Girlie Nuyda",
+    "Department": "Operations"
+  },
+  {
+    "No": 4,
+    "SerialNumber": "FVHH9V5CQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Larah Jane Prudente",
+    "Department": "Admin and Finance"
+  },
+  {
+    "No": 5,
+    "SerialNumber": "FVFDLVSMMHP",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Somsit Dan Gomez",
+    "Department": "Research and Development"
+  },
+  {
+    "No": 6,
+    "SerialNumber": "FVFFN817Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Lorenzo Isuga",
+    "Department": "Research and Development"
+  },
+  {
+    "No": 7,
+    "SerialNumber": "HXJLD2BH1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Maverick Solis",
+    "Department": "Restaurant System"
+  },
+  {
+    "No": 8,
+    "SerialNumber": "FVFHWY6NQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Faith Jireh Milagrosa",
+    "Department": "Human Resources",
+    "Owner_1": "Myko Joseph Belo",
+    "Department_1": "Training"
+  },
+  {
+    "No": 9,
+    "SerialNumber": "FVGRKMUQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jobelle Barcellano - Saguid",
+    "Department": "Legal and Compliance"
+  },
+  {
+    "No": 10,
+    "SerialNumber": "NXA189P00D1S11CD033400",
+    "Brand": "ACER",
+    "Model": "ASPIRE ",
+    "Owner": "Catherin Bacatan",
+    "Department": "Business Development"
+  },
+  {
+    "No": 11,
+    "SerialNumber": "HXJLD5AP1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Michelle Dela Cruz",
+    "Department": "Accounting (AN)"
+  },
+  {
+    "No": 12,
+    "SerialNumber": "HXJL5491JWFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Patrick Moaje",
+    "Department": "Logistics",
+    "Owner_1": "Romeo Estorgio Jr",
+    "Department_1": "Logistics"
+  },
+  {
+    "No": 13,
+    "SerialNumber": "HXJL1EVM1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jaddie Defensor",
+    "Department": "Business Development",
+    "Owner_1": "Andre Pete Vibar",
+    "Department_1": "Business Development"
+  },
+  {
+    "No": 14,
+    "SerialNumber": "FVFJG3HYQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jerald Daniel Salvador",
+    "Department": "Legal and Compliance",
+    "Owner_1": "Genesis Volante",
+    "Department_1": "Engineering"
+  },
+  {
+    "No": 15,
+    "SerialNumber": "FVFJC08XQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Egwin Joseph Cortinas",
+    "Department": "Marketing",
+    "Owner_1": "Aimmelyn Mae Tiosen",
+    "Department_1": "Marketing"
+  },
+  {
+    "No": 16,
+    "SerialNumber": "SCD8441042",
+    "Brand": "HP",
+    "Model": "PROBOOK",
+    "Owner": "Beatrix Ignacia Callado",
+    "Department": "Logistics"
+  },
+  {
+    "No": 17,
+    "SerialNumber": "FVFFHB61Q6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Angela Louise Salazar",
+    "Department": "Research and Development",
+    "Owner_1": "David Nikko Dimaapi",
+    "Department_1": "Research and Development"
+  },
+  {
+    "No": 18,
+    "SerialNumber": "HXJM11SF1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Achilles Galit",
+    "Department": "Executive Office"
+  },
+  {
+    "No": 20,
+    "SerialNumber": "FVFJ10UJQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Sharell Bungay",
+    "Department": "Internal Audit"
+  },
+  {
+    "No": 21,
+    "SerialNumber": "FVFGXAVUQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Mary Jane Ramos",
+    "Department": "Purchasing"
+  },
+  {
+    "No": 22,
+    "SerialNumber": "HXJLC0131WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Anna Patricia Cadornigara",
+    "Department": "Purchasing"
+  },
+  {
+    "No": 23,
+    "SerialNumber": "HXJC00P1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Cristina Kay Illarde",
+    "Department": "Operations"
+  },
+  {
+    "No": 24,
+    "SerialNumber": "FVFGJU1MQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Sharlene Aaliyah Villanueva",
+    "Department": "Quality Assurance"
+  },
+  {
+    "No": 25,
+    "SerialNumber": "FVFDF65XMNHP",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Cristyl Negapatan",
+    "Department": "Marketing",
+    "Owner_1": "Michelle Raven Co",
+    "Department_1": "Accounting"
+  },
+  {
+    "No": 26,
+    "SerialNumber": "HXJLCO5T1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Win Amparo",
+    "Department": "Business Development"
+  },
+  {
+    "No": 27,
+    "SerialNumber": "FVFC5WCQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Kim Hazel Ortigusa",
+    "Department": "Research and Development"
+  },
+  {
+    "No": 28,
+    "SerialNumber": "FVFG3N9LQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Andrea Mikaela Legaspi",
+    "Department": "Legal and Compliance",
+    "Owner_1": "Benj Nicole Agno",
+    "Department_1": "Legal and Compliance",
+    "Owner_2": "Lyka Ishizaka",
+    "Department_2": "Legal and Compliance"
+  },
+  {
+    "No": 29,
+    "SerialNumber": "FVHJL4GX1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Lea Jean Yupangco",
+    "Department": "Human Resources",
+    "Owner_1": "Peter Ariel Santos",
+    "Department_1": "Marketing"
+  },
+  {
+    "No": 30,
+    "SerialNumber": "FVFZJTHJLYWG",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Ralp Jefferson Cahapay",
+    "Department": "Logistics",
+    "Owner_1": "Chloe Anne Domingo",
+    "Department_1": "Logistics"
+  },
+  {
+    "No": 31,
+    "SerialNumber": "HXJM2C8U1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Michelle Mendoza",
+    "Department": "Operations"
+  },
+  {
+    "No": 32,
+    "SerialNumber": "HXJM2CEK1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Mark Anthony Azures",
+    "Department": "Engineering"
+  },
+  {
+    "No": 33,
+    "SerialNumber": "C02GP5GZQ6LC",
+    "Brand": "APPLE",
+    "Model": "MACBOOK 2020",
+    "Owner": "Michelle Mendoza",
+    "Department": "Operations",
+    "Owner_1": "Arjay Animo",
+    "Department_1": "Training"
+  },
+  {
+    "No": 34,
+    "SerialNumber": "FVFFC60XQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Dayasara Estacio",
+    "Department": "Accounting",
+    "Owner_1": "Renalyn Bellen",
+    "Department_1": "Accounting"
+  },
+  {
+    "No": 35,
+    "SerialNumber": "HXJM2CBLIWFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Arnold Hernandez",
+    "Department": "Operations"
+  },
+  {
+    "No": 36,
+    "SerialNumber": "HXJMG7CG1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Christopher De Castro",
+    "Department": "Operations"
+  },
+  {
+    "No": 37,
+    "SerialNumber": "FVFZC8X1LYWJ",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Ma. Sofia Girao",
+    "Department": "Human Resources"
+  },
+  {
+    "No": 38,
+    "SerialNumber": "FVF510ULQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Crystal Valencia",
+    "Department": "Human Resources",
+    "Owner_1": "Shanadine Brutas",
+    "Department_1": "Human Resources"
+  },
+  {
+    "No": 39,
+    "SerialNumber": "FVFFC5XXQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Ruffa Orillos",
+    "Department": "Operations",
+    "Owner_1": "John Dwight Loya",
+    "Department_1": "Quality Assurance"
+  },
+  {
+    "No": 40,
+    "SerialNumber": "HXJMG1LY1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Ruffa Orillos",
+    "Department": "Operations"
+  },
+  {
+    "No": 41,
+    "SerialNumber": "HXJMG8211WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jencel Doma",
+    "Department": "Accounting"
+  },
+  {
+    "No": 42,
+    "SerialNumber": "FVHJM3AC1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Rheinne So",
+    "Department": "Business Development",
+    "Owner_1": "Dolly May Anonas",
+    "Department_1": "Business Development"
+  },
+  {
+    "No": 43,
+    "SerialNumber": "NXA185P00D1511CD02",
+    "Brand": "ACER",
+    "Model": "ASPIRE ",
+    "Owner": "Jerra Castillo",
+    "Department": "Human Resources",
+    "Owner_1": "Ferlyn Alejandrino",
+    "Department_1": "Human Resources"
+  },
+  {
+    "No": 44,
+    "SerialNumber": "HXJMG7GT1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Janice Orca",
+    "Department": "Supply Chain"
+  },
+  {
+    "No": 45,
+    "SerialNumber": "FVFJJEC11WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Janice Orca",
+    "Department": "Supply Chain",
+    "Owner_1": "Eurraine Novales",
+    "Department_1": "Operations"
+  },
+  {
+    "No": 46,
+    "SerialNumber": "C02GQ0QKQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK 2020",
+    "Owner": "Eurraine Novales",
+    "Department": "Operations",
+    "Owner_1": "Farrah Joice Roxas",
+    "Department_1": "Marketing"
+  },
+  {
+    "No": 47,
+    "SerialNumber": "N3N0CV06Y417102",
+    "Brand": "ASUS",
+    "Model": "A51SE",
+    "Owner": "Glenn Blas",
+    "Department": "Internal Audit",
+    "Owner_1": "IT",
+    "Department_1": "Information Technology"
+  },
+  {
+    "No": 48,
+    "SerialNumber": "FVFJWSAJ1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Mikaella Ponesca",
+    "Department": "Quality Assurance",
+    "Owner_1": "Hannah Bianca Torno",
+    "Department_1": "Quality Assurance"
+  },
+  {
+    "No": 49,
+    "SerialNumber": "FVFGDKGNQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jill Tosoro",
+    "Department": "Restaurant System",
+    "Owner_1": "Cris Jefferson Juan ",
+    "Department_1": "Restaurant Systems"
+  },
+  {
+    "No": 50,
+    "SerialNumber": "FVFF407NQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Louise Ann Obuyes",
+    "Department": "Accounting"
+  },
+  {
+    "No": 51,
+    "SerialNumber": "FVFKT54C1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Tannia Gandungan",
+    "Department": "Accounting",
+    "Owner_1": "Percival Hermocilla",
+    "Department_1": "Accounting"
+  },
+  {
+    "No": 52,
+    "SerialNumber": "FVFGT68KQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Aileen Marasigan",
+    "Department": "Operations",
+    "Owner_1": "Glenn Blas",
+    "Department_1": "Internal Audit"
+  },
+  {
+    "No": 53,
+    "SerialNumber": "FVHGTEQVQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jerimiel Santos",
+    "Department": "Operations"
+  },
+  {
+    "No": 54,
+    "SerialNumber": "FVFJGHJ61WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Maxidy Bianca Sumera",
+    "Department": "Marketing"
+  },
+  {
+    "No": 55,
+    "SerialNumber": "FVFHX3JTQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Aaron Neil Domingo",
+    "Department": "Marketing",
+    "Owner_1": "Dyan Kathleen Dadia",
+    "Department_1": "Operations"
+  },
+  {
+    "No": 56,
+    "SerialNumber": "FVFJC09KQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Lucky Dela Rosa",
+    "Department": "Marketing"
+  },
+  {
+    "No": 57,
+    "SerialNumber": "HXJL16JM1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Rochelle Sayan",
+    "Department": "Office of the president"
+  },
+  {
+    "No": 58,
+    "SerialNumber": "FVFGJU3DQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Harrah Jullyn Magtibay",
+    "Department": "Research and Development"
+  },
+  {
+    "No": 59,
+    "SerialNumber": "FVFFC5USQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Daniel Flores",
+    "Department": "Accounting",
+    "Owner_1": "Angelo Pocholo Punzalan",
+    "Department_1": "Accounting"
+  },
+  {
+    "No": 60,
+    "SerialNumber": "HXJLD9Q61WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Faith Jireh Milagrosa",
+    "Department": "Human Resources"
+  },
+  {
+    "No": 61,
+    "SerialNumber": "FVFGVMHDQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Andrea Paula Leonardo",
+    "Department": "Quality Assurance"
+  },
+  {
+    "No": 62,
+    "SerialNumber": "MBN0CU253185478",
+    "Brand": "ASUS",
+    "Model": "X515EA",
+    "Owner": "Francis Glenn Caranay",
+    "Department": "Accounting"
+  },
+  {
+    "No": 63,
+    "SerialNumber": "FVFDN171Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Patrick Adam Cimacio",
+    "Department": "Marketing"
+  },
+  {
+    "No": 64,
+    "SerialNumber": "FVFFC60LQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Aldrin Gamat",
+    "Department": "Accounting"
+  },
+  {
+    "No": 65,
+    "SerialNumber": "FVFKT5131WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Hannah Jane Pambid",
+    "Department": "Accounting"
+  },
+  {
+    "No": 66,
+    "SerialNumber": "FVFKT51A1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Abbygale Ravela",
+    "Department": "Accounting"
+  },
+  {
+    "No": 67,
+    "SerialNumber": "FVFKT4ZU1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Karl Nikko Badenas",
+    "Department": "Operations"
+  },
+  {
+    "No": 68,
+    "SerialNumber": "FVFF8EKQQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jen Jen Griego",
+    "Department": "Accounting",
+    "Owner_1": "Kyle Anthony Lahaylahay",
+    "Department_1": "Accounting"
+  },
+  {
+    "No": 69,
+    "SerialNumber": "FVHJM3EF1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Karl Allan Landanaz",
+    "Department": "Marketing",
+    "Owner_1": "Betha Fe Marcos",
+    "Department_1": "Logistics"
+  },
+  {
+    "No": 71,
+    "SerialNumber": "FVFJWE1S1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Alilee Sagun",
+    "Department": "Accounting"
+  },
+  {
+    "No": 72,
+    "SerialNumber": "FVFJG3TSQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jen Jen Griego",
+    "Department": "Accounting"
+  },
+  {
+    "No": 73,
+    "SerialNumber": "FVFHCAACQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Anna Patricia Cadornigara",
+    "Department": "Purchasing",
+    "Owner_1": "Mary Jane Ramos",
+    "Department_1": "Purchasing"
+  },
+  {
+    "No": 74,
+    "SerialNumber": "FVFJWS6Y1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Leover Janohan (Keith)",
+    "Department": "Marketing"
+  },
+  {
+    "No": 75,
+    "SerialNumber": "FVFFV09PQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Caleb Kyle Aboy",
+    "Department": "Marketing",
+    "Owner_1": "Krizia Vasallo",
+    "Department_1": "Marketing"
+  },
+  {
+    "No": 76,
+    "SerialNumber": "5CD8386G9W",
+    "Brand": "HP",
+    "Model": "PROBOOK",
+    "Owner": "Michelle Raven Co",
+    "Department": "Accounting"
+  },
+  {
+    "No": 77,
+    "SerialNumber": "FVFJJ089Q6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Emmanuel Mamino",
+    "Department": "Research and Development"
+  },
+  {
+    "No": 78,
+    "SerialNumber": "N3N0CV07245110B",
+    "Brand": "ASUS",
+    "Model": "X515E",
+    "Owner": "Juan Alfonso Castro",
+    "Department": "Engineering"
+  },
+  {
+    "No": 79,
+    "SerialNumber": "5CD7131PFB",
+    "Brand": "HP ",
+    "Model": "PROBOOK",
+    "Owner": "John Raymond Padua",
+    "Department": "Legal and Compliance"
+  },
+  {
+    "No": 80,
+    "SerialNumber": "FVFC50QWLYWNJ",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "John Razel Aquino",
+    "Department": "Internal Audit"
+  },
+  {
+    "No": 81,
+    "SerialNumber": "FVFHLQF6Q644",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Joselyn Requioma",
+    "Department": "Operations"
+  },
+  {
+    "No": 82,
+    "SerialNumber": "FVFJ1126Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Maria Andrea Flores",
+    "Department": "Purchasing"
+  },
+  {
+    "No": 83,
+    "SerialNumber": "FVFFVY62Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jovel Laguinday",
+    "Department": "Training"
+  },
+  {
+    "No": 84,
+    "SerialNumber": "FVFFXG1UQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Chelsea Gettalla",
+    "Department": "Quality Assurance"
+  },
+  {
+    "No": 85,
+    "SerialNumber": "FVFG1LQ5Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Dannica Canlobo",
+    "Department": "Accounting"
+  },
+  {
+    "No": 86,
+    "SerialNumber": "FVFFAED1Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Almira Bautista",
+    "Department": "Accounting"
+  },
+  {
+    "No": 87,
+    "SerialNumber": "FVFGT6RBQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Nicole Andrea Ramirez",
+    "Department": "Operations"
+  },
+  {
+    "No": 88,
+    "SerialNumber": "N5NRCX025459190",
+    "Brand": "ASUS",
+    "Model": "TUF",
+    "Owner": "Roanne mae Dahilog",
+    "Department": "Engineering"
+  },
+  {
+    "No": 89,
+    "SerialNumber": "M6NRCX044931246",
+    "Brand": "ASUS",
+    "Model": "TUF",
+    "Owner": "Marvin Alferez",
+    "Department": "Engineering"
+  },
+  {
+    "No": 90,
+    "SerialNumber": "5CD7131PH2",
+    "Brand": "HP",
+    "Model": "PROBOOK",
+    "Owner": "Jay Porcal",
+    "Department": "Engineering"
+  },
+  {
+    "No": 91,
+    "SerialNumber": "C02G1VUXQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Demzen Caramanza",
+    "Department": "Research and Development"
+  },
+  {
+    "No": 92,
+    "SerialNumber": "FVFHLPPPQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Shaina C. Alegria",
+    "Department": "Human Resources"
+  },
+  {
+    "No": 93,
+    "SerialNumber": "FVFJ9273Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Nikko Vera",
+    "Department": "Business Development"
+  },
+  {
+    "No": 94,
+    "SerialNumber": "FVFG31V6Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Jessamine Fegaran",
+    "Department": "Marketing"
+  },
+  {
+    "No": 95,
+    "SerialNumber": "FVFFN817Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Faith Sarmiento",
+    "Department": "Operations"
+  },
+  {
+    "No": 96,
+    "SerialNumber": "FVFGRKH4Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Johnryl Torre",
+    "Department": "Operations"
+  },
+  {
+    "No": 97,
+    "SerialNumber": "FVFGT6WTQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Erica Deyrit",
+    "Department": "Operations"
+  },
+  {
+    "No": 98,
+    "SerialNumber": "FVFGT6KRQL4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Lito Villato",
+    "Department": "Operations"
+  },
+  {
+    "No": 99,
+    "SerialNumber": "FVFGWFCCQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Hersyl Manansala",
+    "Department": "Quality Assurance"
+  },
+  {
+    "No": 100,
+    "Brand": "LENOVO",
+    "Model": "THINKPAD",
+    "Owner": "Angelica Armamento",
+    "Department": "Human Resources"
+  },
+  {
+    "No": 101,
+    "SerialNumber": "M7NRCX2C98928G",
+    "Brand": "ASUS",
+    "Model": "TUF",
+    "Owner": "Justin Sanchez",
+    "Department": "Engineering",
+    "Owner_1": "Rogel Martin Cabrera Percol",
+    "Department_1": "Engineering"
+  },
+  {
+    "No": 102,
+    "SerialNumber": "FVFFNEMJQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Dennis Desacula",
+    "Department": "Quality Assurance"
+  },
+  {
+    "No": 105,
+    "SerialNumber": "FVFFNELJQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Janine Hernandez Aberin",
+    "Department": "Marketing"
+  },
+  {
+    "No": 107,
+    "SerialNumber": "N2NRCX09T457073",
+    "Brand": "ASUS",
+    "Model": " TUF FX506H",
+    "Owner": "Ian Paul Nacis",
+    "Department": "IT Department"
+  },
+  {
+    "No": 108,
+    "SerialNumber": "QFQNYJV9RW",
+    "Brand": "APPLE",
+    "Model": "MAC",
+    "Owner": "Christopher Martin Puno",
+    "Department": "Office of the president"
+  },
+  {
+    "No": 109,
+    "SerialNumber": "FVHF44KEQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Monica Bernadette Puno",
+    "Department": "Office of the president"
+  },
+  {
+    "No": 111,
+    "Owner": "Denise Retuya",
+    "Department": "Accounting"
+  },
+  {
+    "No": 112,
+    "Owner": "Jeric Vegiga Ching",
+    "Department": "Audit"
+  },
+  {
+    "No": 116,
+    "Owner": "Celeste Paez Laquian",
+    "Department": "Executive Office"
+  },
+  {
+    "No": 117,
+    "SerialNumber": "FVHH9V6GQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Kimberly Anne Montinola",
+    "Department": "Operations"
+  },
+  {
+    "No": 119,
+    "SerialNumber": "FVFGT6KRQL4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Josellito Nieves Nivato",
+    "Department": "Operations"
+  },
+  {
+    "No": 122,
+    "Owner": "Jerome Gimpisao",
+    "Department": "Operations"
+  },
+  {
+    "No": 124,
+    "SerialNumber": "FVFJCFRP1WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Remely Grace Mampula",
+    "Department": "Operations"
+  },
+  {
+    "No": 125,
+    "SerialNumber": "FVFF407NQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Agnes Villanueva Diocares",
+    "Department": "Legal and Compliance"
+  },
+  {
+    "No": 126,
+    "SerialNumber": "FVFKT4ZU1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Daryl Rexie Espenilla",
+    "Department": "Purchasing"
+  },
+  {
+    "No": 128,
+    "Owner": "Marlon Dangcalan Flor",
+    "Department": "Legal and Compliance"
+  },
+  {
+    "No": 132,
+    "SerialNumber": "FVFKT54C1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Rey-Joyce Sapanghila",
+    "Department": "Purchasing"
+  },
+  {
+    "No": 133,
+    "SerialNumber": "FVFJ11H5Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Rachelle Ann Rodriguez",
+    "Department": "Purchasing"
+  },
+  {
+    "No": 136,
+    "SerialNumber": "FVFFC6DEQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Jennirry Panganiban Sustal",
+    "Department": "Accounting"
+  },
+  {
+    "No": 139,
+    "SerialNumber": "N/A",
+    "Brand": "WINDOWS",
+    "Model": "DESKSTOP",
+    "Owner": "Reynaldo Santos",
+    "Department": "Accounting"
+  },
+  {
+    "No": 143,
+    "SerialNumber": "FVFFVY62Q6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jake Christian Escobar",
+    "Department": "Training"
+  },
+  {
+    "No": 144,
+    "SerialNumber": "C02GP5GZQ6LC",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR 2020",
+    "Owner": "Michelle Mendoza",
+    "Department": "Operations",
+    "Owner_1": "Reyjen Castillo Almojen",
+    "Department_1": "Training"
+  },
+  {
+    "No": 145,
+    "SerialNumber": "N/A",
+    "Brand": "WINDOWS",
+    "Model": "DESKSTOP",
+    "Owner": "Mark Glenn Mendoza",
+    "Department": "IT Department"
+  },
+  {
+    "No": 146,
+    "SerialNumber": "M5N0CV09T73419H",
+    "Brand": "WINDOWS",
+    "Model": "VIVOBOOK 15",
+    "Owner": "Mary Jane Ramos",
+    "Department": "Purchasing",
+    "Owner_1": "Romy Suabas Tamayo",
+    "Department_1": "Purchasing"
+  },
+  {
+    "No": 147,
+    "SerialNumber": "FVFJG3TSQ6L7",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Christine Angelina Gutierrez",
+    "Department": "Human Resources"
+  },
+  {
+    "No": 150,
+    "SerialNumber": "FVFKT51A1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Danieca Pearl Espiritu Fabilinia",
+    "Department": "Accounting"
+  },
+  {
+    "No": 163,
+    "SerialNumber": "N/A",
+    "Brand": "WINDOWS",
+    "Model": "DESKSTOP",
+    "Owner": "Ernesto Rabo Lastima",
+    "Department": "IT Department"
+  },
+  {
+    "No": 164,
+    "SerialNumber": "MCN0CV12050650A",
+    "Brand": "WINDOWS",
+    "Model": "X515E",
+    "Owner": "Kenneth Villamor",
+    "Department": "Quality Assurance",
+    "Owner_1": "John Paul Lanaza Francisco",
+    "Department_1": "Quality Assurance"
+  },
+  {
+    "No": 165,
+    "SerialNumber": "FVFF407NQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Albert Rodriguez Fauni",
+    "Department": "Engineering"
+  },
+  {
+    "No": 166,
+    "SerialNumber": "FVFJWE1S1WFY",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Jade Domiquel Tapaganao",
+    "Department": "Accounting"
+  },
+  {
+    "No": 168,
+    "SerialNumber": "FVHGTEQVQ6L4",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Resalyn Rebaldo Aguimatang",
+    "Department": "Logistics"
+  },
+  {
+    "No": 169,
+    "SerialNumber": "FVFJGHJ61WFV",
+    "Brand": "APPLE",
+    "Model": "MACBOOK AIR M1",
+    "Owner": "Luisa Lualhati",
+    "Department": "Marketing"
+  },
+  {
+    "No": 170,
+    "SerialNumber": "M9N0CX26084239B",
+    "Brand": "WINDOWS",
+    "Model": "ASUS X415J",
+    "Owner": "Romeo Estorgio",
+    "Department": "Logistics",
+    "Owner_1": "Resalyn Aguimantang",
+    "Department_1": "Logistics"
+  },
+  {
+    "No": "Peripherals"
+  },
+  {
+    "No": "Hardware",
+    "SerialNumber": "Location",
+    "Brand": "Serial Number"
+  },
+  {
+    "No": "Epson L14150",
+    "SerialNumber": "2nd Floor"
+  },
+  {
+    "No": "Epson L15150",
+    "SerialNumber": "3rd Floor"a
+  },
+  {
+    "No": "IMAC",
+    "SerialNumber": "2nd Floor"
+  },
+  {
+    "No": "Cheque Printer",
+    "SerialNumber": "3rd Floor"
+  },
+  {
+    "No": "Epson Projector",
+    "SerialNumber": "2nd Floor"
+  },
+  {
+    "No": "Epson Projector",
+    "SerialNumber": "2nd Floor"
+  },
+  {
+    "No": "Fintex Projector",
+    "SerialNumber": "3rd Floor"
+  }
+]
