@@ -7,6 +7,22 @@ const Table = () => {
   const [loading, setLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({ key: 'No', direction: 'asc' });
   const [searchTerm, setSearchTerm] = useState('');
+  const [password, setPassword] = useState('');
+  const [isEnabled, setEnable] = useState(false);
+
+  const mainPassword = "army";
+
+
+  const checkIfSame = () => {
+    if (mainPassword == password){
+        setEnable(true);
+        alert("You have successfully accessed it!")
+    }
+    else {
+       alert("They are not the same bro!")
+    }
+  }
+
   const [selectedBrand, setSelectedBrand] = useState('All');
   const [newRows, setNewRows] = useState([
     {
@@ -54,6 +70,11 @@ const Table = () => {
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
+  };
+
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
   const handleBrandFilterChange = (e) => {
@@ -208,6 +229,22 @@ const Table = () => {
         >
           Export to XLSX
         </button>
+
+        <input
+          type="password"
+          placeholder="Enter a password to access the data"
+          value={password}
+          onChange={handlePasswordChange}
+          className={`border border-gray-300 p-2 mr-4 ml-5 ${isEnabled ? 'hidden' : 'block'}`}
+        />
+
+        <button
+          onClick={checkIfSame}
+          className={`bg-red-500 text-white px-4 py-2 ${isEnabled ? 'hidden' : 'block'}`}
+        >
+          Submit
+        </button>
+
       </div>
 
       {isModalOpen && (
@@ -267,12 +304,13 @@ const Table = () => {
       >
         Cancel
       </button>
+
     </div>
   </div>
 )}
 
 
-      <table className="min-w-full bg-white border border-gray-300">
+      <table className={`min-w-full bg-white border border-gray-300 ${isEnabled ? 'block' : 'hidden'}`}>
         <thead>
           <tr className="bg-gray-200">
             {['No', 'SerialNumber', 'Brand', 'Model', 'Owner', 'Department', 'Owner_1', 'Department_1', 'Owner_2', 'Department_2'].map((header) => (
