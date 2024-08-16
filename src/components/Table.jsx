@@ -93,6 +93,44 @@ const Table = () => {
     updatedRows[rowIndex] = { ...updatedRows[rowIndex], [key]: value };
     setNewRows(updatedRows);
   };
+  const [disabled, setShown] = useState(true);
+
+
+  useEffect(() => {
+    // Function to handle the keydown event
+    const handleKeyDown = (event) => {
+      // Check if 'Ctrl' and 'J' keys are pressed
+      if (event.ctrlKey && event.key === 's') {
+        // Prevent the default action (e.g., for browsers where 'Ctrl + J' might open downloads)
+        event.preventDefault();
+        
+        // Perform your desired action here
+        setShown(disable => !disable);
+
+      }
+    };
+
+    // Add the event listener
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+    
+  useEffect(() => {
+    const hideElement = () => {
+      const elements = document.getElementsByClassName("SerialNumber");
+      
+      Array.from(elements).forEach(element => {
+        disabled ? element.disabled = true : element.disabled = false; // Set disabled to a boolean value
+      });
+    };
+    hideElement(); // Call the function whenever 'disabled' changes
+  }, [disabled, isEnabled]);
+
 
   const updateDevice = async (id, updatedData) => {
     try {
@@ -334,9 +372,10 @@ const Table = () => {
                     type="text"
                     value={device[key] || ''}
                     onChange={(e) => handleInputChange(index, key, e.target.value)}
-                    className="w-full"
+                    className={`w-full ${key}`}
                   />
 
+                  
                 </td>
               ))}
               <td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
