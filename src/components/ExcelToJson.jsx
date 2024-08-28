@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import * as XLSX from 'xlsx';
+import React, { useState } from "react";
+import axios from "axios";
+import * as XLSX from "xlsx";
 
 const ExcelToJson = () => {
   const [jsonData, setJsonData] = useState(null);
@@ -13,7 +13,7 @@ const ExcelToJson = () => {
 
     reader.onload = (event) => {
       const data = new Uint8Array(event.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
+      const workbook = XLSX.read(data, { type: "array" });
 
       const sheetName = workbook.SheetNames[0];
       const sheet = workbook.Sheets[sheetName];
@@ -31,11 +31,13 @@ const ExcelToJson = () => {
   const downloadJson = () => {
     if (!jsonData) return;
 
-    const blob = new Blob([JSON.stringify(jsonData, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(jsonData, null, 2)], {
+      type: "application/json",
+    });
     const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = url;
-    link.download = 'output.json';
+    link.download = "output.json";
     link.click();
     URL.revokeObjectURL(url);
   };
@@ -43,17 +45,19 @@ const ExcelToJson = () => {
   const copyJson = () => {
     if (!jsonData) return;
 
-    navigator.clipboard.writeText(JSON.stringify(jsonData, null, 2))
-      .then(() => alert('JSON copied to clipboard!'))
-      .catch((error) => alert('Failed to copy JSON: ' + error));
+    navigator.clipboard
+      .writeText(JSON.stringify(jsonData, null, 2))
+      .then(() => alert("JSON copied to clipboard!"))
+      .catch((error) => alert("Failed to copy JSON: " + error));
   };
 
   const sendToDatabase = () => {
     if (!jsonData) return;
 
-    axios.post('http://localhost:5000/api/data', jsonData)
-      .then(() => alert('Data successfully sent to the database!'))
-      .catch((error) => alert('Failed to send data: ' + error));
+    axios
+      .post("/api/data", jsonData)
+      .then(() => alert("Data successfully sent to the database!"))
+      .catch((error) => alert("Failed to send data: " + error));
   };
 
   return (

@@ -5,38 +5,36 @@ import * as XLSX from "xlsx";
 const Table = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [sortConfig, setSortConfig] = useState({ key: 'No', direction: 'asc' });
-  const [searchTerm, setSearchTerm] = useState('');
-  const [password, setPassword] = useState('');
+  const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" });
+  const [searchTerm, setSearchTerm] = useState("");
+  const [password, setPassword] = useState("");
   const [isEnabled, setEnable] = useState(false);
 
   const mainPassword = "army";
 
-
   const checkIfSame = () => {
-    if (mainPassword == password){
-        setEnable(true);
-        alert("You have successfully accessed it!")
+    if (mainPassword == password) {
+      setEnable(true);
+      alert("You have successfully accessed it!");
+    } else {
+      alert("They are not the same bro!");
     }
-    else {
-       alert("They are not the same bro!")
-    }
-  }
+  };
 
-  const [selectedBrand, setSelectedBrand] = useState('All');
+  const [selectedBrand, setSelectedBrand] = useState("All");
   const [newRows, setNewRows] = useState([
     {
-      No: '', // This will be set later based on existing data
-      SerialNumber: '',
-      Brand: '',
-      Model: '',
-      Owner: '',
-      Department: '',
-      Owner_1: '',
-      Department_1: '',
-      Owner_2: '',
-      Department_2: ''
-    }
+      No: "", // This will be set later based on existing data
+      SerialNumber: "",
+      Brand: "",
+      Model: "",
+      Owner: "",
+      Department: "",
+      Owner_1: "",
+      Department_1: "",
+      Owner_2: "",
+      Department_2: "",
+    },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -46,13 +44,17 @@ const Table = () => {
         const response = await axios.get("/");
         const fetchedData = response.data;
 
-
         // Ensure No field is a number
-        const maxNo = fetchedData.reduce((max, item) => Math.max(max, Number(item.No) || 0), 0);
+        const maxNo = fetchedData.reduce(
+          (max, item) => Math.max(max, Number(item.No) || 0),
+          0
+        );
         setData(fetchedData);
 
         // Set initial No for new rows based on existing data
-        setNewRows(prevRows => prevRows.map(row => ({ ...row, No: maxNo + 1 })));
+        setNewRows((prevRows) =>
+          prevRows.map((row) => ({ ...row, No: maxNo + 1 }))
+        );
 
         setLoading(false);
       } catch (error) {
@@ -64,14 +66,14 @@ const Table = () => {
   }, []);
 
   const handleSort = (key) => {
-    const direction = (sortConfig.key === key && sortConfig.direction === 'asc') ? 'desc' : 'asc';
+    const direction =
+      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
     setSortConfig({ key, direction });
   };
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -95,82 +97,80 @@ const Table = () => {
   };
   const [disabled, setShown] = useState(true);
 
-
   useEffect(() => {
     // Function to handle the keydown event
     const handleKeyDown = (event) => {
       // Check if 'Ctrl' and 'J' keys are pressed
-      if (event.ctrlKey && event.key === 's') {
+      if (event.ctrlKey && event.key === "s") {
         // Prevent the default action (e.g., for browsers where 'Ctrl + J' might open downloads)
         event.preventDefault();
-        
-        // Perform your desired action here
-        setShown(disable => !disable);
 
+        // Perform your desired action here
+        setShown((disable) => !disable);
       }
     };
 
     // Add the event listener
-    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
 
     // Cleanup function to remove the event listener
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
-    
   useEffect(() => {
     const hideElement = () => {
       const elements = document.getElementsByClassName("SerialNumber");
-      
-      Array.from(elements).forEach(element => {
-        disabled ? element.disabled = true : element.disabled = false; // Set disabled to a boolean value
+
+      Array.from(elements).forEach((element) => {
+        disabled ? (element.disabled = true) : (element.disabled = false); // Set disabled to a boolean value
       });
     };
     hideElement(); // Call the function whenever 'disabled' changes
   }, [disabled, isEnabled]);
 
-
   const updateDevice = async (id, updatedData) => {
     try {
       await axios.put(`/update-device/${id}`, updatedData);
     } catch (error) {
-      console.error('Failed to update device:', error);
+      console.error("Failed to update device:", error);
     }
   };
 
   const addNewRows = async () => {
     try {
-      const responses = await Promise.all(newRows.map(row => axios.post('/add-device', row)));
-      setData([...data, ...responses.map(response => response.data)]);
-      
+      const responses = await Promise.all(
+        newRows.map((row) => axios.post("/add-device", row))
+      );
+      setData([...data, ...responses.map((response) => response.data)]);
+
       setNewRows([
         {
-          No: Math.max(...newRows.map(item => Number(item.No) || 0), 0) + 1,
-          SerialNumber: '',
-          Brand: '',
-          Model: '',
-          Owner: '',
-          Department: '',
-          Owner_1: '',
-          Department_1: '',
-          Owner_2: '',
-          Department_2: ''
-        }
+          No: Math.max(...newRows.map((item) => Number(item.No) || 0), 0) + 1,
+          SerialNumber: "",
+          Brand: "",
+          Model: "",
+          Owner: "",
+          Department: "",
+          Owner_1: "",
+          Department_1: "",
+          Owner_2: "",
+          Department_2: "",
+        },
       ]);
       closeModal(); // Close modal after adding the rows
     } catch (error) {
-      console.error('Failed to add new devices:', error);
+      console.error("Failed to add new devices:", error);
     }
   };
 
   const deleteDevice = async (id) => {
     try {
       await axios.delete(`/delete-device/${id}`);
-      setData(data.filter(device => device._id !== id));
+      setData(data.filter((device) => device._id !== id));
     } catch (error) {
-      console.error('Failed to delete device:', error);
+      console.error("Failed to delete device:", error);
     }
   };
 
@@ -186,7 +186,8 @@ const Table = () => {
       const searchMatch = Object.values(item).some((value) =>
         value.toString().toLowerCase().includes(searchTerm.toLowerCase())
       );
-      const brandMatch = selectedBrand === 'All' || item.Brand === selectedBrand;
+      const brandMatch =
+        selectedBrand === "All" || item.Brand === selectedBrand;
       return searchMatch && brandMatch;
     });
   }, [data, searchTerm, selectedBrand]);
@@ -195,14 +196,18 @@ const Table = () => {
     let sortableData = [...filteredData];
     if (sortConfig !== null) {
       sortableData.sort((a, b) => {
-        const aNo = isNaN(Number(a[sortConfig.key])) ? a[sortConfig.key] : Number(a[sortConfig.key]);
-        const bNo = isNaN(Number(b[sortConfig.key])) ? b[sortConfig.key] : Number(b[sortConfig.key]);
+        const aNo = isNaN(Number(a[sortConfig.key]))
+          ? a[sortConfig.key]
+          : Number(a[sortConfig.key]);
+        const bNo = isNaN(Number(b[sortConfig.key]))
+          ? b[sortConfig.key]
+          : Number(b[sortConfig.key]);
 
         if (aNo < bNo) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
+          return sortConfig.direction === "asc" ? -1 : 1;
         }
         if (aNo > bNo) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
+          return sortConfig.direction === "asc" ? 1 : -1;
         }
         return 0;
       });
@@ -215,8 +220,8 @@ const Table = () => {
     const filteredData = sortedData.map(({ _id, __v, ...rest }) => rest);
     const worksheet = XLSX.utils.json_to_sheet(filteredData);
     const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Devices');
-    XLSX.writeFile(workbook, 'devices_data.xlsx');
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Devices");
+    XLSX.writeFile(workbook, "devices_data.xlsx");
   };
 
   if (loading) {
@@ -273,109 +278,156 @@ const Table = () => {
           placeholder="Enter a password to access the data"
           value={password}
           onChange={handlePasswordChange}
-          className={`border border-gray-300 p-2 mr-4 ml-5 ${isEnabled ? 'hidden' : 'block'}`}
+          className={`border border-gray-300 p-2 mr-4 ml-5 ${
+            isEnabled ? "hidden" : "block"
+          }`}
         />
 
         <button
           onClick={checkIfSame}
-          className={`bg-red-500 text-white px-4 py-2 ${isEnabled ? 'hidden' : 'block'}`}
+          className={`bg-red-500 text-white px-4 py-2 ${
+            isEnabled ? "hidden" : "block"
+          }`}
         >
           Submit
         </button>
-
       </div>
 
       {isModalOpen && (
-  <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-    <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
-      <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
-      {newRows.map((row, rowIndex) => (
-        <div key={rowIndex} className="mb-4">
-          <h3 className="text-md font-medium mb-2">Device {rowIndex + 1}</h3>
-          <div className="flex flex-wrap gap-4">
-            {Object.keys(row).map((key) => (
-              <div key={key} className="flex-1">
-                <label className="block text-sm font-medium text-gray-700">{key}</label>
-                <input
-                  type="text"
-                  value={row[key]}
-                  onChange={(e) => handleRowInputChange(rowIndex, key, e.target.value)}
-                  className="border border-gray-300 p-2 mt-1 w-full"
-                />
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
+            <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
+            {newRows.map((row, rowIndex) => (
+              <div key={rowIndex} className="mb-4">
+                <h3 className="text-md font-medium mb-2">
+                  Device {rowIndex + 1}
+                </h3>
+                <div className="flex flex-wrap gap-4">
+                  {Object.keys(row).map((key) => (
+                    <div key={key} className="flex-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        {key}
+                      </label>
+                      <input
+                        type="text"
+                        value={row[key]}
+                        onChange={(e) =>
+                          handleRowInputChange(rowIndex, key, e.target.value)
+                        }
+                        className="border border-gray-300 p-2 mt-1 w-full"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => deleteRow(rowIndex)}
+                  className="bg-red-500 text-white px-4 py-1 rounded mt-2"
+                >
+                  Delete Row
+                </button>
               </div>
             ))}
+            <button
+              onClick={() =>
+                setNewRows([
+                  ...newRows,
+                  {
+                    No:
+                      Math.max(
+                        ...newRows.map((item) => Number(item.No) || 0),
+                        0
+                      ) + 1,
+                    SerialNumber: "",
+                    Brand: "",
+                    Model: "",
+                    Owner: "",
+                    Department: "",
+                    Owner_1: "",
+                    Department_1: "",
+                    Owner_2: "",
+                    Department_2: "",
+                  },
+                ])
+              }
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
+            >
+              Add Another Row
+            </button>
+            <button
+              onClick={addNewRows}
+              className="bg-blue-500 text-white px-4 py-2 rounded mt-4 ml-2"
+            >
+              Add Rows
+            </button>
+            <button
+              onClick={closeModal}
+              className="bg-gray-500 text-white px-4 py-2 rounded mt-4 ml-2"
+            >
+              Cancel
+            </button>
           </div>
-          <button
-            onClick={() => deleteRow(rowIndex)}
-            className="bg-red-500 text-white px-4 py-1 rounded mt-2"
-          >
-            Delete Row
-          </button>
         </div>
-      ))}
-      <button
-        onClick={() => setNewRows([...newRows, {
-          No: Math.max(...newRows.map(item => Number(item.No) || 0), 0) + 1,
-          SerialNumber: '', 
-          Brand: '',
-          Model: '',
-          Owner: '',
-          Department: '',
-          Owner_1: '',
-          Department_1: '',
-          Owner_2: '',
-          Department_2: ''
-        }])}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-      >
-        Add Another Row
-      </button>
-      <button
-        onClick={addNewRows}
-        className="bg-blue-500 text-white px-4 py-2 rounded mt-4 ml-2"
-      >
-        Add Rows
-      </button>
-      <button
-        onClick={closeModal}
-        className="bg-gray-500 text-white px-4 py-2 rounded mt-4 ml-2"
-      >
-        Cancel
-      </button>
+      )}
 
-    </div>
-  </div>
-)}
-
-
-      <table className={`min-w-full bg-white border border-gray-300 ${isEnabled ? 'block' : 'hidden'}`}>
+      <table className={`min-w-full bg-white border border-gray-300 `}>
         <thead>
           <tr className="bg-gray-200">
-            {['No', 'SerialNumber', 'Brand', 'Model', 'Owner', 'Department', 'Owner_1', 'Department_1', 'Owner_2', 'Department_2'].map((header) => (
+            {[
+              "No",
+              "SerialNumber",
+              "Brand",
+              "Model",
+              "Owner",
+              "Department",
+              "Owner_1",
+              "Department_1",
+              "Owner_2",
+              "Department_2",
+            ].map((header) => (
               <th
                 key={header}
                 className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700 cursor-pointer"
                 onClick={() => handleSort(header)}
               >
-                {header} {sortConfig.key === header ? (sortConfig.direction === 'asc' ? '▲' : '▼') : ''}
+                {header}{" "}
+                {sortConfig.key === header
+                  ? sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
               </th>
             ))}
-            <th className="px-6 py-3 border-b-2 border-gray-300"></th> {/* For delete button */}
+            <th className="px-6 py-3 border-b-2 border-gray-300"></th>{" "}
+            {/* For delete button */}
           </tr>
         </thead>
         <tbody>
           {sortedData.map((device, index) => (
             <tr key={device._id} className="hover:bg-gray-100">
-              {['No', 'SerialNumber', 'Brand', 'Model', 'Owner', 'Department', 'Owner_1', 'Department_1', 'Owner_2', 'Department_2'].map((key) => (
-                <td key={key} className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
+              {[
+                "No",
+                "SerialNumber",
+                "Brand",
+                "Model",
+                "Owner",
+                "Department",
+                "Owner_1",
+                "Department_1",
+                "Owner_2",
+                "Department_2",
+              ].map((key) => (
+                <td
+                  key={key}
+                  className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700"
+                >
                   <input
                     type="text"
-                    value={device[key] || ''}
-                    onChange={(e) => handleInputChange(index, key, e.target.value)}
+                    value={device[key] || ""}
+                    onChange={(e) =>
+                      handleInputChange(index, key, e.target.value)
+                    }
                     className={`w-full ${key}`}
                   />
-
-                  
                 </td>
               ))}
               <td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
