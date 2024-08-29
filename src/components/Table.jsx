@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import * as XLSX from "xlsx";
 
@@ -12,19 +12,10 @@ const Table = () => {
 
   const mainPassword = "army";
 
-  const checkIfSame = () => {
-    if (mainPassword == password) {
-      setEnable(true);
-      alert("You have successfully accessed it!");
-    } else {
-      alert("They are not the same bro!");
-    }
-  };
-
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [newRows, setNewRows] = useState([
     {
-      No: "", // This will be set later based on existing data
+      No: "", 
       SerialNumber: "",
       Brand: "",
       Model: "",
@@ -37,6 +28,7 @@ const Table = () => {
     },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [pendingChanges, setPendingChanges] = useState({ updates: [], additions: [] });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,54 +79,44 @@ const Table = () => {
     const updatedData = [...data];
     updatedData[index] = { ...updatedData[index], [key]: value };
     setData(updatedData);
-    updateDevice(updatedData[index]._id, { [key]: value });
+    setPendingChanges(prev => ({
+      ...prev,
+      updates: [...prev.updates, { id: updatedData[index]._id, changes: { [key]: value } }]
+    }));
   };
 
   const handleRowInputChange = (rowIndex, key, value) => {
     const updatedRows = [...newRows];
     updatedRows[rowIndex] = { ...updatedRows[rowIndex], [key]: value };
     setNewRows(updatedRows);
+    setPendingChanges(prev => ({
+      ...prev,
+      additions: [...prev.additions, updatedRows[rowIndex]]
+    }));
   };
-  const [disabled, setShown] = useState(true);
 
-  useEffect(() => {
-    // Function to handle the keydown event
-    const handleKeyDown = (event) => {
-      // Check if 'Ctrl' and 'J' keys are pressed
-      if (event.ctrlKey && event.key === "s") {
-        // Prevent the default action (e.g., for browsers where 'Ctrl + J' might open downloads)
-        event.preventDefault();
-
-        // Perform your desired action here
-        setShown((disable) => !disable);
-      }
-    };
-
-    // Add the event listener
-    document.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup function to remove the event listener
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
-  useEffect(() => {
-    const hideElement = () => {
-      const elements = document.getElementsByClassName("SerialNumber");
-
-      Array.from(elements).forEach((element) => {
-        disabled ? (element.disabled = true) : (element.disabled = false); // Set disabled to a boolean value
-      });
-    };
-    hideElement(); // Call the function whenever 'disabled' changes
-  }, [disabled, isEnabled]);
-
-  const updateDevice = async (id, updatedData) => {
+  const saveChanges = async () => {
     try {
-      await axios.put(`/update-device/${id}`, updatedData);
+      // Save updated devices
+      await Promise.all(
+        pendingChanges.updates.map(update =>
+          axios.put(`/update-device/${update.id}`, update.changes)
+        )
+      );
+
+      // Save new devices
+      await Promise.all(
+        pendingChanges.additions.map(row => axios.post("/add-device", row))
+      );
+
+      // Refresh data
+      const response = await axios.get("/");
+      setData(response.data);
+
+      // Clear pending changes
+      setPendingChanges({ updates: [], additions: [] });
     } catch (error) {
-      console.error("Failed to update device:", error);
+      console.error("Failed to save changes:", error);
     }
   };
 
@@ -216,24 +198,44 @@ const Table = () => {
   }, [filteredData, sortConfig]);
 
   const exportToXlsx = () => {
-    // Remove _id and __v from each item
-    const filteredData = sortedData.map(({ _id, __v, ...rest }) => rest);
-    const worksheet = XLSX.utils.json_to_sheet(filteredData);
+    const worksheet = XLSX.utils.json_to_sheet(sortedData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Devices");
-    XLSX.writeFile(workbook, "devices_data.xlsx");
+    XLSX.writeFile(workbook, "devices.xlsx");
   };
+
+  const checkIfSame = () => {
+    if (password === mainPassword) {
+      setEnable(true);
+    } else {
+      alert("Incorrect password");
+    }
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.ctrlKey && event.key === 's') {
+        event.preventDefault(); // Prevent the default browser save action
+        saveChanges();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [saveChanges]);
 
   if (loading) {
     return (
-      <div className="flex w-full justify-center">
-        <div role="status" className="w-full animate-pulse">
-          <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-48 mb-4"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700  mb-2.5"></div>
+      <div className="flex justify-center items-center h-screen">
+        <div role="status">
           <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
           <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700  mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 "></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
+          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
           <span className="sr-only">Loading...</span>
         </div>
       </div>
@@ -291,6 +293,15 @@ const Table = () => {
         >
           Submit
         </button>
+
+        {pendingChanges.updates.length > 0 || pendingChanges.additions.length > 0 ? (
+          <button
+            onClick={saveChanges}
+            className="bg-yellow-500 text-white px-4 py-2 rounded ml-4"
+          >
+            Save Changes
+          </button>
+        ) : null}
       </div>
 
       {isModalOpen && (
