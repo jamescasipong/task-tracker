@@ -80,33 +80,35 @@ const Table = () => {
     updatedData[index] = { ...updatedData[index], [key]: value };
     setData(updatedData);
     setPendingChanges(prev => ({
-      ...prev,
-      updates: [...prev.updates, { id: updatedData[index]._id, changes: { [key]: value } }]
+        ...prev,
+        updates: [...prev.updates, { id: updatedData[index]._id, changes: { [key]: value } }]
     }));
-  };
+};
 
-  const handleRowInputChange = (rowIndex, key, value) => {
-    const updatedRows = [...newRows];
-    updatedRows[rowIndex] = { ...updatedRows[rowIndex], [key]: value };
-    setNewRows(updatedRows);
-    setPendingChanges(prev => ({
+
+const handleRowInputChange = (rowIndex, key, value) => {
+  const updatedRows = [...newRows];
+  updatedRows[rowIndex] = { ...updatedRows[rowIndex], [key]: value };
+  setNewRows(updatedRows);
+  setPendingChanges(prev => ({
       ...prev,
       additions: [...prev.additions, updatedRows[rowIndex]]
-    }));
-  };
+  }));
+};
 
-  const saveChanges = async () => {
-    try {
+
+const saveChanges = async () => {
+  try {
       // Save updated devices
       await Promise.all(
-        pendingChanges.updates.map(update =>
-          axios.put(`/update-device/${update.id}`, update.changes)
-        )
+          pendingChanges.updates.map(update =>
+              axios.put(`/update-device/${update.id}`, update.changes)
+          )
       );
 
       // Save new devices
       await Promise.all(
-        pendingChanges.additions.map(row => axios.post("/add-device", row))
+          pendingChanges.additions.map(row => axios.post("/add-device", row))
       );
 
       // Refresh data
@@ -115,10 +117,11 @@ const Table = () => {
 
       // Clear pending changes
       setPendingChanges({ updates: [], additions: [] });
-    } catch (error) {
+  } catch (error) {
       console.error("Failed to save changes:", error);
-    }
-  };
+  }
+};
+
 
   const addNewRows = async () => {
     try {
