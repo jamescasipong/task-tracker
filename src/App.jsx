@@ -30,7 +30,7 @@ function App() {
       <div className="bg-primary flex justify-center items-start">
         <div className="w-full">
           {currentView === 'table' && <Table />}
-          {currentView === 'excelToJson' && <ExcelToJson />}
+          {/*currentView === 'excelToJson' && <ExcelToJson />*/}
           {currentView === 'paymentTable' && <PaymentTable />}
           {/* Optionally, you can include other components or fallback content */}
         </div>
