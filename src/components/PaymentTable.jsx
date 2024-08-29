@@ -87,6 +87,16 @@ const PaymentTable = () => {
           {rows.map((row, rowIndex) => (
             <React.Fragment key={rowIndex}>
               <tr>
+                {row.months.map((month, monthIndex) => (
+                  <th
+                    key={monthIndex}
+                    className="py-2 px-4 border text-center bg-gray-200"
+                  >
+                    {month}
+                  </th>
+                ))}
+              </tr>
+              <tr>
                 {row.values.map((value, monthIndex) => (
                   <td key={monthIndex} className="py-2 px-4 border">
                     <input
@@ -101,16 +111,7 @@ const PaymentTable = () => {
                   </td>
                 ))}
               </tr>
-              <tr>
-                {row.months.map((month, monthIndex) => (
-                  <th
-                    key={monthIndex}
-                    className="py-2 px-4 border text-center bg-gray-200"
-                  >
-                    {month}
-                  </th>
-                ))}
-              </tr>
+              
             </React.Fragment>
           ))}
         </tbody>
