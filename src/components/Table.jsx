@@ -49,10 +49,7 @@ const Table = () => {
         );
 
         setLoading(false);
-        
-      } 
-      
-      catch (error) {
+      } catch (error) {
         setLoading(false);
       }
     };
