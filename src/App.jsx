@@ -6,19 +6,30 @@ import Table from "./components/Table";
 import "./index.css";
 
 axios.defaults.baseURL = "https://tasktracker-server.vercel.app";
-//axios.defaults.baseURL = "http://localhost:3002";
+// axios.defaults.baseURL = "http://localhost:3002";
 axios.defaults.withCredentials = true;
 
 function App() {
-  // Initialize state from local storage or default to 'table'
   const [currentView, setCurrentView] = useState(() => {
     const savedView = localStorage.getItem('currentView');
     return savedView ? JSON.parse(savedView) : 'table';
   });
 
-  // Update local storage whenever currentView changes
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('currentView', JSON.stringify(currentView));
+  }, [currentView]);
+
+  useEffect(() => {
+    // Simulate loading delay
+    const loadView = async () => {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 500)); // Simulate a delay
+      setLoading(false);
+    };
+
+    loadView();
   }, [currentView]);
 
   return (
@@ -26,11 +37,17 @@ function App() {
       <Navbar currentView={currentView} setCurrentView={setCurrentView} />
       <div className="bg-primary flex justify-center items-start">
         <div className="w-full">
-          {currentView === 'table' && <Table />}
-          {/*currentView === 'excelToJson' && <ExcelToJson />*/}
-          {currentView === 'paymentTable' && <PaymentTable />}
-          
-          {/* Optionally, you can include other components or fallback content */}
+          {loading ? (
+            <div className="flex justify-center items-center h-screen">
+              <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 border-solid border-primary rounded-full"></div>
+            </div>
+          ) : (
+            <>
+              {currentView === 'table' && <Table />}
+              {/*currentView === 'excelToJson' && <ExcelToJson />*/}
+              {currentView === 'paymentTable' && <PaymentTable />}
+            </>
+          )}
         </div>
       </div>
     </div>
