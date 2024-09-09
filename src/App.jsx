@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from "react";
-import "./index.css";
-import Dashboard from "./components/Dashboard";
-import ExcelToJson from "./components/ExcelToJson";
-import Table from "./components/Table";
-import TaskTracker from "./components/TaskTracker";
 import axios from "axios";
-import PaymentTable from "./components/PaymentTable";
+import React, { useEffect, useState } from "react";
 import Navbar from "./components/Navbar";
+import PaymentTable from "./components/PaymentTable";
+import Table from "./components/Table";
+import "./index.css";
 
 axios.defaults.baseURL = "https://tasktracker-server.vercel.app";
 //axios.defaults.baseURL = "http://localhost:3002";
@@ -32,6 +29,7 @@ function App() {
           {currentView === 'table' && <Table />}
           {/*currentView === 'excelToJson' && <ExcelToJson />*/}
           {currentView === 'paymentTable' && <PaymentTable />}
+          
           {/* Optionally, you can include other components or fallback content */}
         </div>
       </div>
