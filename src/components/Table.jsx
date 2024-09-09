@@ -455,7 +455,9 @@ const saveChanges = async () => {
             </tr>
           ))}
         </tbody>
+        
       </table>
+      
     </div>
   );
 };

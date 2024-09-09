@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import ExcelToJson from "./components/ExcelToJson";
 import Navbar from "./components/Navbar";
 import PaymentTable from "./components/PaymentTable";
 import Table from "./components/Table";
@@ -27,7 +28,7 @@ function App() {
       <div className="bg-primary flex justify-center items-start">
         <div className="w-full">
           {currentView === 'table' && <Table />}
-          {/*currentView === 'excelToJson' && <ExcelToJson />*/}
+          {currentView === 'excelToJson' && <ExcelToJson />}
           {currentView === 'paymentTable' && <PaymentTable />}
           
           {/* Optionally, you can include other components or fallback content */}

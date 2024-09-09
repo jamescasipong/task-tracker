@@ -10,12 +10,12 @@ const Navbar = ({ currentView, setCurrentView }) => {
         >
           Table
         </button>
-        {/*<button
+        {<button
           className={`text-white px-4 py-2 rounded-md mx-2 focus:outline-none ${currentView === 'excelToJson' ? 'bg-blue-500' : 'bg-gray-700'}`}
           onClick={() => setCurrentView('excelToJson')}
         >
           Excel to JSON
-        </button>*/}
+        </button>}
         <button
           className={`ml-3 text-white px-4 py-2 rounded-md focus:outline-none ${currentView === 'paymentTable' ? 'bg-blue-500' : 'bg-gray-700'}`}
           onClick={() => setCurrentView('paymentTable')}
