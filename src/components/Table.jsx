@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 
 const Table = () => {
@@ -49,7 +49,10 @@ const Table = () => {
         );
 
         setLoading(false);
-      } catch (error) {
+        
+      } 
+      
+      catch (error) {
         setLoading(false);
       }
     };
