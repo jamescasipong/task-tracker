@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 
+
 const Table = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -200,12 +201,29 @@ const saveChanges = async () => {
     return sortableData;
   }, [filteredData, sortConfig]);
 
-  const exportToXlsx = () => {
-    const worksheet = XLSX.utils.json_to_sheet(sortedData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Devices");
-    XLSX.writeFile(workbook, "devices.xlsx");
+  
+  const exportToXlsx = async () => {
+    try {
+      // Fetch data from the backend
+      const response = await axios.get('/export/excel', { responseType: 'json' });
+      
+      // Convert the response to JSON
+      const data = response.data;
+  
+      // Convert JSON data to worksheet
+      const worksheet = XLSX.utils.json_to_sheet(data);
+  
+      // Create a new workbook and append the worksheet
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+  
+      // Export the workbook to a file
+      XLSX.writeFile(workbook, 'Device Inventory.xlsx');
+    } catch (error) {
+      console.error('Error exporting data:', error.message);
+    }
   };
+  
 
   const checkIfSame = () => {
     if (password === mainPassword) {
