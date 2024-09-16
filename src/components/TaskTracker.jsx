@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const TaskTracker = () => {
   const [tasks, setTasks] = useState([]);
@@ -12,9 +12,6 @@ const TaskTracker = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const tasksPerPage = 10;
   const maxPaginationButtons = 4; // Maximum number of pagination buttons to display
-
-
-
 
 
   const addTask = () => {

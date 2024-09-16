@@ -9,9 +9,6 @@ const Table = () => {
   const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
   const [password, setPassword] = useState("");
-  const [isEnabled, setEnable] = useState(false);
-
-  const mainPassword = "army";
 
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [newRows, setNewRows] = useState([
@@ -216,66 +213,7 @@ const saveChanges = async () => {
     // Convert JSON data to worksheet
     const worksheet = XLSX.utils.json_to_sheet(data);
 
-    // Apply styles to the worksheet
-    const headerStyle = {
-      font: { bold: true, color: { rgb: "FFFFFF" } },
-      fill: { fgColor: { rgb: "4F81BD" } },
-      border: {
-        top: { style: "thin", color: { rgb: "000000" } },
-        bottom: { style: "thin", color: { rgb: "000000" } },
-        left: { style: "thin", color: { rgb: "000000" } },
-        right: { style: "thin", color: { rgb: "000000" } },
-      },
-      alignment: { horizontal: "center", vertical: "center" }
-    };
-
-    const bodyStyle = {
-      font: { color: { rgb: "000000" } },
-      border: {
-        top: { style: "thin", color: { rgb: "000000" } },
-        bottom: { style: "thin", color: { rgb: "000000" } },
-        left: { style: "thin", color: { rgb: "000000" } },
-        right: { style: "thin", color: { rgb: "000000" } },
-      },
-      alignment: { horizontal: "left", vertical: "center" }
-    };
-
-    const totalColumns = 10;
-
-    // Apply styles to the header row (row 1)
-    const headers = Object.keys(data[0]);
-    for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
-      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
-      const headerValue = headers[colIndex] || `Column ${colIndex + 1}`; // Default header if undefined
-      if (!worksheet[cellAddress]) {
-        worksheet[cellAddress] = { v: headerValue };
-      }
-      worksheet[cellAddress].s = headerStyle; // Set style to header cell
-    }
-
-    // Apply styles to the rest of the rows
-    data.forEach((row, rowIndex) => {
-      for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 1, c: colIndex });
-        const cellValue = row[headers[colIndex]] || ''; // Default value if undefined
-        if (!worksheet[cellAddress]) {
-          worksheet[cellAddress] = { v: cellValue };
-        }
-        worksheet[cellAddress].s = bodyStyle; // Set style to body cells
-      }
-    });
-
-    // Dynamically calculate the column widths based on content
-    const colWidths = headers.map((header, colIndex) => {
-      let maxLength = header.length; // Start with header length
-      data.forEach(row => {
-        const cellValue = row[header] ? row[header].toString() : '';
-        maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
-      });
-      return { wch: maxLength + 2 }; // Add some padding (2 characters)
-    });
-
-    worksheet['!cols'] = colWidths; // Set the column widths
+    
 
     // Create a new workbook and append the styled worksheet
     const workbook = XLSX.utils.book_new();
@@ -291,15 +229,7 @@ const saveChanges = async () => {
   
 
   
-  
 
-  const checkIfSame = () => {
-    if (password === mainPassword) {
-      setEnable(true);
-    } else {
-      alert("Incorrect password");
-    }
-  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -334,13 +264,13 @@ const saveChanges = async () => {
   return (
     <div className="overflow-x-auto p-4">
       <div className="mb-4 flex items-center">
-        <input
+        {/*<input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearchChange}
           className="border border-gray-300 p-2 mr-4 w-[700px]"
-        />
+        />*/}
         <select
           value={selectedBrand}
           onChange={handleBrandFilterChange}
@@ -364,24 +294,6 @@ const saveChanges = async () => {
           Export to XLSX
         </button>
 
-        <input
-          type="password"
-          placeholder="Enter a password to access the data"
-          value={password}
-          onChange={handlePasswordChange}
-          className={`border border-gray-300 p-2 mr-4 ml-5 ${
-            isEnabled ? "hidden" : "block"
-          }`}
-        />
-
-        <button
-          onClick={checkIfSame}
-          className={`bg-red-500 text-white px-4 py-2 ${
-            isEnabled ? "hidden" : "block"
-          }`}
-        >
-          Submit
-        </button>
 
         {pendingChanges.updates.length > 0 || pendingChanges.additions.length > 0 ? (
           <button
