@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import * as XLSX from "xlsx";
+import XLSX from "xlsx-js-style";
 
 
 const Table = () => {
@@ -203,26 +203,91 @@ const saveChanges = async () => {
 
   
   const exportToXlsx = async () => {
-    try {
-      // Fetch data from the backend
-      const response = await axios.get('/export/excel', { responseType: 'json' });
-      
-      // Convert the response to JSON
-      const data = response.data;
-  
-      // Convert JSON data to worksheet
-      const worksheet = XLSX.utils.json_to_sheet(data);
-  
-      // Create a new workbook and append the worksheet
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
-  
-      // Export the workbook to a file
-      XLSX.writeFile(workbook, 'Device Inventory.xlsx');
-    } catch (error) {
-      console.error('Error exporting data:', error.message);
+  try {
+    // Fetch data from the backend
+    const response = await axios.get('/export/excel', { responseType: 'json' });
+    
+    // Convert the response to JSON
+    const data = response.data;
+
+    // Convert JSON data to worksheet
+    const worksheet = XLSX.utils.json_to_sheet(data);
+
+    // Apply styles to the worksheet
+    const headerStyle = {
+      font: { bold: true, color: { rgb: "FFFFFF" } },
+      fill: { fgColor: { rgb: "4F81BD" } },
+      border: {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } },
+      },
+      alignment: { horizontal: "center", vertical: "center" }
+    };
+
+    const bodyStyle = {
+      font: { color: { rgb: "000000" } },
+      border: {
+        top: { style: "thin", color: { rgb: "000000" } },
+        bottom: { style: "thin", color: { rgb: "000000" } },
+        left: { style: "thin", color: { rgb: "000000" } },
+        right: { style: "thin", color: { rgb: "000000" } },
+      },
+      alignment: { horizontal: "left", vertical: "center" }
+    };
+
+    const totalColumns = 10;
+
+    // Apply styles to the header row (row 1)
+    const headers = Object.keys(data[0]);
+    for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
+      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+      const headerValue = headers[colIndex] || `Column ${colIndex + 1}`; // Default header if undefined
+      if (!worksheet[cellAddress]) {
+        worksheet[cellAddress] = { v: headerValue };
+      }
+      worksheet[cellAddress].s = headerStyle; // Set style to header cell
     }
-  };
+
+    // Apply styles to the rest of the rows
+    data.forEach((row, rowIndex) => {
+      for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 1, c: colIndex });
+        const cellValue = row[headers[colIndex]] || ''; // Default value if undefined
+        if (!worksheet[cellAddress]) {
+          worksheet[cellAddress] = { v: cellValue };
+        }
+        worksheet[cellAddress].s = bodyStyle; // Set style to body cells
+      }
+    });
+
+    // Dynamically calculate the column widths based on content
+    const colWidths = headers.map((header, colIndex) => {
+      let maxLength = header.length; // Start with header length
+      data.forEach(row => {
+        const cellValue = row[header] ? row[header].toString() : '';
+        maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
+      });
+      return { wch: maxLength + 2 }; // Add some padding (2 characters)
+    });
+
+    worksheet['!cols'] = colWidths; // Set the column widths
+
+    // Create a new workbook and append the styled worksheet
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Device Inventory');
+
+    // Export the workbook to a file
+    XLSX.writeFile(workbook, 'Device Inventory.xlsx');
+  } catch (error) {
+    console.error('Error exporting data:', error.message);
+  }
+};
+
+  
+
+  
   
 
   const checkIfSame = () => {
