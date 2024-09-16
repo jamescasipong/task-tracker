@@ -375,7 +375,7 @@ const PaymentTable = () => {
                         {month}
                       </th>
                     ))}
-                    <th className="py-2 px-4 border text-center">Actions</th>
+                    <th className="py-2 px-4 border text-center bg-gray-200">Actions</th>
                   </tr>
                   <tr>
                     {row.values.map((value, monthIndex) => (
@@ -396,7 +396,7 @@ const PaymentTable = () => {
                         onClick={() => deleteRow(tableIndex, rowIndex)}
                         className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                       >
-                        Delete
+                        <FaTrash className="w-5 h-5"/>
                       </button>
                     </td>
                   </tr>

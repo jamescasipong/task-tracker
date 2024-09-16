@@ -10,7 +10,6 @@ const Table = () => {
   const [loading, setLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
-  const [password, setPassword] = useState("");
 
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [newRows, setNewRows] = useState([
@@ -453,7 +452,6 @@ const saveChanges = async () => {
               "Department_1",
               "Owner_2",
               "Department_2",
-              "Action",
             ].map((header) => (
               <th
                 key={header}
@@ -499,14 +497,14 @@ const saveChanges = async () => {
                   />
                 </td>
               ))}
-              <td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
+              {/*<td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
                 <button
                   onClick={() => deleteDevice(device._id)}
                   className="bg-red-500 text-white px-4 py-1 rounded"
                 >
                   Delete
                 </button>
-              </td>
+              </td>*/}
             </tr>
           ))}
         </tbody>

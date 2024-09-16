@@ -30,7 +30,6 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
 
         <div className='absolute right-[1%] flex gap-5'>
         <button
-          onClick={false}
           className='sm:flex hidden items-center bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300 ease-in-out gap-2'
         >
           <MdOutlineIntegrationInstructions className='w-7 h-7'/>
