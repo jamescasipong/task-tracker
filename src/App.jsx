@@ -38,7 +38,6 @@ function App() {
   };
 
   const handleLogout = () => {
-    setLoading(true);
     setTimeout(() => {
       setIsAuthenticated(false);
       localStorage.removeItem('userDetails'); // Optional: Clear saved user details
@@ -58,9 +57,15 @@ function App() {
   return (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
-        <div className="flex items-center justify-center h-screen">
+        <><Navbar
+        currentView={currentView}
+        setCurrentView={handleViewChange}
+        onLogout={handleLogout}
+      />
+      <div className="flex items-center justify-center h-screen">
           <div className="loader"></div>
-        </div>
+      </div></>
+        
       ) : isAuthenticated ? (
         <>
           <Navbar
