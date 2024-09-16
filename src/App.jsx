@@ -6,8 +6,8 @@ import SignIn from './components/SignIn';
 import Table from './components/Table';
 import './index.css';
 
-axios.defaults.baseURL = "https://tasktracker-server.vercel.app/api";
-//axios.defaults.baseURL = `http://localhost:3002/api`;
+//axios.defaults.baseURL = "https://tasktracker-server.vercel.app/api";
+axios.defaults.baseURL = `http://localhost:3002/api`;
 axios.defaults.withCredentials = true;
 
 function App() {
