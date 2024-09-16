@@ -13,7 +13,7 @@ const PaymentTable = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "/api/payments/get"
+          "/payments/get"
         );
         const data = response.data.tables || [];
         setTables(data);
@@ -164,7 +164,7 @@ const PaymentTable = () => {
     try {
       console.log("Saving the following data:", tables);
       const response = await axios.post(
-        "/api/payments/save",
+        "/payments/save",
         { tables }
       );
       alert(response.data.message);

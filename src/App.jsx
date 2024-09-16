@@ -6,8 +6,9 @@ import PaymentTable from "./components/PaymentTable";
 import Table from "./components/Table";
 import "./index.css";
 
+
 //axios.defaults.baseURL = "https://tasktracker-server.vercel.app";
-axios.defaults.baseURL = "http://localhost:3002";
+axios.defaults.baseURL = `http://localhost:3002/api`;
 axios.defaults.withCredentials = true;
 
 function App() {

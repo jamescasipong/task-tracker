@@ -34,7 +34,7 @@ const Table = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("/");
+        const response = await axios.get("/dataRoute/");
         const fetchedData = response.data;
 
         // Ensure No field is a number
@@ -103,17 +103,17 @@ const saveChanges = async () => {
       // Save updated devices
       await Promise.all(
           pendingChanges.updates.map(update =>
-              axios.put(`/update-device/${update.id}`, update.changes)
+              axios.put(`/dataRoute/update-device/${update.id}`, update.changes)
           )
       );
 
       // Save new devices
       await Promise.all(
-          pendingChanges.additions.map(row => axios.post("/add-device", row))
+          pendingChanges.additions.map(row => axios.post("/dataRoute/add-device", row))
       );
 
       // Refresh data
-      const response = await axios.get("/");
+      const response = await axios.get("/dataRoute/");
       setData(response.data);
 
       // Clear pending changes
@@ -127,7 +127,7 @@ const saveChanges = async () => {
   const addNewRows = async () => {
     try {
       const responses = await Promise.all(
-        newRows.map((row) => axios.post("/add-device", row))
+        newRows.map((row) => axios.post("/dataRoute/add-device", row))
       );
       setData([...data, ...responses.map((response) => response.data)]);
 
@@ -153,7 +153,7 @@ const saveChanges = async () => {
 
   const deleteDevice = async (id) => {
     try {
-      await axios.delete(`/delete-device/${id}`);
+      await axios.delete(`/dataRoute/delete-device/${id}`);
       setData(data.filter((device) => device._id !== id));
     } catch (error) {
       console.error("Failed to delete device:", error);
@@ -205,7 +205,7 @@ const saveChanges = async () => {
   const exportToXlsx = async () => {
   try {
     // Fetch data from the backend
-    const response = await axios.get('/export/excel', { responseType: 'json' });
+    const response = await axios.get('/dataRoute/export/excel', { responseType: 'json' });
     
     // Convert the response to JSON
     const data = response.data;
