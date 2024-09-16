@@ -1,5 +1,7 @@
 import React from 'react';
 import { FaSignOutAlt } from 'react-icons/fa'; // Import the logout icon
+import { MdOutlineIntegrationInstructions } from "react-icons/md";
+
 
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   return (
@@ -25,13 +27,23 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
             Payment Table
           </button>
         </div>
+
+        <div className='absolute right-[1%] flex gap-5'>
+        <button
+          onClick={false}
+          className='sm:flex hidden items-center bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300 ease-in-out gap-2'
+        >
+          <MdOutlineIntegrationInstructions className='w-7 h-7'/>
+
+          Instructions
+        </button>
         <button
           onClick={onLogout}
-          className='flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out absolute right-[1%]'
+          className='flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out '
         >
           <FaSignOutAlt className='mr-2' /> {/* Add the icon here */}
           Logout
-        </button>
+        </button></div>
       </div>
     </nav>
   );
