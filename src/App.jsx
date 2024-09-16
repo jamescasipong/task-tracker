@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import LoadingSignIn from "./components/LoadingSignIn";
 import Navbar from "./components/Navbar";
 import PaymentTable from "./components/PaymentTable";
 import SignIn from "./components/SignIn";
@@ -56,10 +57,7 @@ function App() {
   return (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
-        <div className="flex items-center justify-center h-screen gap-2">
-          <div>Working on.... </div>
-          <div className="loader"></div>
-        </div>
+        <LoadingSignIn></LoadingSignIn>
       ) : isAuthenticated ? (
         <>
           <Navbar

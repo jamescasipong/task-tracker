@@ -4,6 +4,7 @@ import { CiViewTable } from "react-icons/ci";
 import { FaEdit, FaEye, FaEyeSlash, FaPlus, FaRegSave, FaTrash } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
 import XLSX from "xlsx-js-style"; // Import xlsx
+import LoadingTable from './LoadingTable';
 
 
 
@@ -263,10 +264,7 @@ const PaymentTable = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen gap-2">
-        <div>Loading... </div>
-        <div className="loader"></div>
-      </div>
+      <LoadingTable />
     );
   }
 

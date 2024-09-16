@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
-
+import LoadingTable from "./LoadingTable";
 
 const Table = () => {
   const [data, setData] = useState([]);
@@ -307,10 +307,7 @@ const saveChanges = async () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen gap-2">
-      <div>Loading.... </div>
-      <div className="loader"></div>
-  </div>
+      <LoadingTable />
     );
   }
 
