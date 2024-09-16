@@ -308,16 +308,10 @@ const saveChanges = async () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div role="status">
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700 mb-2.5"></div>
-          <div className="h-2 bg-gray-200 rounded-full dark:bg-gray-700"></div>
-          <span className="sr-only">Loading...</span>
-        </div>
-      </div>
+      <div className="flex items-center justify-center h-screen gap-2">
+      <div>Loading.... </div>
+      <div className="loader"></div>
+  </div>
     );
   }
 

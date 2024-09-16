@@ -12,6 +12,7 @@ const PaymentTable = () => {
   const [newTableName, setNewTableName] = useState(""); // State for new table name
   const [editingTableIndex, setEditingTableIndex] = useState(null); // Index of the table being edited
   const [editedTableName, setEditedTableName] = useState(""); // New name for the table
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,13 +27,18 @@ const PaymentTable = () => {
           visibility[index] = index === 0; // Show only the first table initially
         });
         setIsTableVisible(visibility);
+
+        setLoading(false)
       } catch (error) {
+        setLoading(false)
+
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
   }, []);
+
 
   const handleInputChange = (tableIndex, rowIndex, monthIndex, event) => {
     const updatedTables = [...tables];
@@ -262,6 +268,7 @@ const PaymentTable = () => {
     try {
       console.log("Saving the following data:", tables);
       const response = await axios.post("/payments/save", { tables });
+
       alert(response.data.message);
     } catch (error) {
       console.error("Error saving data:", error);
@@ -281,6 +288,15 @@ const PaymentTable = () => {
       [index]: !isTableVisible[index],
     });
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen gap-2">
+      <div>Loading.... </div>
+      <div className="loader"></div>
+  </div>
+    );
+  }
 
   return (
     <div className="p-4">
