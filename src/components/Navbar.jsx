@@ -3,7 +3,7 @@ import { FaSignOutAlt } from 'react-icons/fa'; // Import the logout icon
 
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   return (
-    <nav className='bg-gray-800 p-4 w-full'>
+    <nav className='bg-gray-800 p-4 w-full relative'>
       <div className='container mx-[0px] flex justify-between items-center'>
         <div className='flex'>
           <button
@@ -27,7 +27,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
         <button
           onClick={onLogout}
-          className='flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out'
+          className='flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out absolute right-[1%]'
         >
           <FaSignOutAlt className='mr-2' /> {/* Add the icon here */}
           Logout
