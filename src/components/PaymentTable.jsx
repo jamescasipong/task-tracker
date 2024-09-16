@@ -256,6 +256,7 @@ const PaymentTable = () => {
     return {
       maxHeight: isTableVisible[tableIndex] ? "500px" : "0", // Adjust maxHeight as needed
       opacity: isTableVisible[tableIndex] ? 1 : 0,
+
       transition: "max-height 0.5s ease-in-out, opacity 0.5s ease-in-out",
     };
   };
@@ -305,9 +306,10 @@ const PaymentTable = () => {
       {tables.map((table, tableIndex) => (
         <div
           key={tableIndex}
-          className="mb-4 overflow-hidden shadow-lg border rounded-lg"
+          className="mb-4 overflow-auto shadow-lg border rounded-lg"
         >
-          <table className="min-w-full bg-white border flex flex-col overflow-x-auto">
+          
+          <table className={`min-w-full bg-white border flex flex-col ${isTableVisible[tableIndex] ? "overflow" : "overflow-hidden"}`}>
             <thead className="bg-blue-500 text-white w-full">
               <tr className="flex">
                 <th className="py-3 px-4 flex justify-between items-center gap-5">
@@ -319,13 +321,13 @@ const PaymentTable = () => {
                           type="text"
                           value={editedTableName}
                           onChange={(e) => setEditedTableName(e.target.value)}
-                          className="px-2 py-1 border rounded"
+                          className="px-2 py-1 border rounded text-black"
                         />
                         <button
                           onClick={() => renameTable(tableIndex)}
                           className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
                         >
-                          <FaRegSave />
+                          <FaRegSave className="w-6 h-6"/>
                         </button>
                       </>
                     ) : (
