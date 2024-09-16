@@ -1,11 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { FaEdit, FaEye, FaEyeSlash, FaPlus, FaTrash } from "react-icons/fa";
+import { CiViewTable } from "react-icons/ci";
+import { FaEdit, FaEye, FaEyeSlash, FaPlus, FaRegSave, FaTrash } from "react-icons/fa";
 import { MdFileDownload } from "react-icons/md";
+
 import XLSX from "xlsx-js-style"; // Import xlsx
-
-
-
 
 const PaymentTable = () => {
   const [tables, setTables] = useState([]);
@@ -17,9 +16,7 @@ const PaymentTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          "/payments/get"
-        );
+        const response = await axios.get("/payments/get");
         const data = response.data.tables || [];
         setTables(data);
 
@@ -44,81 +41,78 @@ const PaymentTable = () => {
     setTables(updatedTables);
   };
 
-
   const exportToXLSX = async () => {
     try {
-      const response = await axios.get('/payments/get', { responseType: 'json' });
+      const response = await axios.get("/payments/get", {
+        responseType: "json",
+      });
       const tablesData = response.data.tables;
       const exportData = [];
       const merges = []; // Array to store merge ranges
-  
+
       let rowIndex = 0;
-      
-      
+
       // Iterate through each table
       tablesData.forEach((table) => {
-        exportData.push(Array(12).fill('')); // Create a row with 12 empty cells for title
+        exportData.push(Array(12).fill("")); // Create a row with 12 empty cells for title
         exportData[rowIndex][0] = table.name; // Set the table name in the first cell of the row
-  
+
         // Define merge range for the table name
         merges.push({
           s: { r: rowIndex, c: 0 },
-          e: { r: rowIndex, c: 11 } // Span across 12 columns
+          e: { r: rowIndex, c: 11 }, // Span across 12 columns
         });
-  
+
         rowIndex += 1; // Move to the next row
-  
+
         table.rows.forEach((row) => {
           exportData.push(row.months); // Add the months row
           exportData.push(row.values); // Add the values row
           rowIndex += 2; // Move to the next rows
         });
-  
-        exportData.push(Array(12).fill('')); // Spacing between tables
+
+        exportData.push(Array(12).fill("")); // Spacing between tables
         rowIndex += 1; // Move to the next row for spacing
       });
-  
+
       const worksheet = XLSX.utils.aoa_to_sheet(exportData);
-  
+
       // Apply styles
       const headerStyle = {
         font: { bold: true, sz: 14 },
-        fill: { fgColor: { rgb: 'FFFF00' } }, // Yellow background
-        alignment: { horizontal: 'center', vertical: 'center' },
+        fill: { fgColor: { rgb: "FFFF00" } }, // Yellow background
+        alignment: { horizontal: "center", vertical: "center" },
         border: {
-          top: { style: 'thin', color: { rgb: '000000' } },
-          bottom: { style: 'thin', color: { rgb: '000000' } },
-          left: { style: 'thin', color: { rgb: '000000' } },
-          right: { style: 'thin', color: { rgb: '000000' } }
-        }
+          top: { style: "thin", color: { rgb: "000000" } },
+          bottom: { style: "thin", color: { rgb: "000000" } },
+          left: { style: "thin", color: { rgb: "000000" } },
+          right: { style: "thin", color: { rgb: "000000" } },
+        },
       };
-  
+
       const cellStyle = {
         font: { sz: 12 },
-        alignment: { horizontal: 'center', vertical: 'center' },
+        alignment: { horizontal: "center", vertical: "center" },
         border: {
-          top: { style: 'thin', color: { rgb: '000000' } },
-          bottom: { style: 'thin', color: { rgb: '000000' } },
-          left: { style: 'thin', color: { rgb: '000000' } },
-          right: { style: 'thin', color: { rgb: '000000' } }
-        }
+          top: { style: "thin", color: { rgb: "000000" } },
+          bottom: { style: "thin", color: { rgb: "000000" } },
+          left: { style: "thin", color: { rgb: "000000" } },
+          right: { style: "thin", color: { rgb: "000000" } },
+        },
       };
-      
-      console.log(exportData)
+
+      console.log(exportData);
       const keys = Object.keys(worksheet);
       keys.forEach((key) => {
-        if (key[0] === '!') return; // Skip metadata
+        if (key[0] === "!") return; // Skip metadata
         const cell = worksheet[key];
 
-        
-       
-          cell.s = cellStyle;
-        
+        cell.s = cellStyle;
       });
-  
+
       // Apply the merge ranges
-      worksheet['!merges'] = merges;
-  
+      worksheet["!merges"] = merges;
+
       // Calculate column widths based on content
       const columnWidths = exportData.reduce((widths, row) => {
         row.forEach((cell, colIndex) => {
@@ -129,24 +123,19 @@ const PaymentTable = () => {
         });
         return widths;
       }, []);
-  
-      worksheet['!cols'] = columnWidths.map((width) => ({
-        wch: width + 2 // Add extra padding for readability
+
+      worksheet["!cols"] = columnWidths.map((width) => ({
+        wch: width + 2, // Add extra padding for readability
       }));
-  
+
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, 'Payment Data');
-  
-      XLSX.writeFile(workbook, 'Payment_Data_Styled.xlsx');
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Payment Data");
+
+      XLSX.writeFile(workbook, "Payment_Data_Styled.xlsx");
     } catch (error) {
-      console.error('Error exporting data:', error.message);
+      console.error("Error exporting data:", error.message);
     }
   };
-  
-  
-  
-  
-
 
   const addRow = (tableIndex) => {
     let newYear;
@@ -272,10 +261,7 @@ const PaymentTable = () => {
   const saveData = async () => {
     try {
       console.log("Saving the following data:", tables);
-      const response = await axios.post(
-        "/payments/save",
-        { tables }
-      );
+      const response = await axios.post("/payments/save", { tables });
       alert(response.data.message);
     } catch (error) {
       console.error("Error saving data:", error);
@@ -308,23 +294,27 @@ const PaymentTable = () => {
         />
         <button
           onClick={addTable}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all duration-300"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-2"
         >
+          <CiViewTable className="w-7 h-7"/>
+
           Add Table
         </button>
         <button
           onClick={saveData}
-          className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300"
+          className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all  items-center duration-300 flex gap-2"
         >
+          <FaRegSave className="w-7 h-7"/>
+
           Save Data
         </button>
         <button
-                      onClick={() => exportToXLSX()}
-                      className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all duration-300 flex items-center gap-2"
-                    >
-                      <MdFileDownload className="w-7 h-7" />
-                      <span className="sr-only">Export</span>
-                    </button>
+          onClick={() => exportToXLSX()}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all duration-300 flex items-center gap-2"
+        >
+          <MdFileDownload className="w-7 h-7" />
+          Export
+        </button>
       </div>
       {tables.map((table, tableIndex) => (
         <div
@@ -396,7 +386,6 @@ const PaymentTable = () => {
                       <FaPlus className="w-5 h-5" />
                       <span className="sr-only">Add Row</span>
                     </button>
-                    
                   </div>
                 </th>
               </tr>

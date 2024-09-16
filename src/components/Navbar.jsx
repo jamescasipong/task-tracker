@@ -7,19 +7,19 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
       <div className='container mx-[0px] flex justify-between items-center'>
         <div className='flex'>
           <button
-            className={`text-white px-4 py-2 rounded-md focus:outline-none ${currentView === 'table' ? 'bg-blue-500' : 'bg-gray-700'}`}
+            className={`text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'table' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
             onClick={() => setCurrentView('table')}
           >
             Table
           </button>
           {/*<button
-            className={`text-white px-4 py-2 rounded-md mx-2 focus:outline-none ${currentView === 'excelToJson' ? 'bg-blue-500' : 'bg-gray-700'}`}
+            className={`text-white px-4 py-2 rounded-md mx-2 transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'excelToJson' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
             onClick={() => setCurrentView('excelToJson')}
           >
             Excel to JSON
           </button>*/}
           <button
-            className={`ml-3 text-white px-4 py-2 rounded-md focus:outline-none ${currentView === 'paymentTable' ? 'bg-blue-500' : 'bg-gray-700'}`}
+            className={`ml-3 text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'paymentTable' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
             onClick={() => setCurrentView('paymentTable')}
           >
             Payment Table
@@ -27,7 +27,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
         <button
           onClick={onLogout}
-          className='flex items-end bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors'
+          className='flex items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out'
         >
           <FaSignOutAlt className='mr-2' /> {/* Add the icon here */}
           Logout

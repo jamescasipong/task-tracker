@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { FaRegFileExcel } from "react-icons/fa";
+import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
 
 
@@ -283,15 +285,19 @@ const saveChanges = async () => {
         </select>
         <button
           onClick={openModal}
-          className="bg-blue-500 text-white px-4 py-2 rounded ml-4"
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 ml-4"
         >
-          Add New Devices
+          <IoMdAdd  className="w-7 h-7" />
+
+          Add devices
         </button>
         <button
           onClick={exportToXlsx}
-          className="bg-green-500 text-white px-4 py-2 rounded ml-4"
+          className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
         >
-          Export to XLSX
+          <FaRegFileExcel className="w-7 h-7" />
+
+          Export
         </button>
 
 
