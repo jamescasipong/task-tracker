@@ -49,11 +49,7 @@ function SignIn({ onSignIn }) {
               {/*<img src="/path/to/logo.png" alt="Logo" className="w-12 h-12 mr-2" />*/}
             </div>
             <h2 className="text-gray-800 text-center text-[25px] font-bold">Sign in</h2>
-            {loading && (
-              <div className="flex items-center justify-center mb-4">
-                <div className="loader"></div>
-              </div>
-            )}
+            
             <form onSubmit={handleSubmit} className="mt-8 space-y-4">
               <div>
                 <label className="text-gray-800 text-sm mb-2 block">User name</label>
@@ -116,7 +112,7 @@ function SignIn({ onSignIn }) {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center justify-between gap-4">
+              {/*<div className="flex flex-wrap items-center justify-between gap-4">
                 <div className="flex items-center">
                   <input
                     id="remember-me"
@@ -140,14 +136,19 @@ function SignIn({ onSignIn }) {
                     Forgot your password?
                   </button>
                 </div>
-              </div>
+              </div>*/}
 
               <div className="!mt-8">
                 <button
                   type="submit"
-                  className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none"
+                  className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none flex items-center justify-center gap-2 mt-[50px]"
                 >
-                  Sign in
+                  {loading && (
+
+                <div className="loader-signin"></div>
+                  )}
+
+                  {loading ? (<>Loading...</>) : (<>Sign In</>)}
                 </button>
               </div>
               
