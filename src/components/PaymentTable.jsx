@@ -131,7 +131,7 @@ const PaymentTable = () => {
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Payment Data");
 
-      XLSX.writeFile(workbook, "Payment_Data_Styled.xlsx");
+      XLSX.writeFile(workbook, "Payment Data.xlsx");
     } catch (error) {
       console.error("Error exporting data:", error.message);
     }
@@ -321,7 +321,7 @@ const PaymentTable = () => {
           key={tableIndex}
           className="mb-4 overflow-hidden shadow-lg border rounded-lg"
         >
-          <table className="min-w-full bg-white border flex flex-col">
+          <table className="min-w-full bg-white border flex flex-col overflow-x-auto">
             <thead className="bg-blue-500 text-white w-full">
               <tr className="flex">
                 <th className=" py-3 px-4 flex justify-between items-center gap-5">
