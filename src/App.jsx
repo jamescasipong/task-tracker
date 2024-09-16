@@ -48,16 +48,19 @@ function App() {
   };
 
   const handleViewChange = (view) => {
-    setLoading(true);
     setTimeout(() => {
       setCurrentView(view);
-      setLoading(false);
     }, 500); // Simulate view change time
   };
 
   return (
     <div className="bg-primary w-full overflow-hidden">
-      {isAuthenticated ? (
+      {loading ? (
+        <div className="flex items-center justify-center h-screen gap-2">
+          <div>Working on.... </div>
+          <div className="loader"></div>
+        </div>
+      ) : isAuthenticated ? (
         <>
           <Navbar
             currentView={currentView}
