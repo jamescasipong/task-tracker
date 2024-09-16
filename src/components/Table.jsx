@@ -98,6 +98,7 @@ const handleRowInputChange = (rowIndex, key, value) => {
 };
 
 
+
 const saveChanges = async () => {
   try {
       // Save updated devices
@@ -150,6 +151,8 @@ const saveChanges = async () => {
       console.error("Failed to add new devices:", error);
     }
   };
+
+
 
   const deleteDevice = async (id) => {
     try {
@@ -480,6 +483,7 @@ const saveChanges = async () => {
               "Department_1",
               "Owner_2",
               "Department_2",
+              "Action",
             ].map((header) => (
               <th
                 key={header}
@@ -494,8 +498,6 @@ const saveChanges = async () => {
                   : ""}
               </th>
             ))}
-            <th className="px-6 py-3 border-b-2 border-gray-300"></th>{" "}
-            {/* For delete button */}
           </tr>
         </thead>
         <tbody>
