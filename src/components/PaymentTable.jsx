@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { CiViewTable } from "react-icons/ci";
 import { FaEdit, FaEye, FaEyeSlash, FaPlus, FaRegSave, FaTrash } from "react-icons/fa";
-import { MdFileDownload } from "react-icons/md";
+import { MdCancelPresentation, MdFileDownload } from "react-icons/md";
 import XLSX from "xlsx-js-style"; // Import xlsx
 import LoadingTable from './LoadingTable';
 
@@ -311,7 +311,7 @@ const PaymentTable = () => {
             <thead className="bg-blue-500 text-white w-full">
               <tr className="flex">
                 <th className="py-3 px-4 flex justify-between items-center gap-5">
-                  <span className="text-[22px]">{table.name}</span>
+                  {editingTableIndex === tableIndex ? (<></>) : (<span className="text-[22px]">{table.name}</span>) }
                   <div className="flex items-center gap-2">
                     {editingTableIndex === tableIndex ? (
                       <>
@@ -327,12 +327,18 @@ const PaymentTable = () => {
                         >
                           <FaRegSave className="w-6 h-6"/>
                         </button>
+                        <button
+                          onClick={() => setEditingTableIndex(null)}
+                          className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        >
+                          <MdCancelPresentation   className="w-6 h-6 "/>
+                        </button>
                       </>
-                    ) : (
-                      <>
+                    ) :  
+                      (<>
                         <button
                           onClick={() => setEditingTableIndex(tableIndex)}
-                          className="px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                          className={`px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600`}
                         >
                           
                           <FaEdit className="w-6 h-6"/>
@@ -343,17 +349,16 @@ const PaymentTable = () => {
                         >
                           <FaTrash className="w-6 h-6"/>
                         </button>
-                      </>
-                    )}
+                      </>)}
                     <button
                       onClick={() => toggleTableVisibility(tableIndex)}
-                      className="px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600"
+                      className={`px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 ${editingTableIndex === tableIndex ? "hidden" : "block"}`}
                     >
                       {isTableVisible[tableIndex] ? <FaEyeSlash className="w-6 h-6"/> : <FaEye className="w-6 h-6"/>}
                     </button>
                     <button
                     onClick={() => addRow(tableIndex)}
-                    className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 "
+                    className={`px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 ${editingTableIndex === tableIndex ? "hidden" : "block"}`}
                   >
                     <FaPlus className="w-6 h-6"/>
                   </button>
