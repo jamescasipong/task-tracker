@@ -66,7 +66,7 @@ function App() {
             onLogout={handleLogout}
           />
           <div className="bg-primary flex justify-center items-start">
-            <div className="w-full">
+            <div className="sm:w-[1700px]">
               {currentView === "table" && <Table />}
               {/*currentView === 'excelToJson' && <ExcelToJson />*/}
               {currentView === "paymentTable" && <PaymentTable />}

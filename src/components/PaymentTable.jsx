@@ -306,13 +306,12 @@ const PaymentTable = () => {
       }`}
     >
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold mb-4">Payment Tables</h1>
-        <button
+        {/*<button
           className="px-4 py-2 bg-indigo-500 text-white rounded-md"
           onClick={() => setDarkMode(!darkMode)}
         >
           Toggle {darkMode ? "Light" : "Dark"} Mode
-        </button>
+        </button>*/}
       </div>
 
       {loading ? (
@@ -343,7 +342,7 @@ const PaymentTable = () => {
             className="px-4 py-2 bg-green-500 text-white rounded-md mb-4 ml-2"
           >
             <MdFileDownload className="inline-block mr-2" />
-            Export to XLSX
+            Export
           </button>
 
           <button
@@ -351,12 +350,12 @@ const PaymentTable = () => {
             className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 ml-2"
           >
             <FaRegSave className="inline-block mr-2" />
-            Save Data
+            Save
           </button>
 
           {tables.map((table, tableIndex) => (
             <div key={tableIndex} className="mt-8 border p-4 rounded-md overflow-auto">
-              <div className="flex justify-between items-center mb-2 overflow-auto">
+              <div className="flex gap-5 items-center mb-2 overflow-auto">
                 {editingTableIndex === tableIndex ? (
                   <>
                     <input
@@ -383,7 +382,7 @@ const PaymentTable = () => {
                   </>
                 ) : (
                   <>
-                    <h2 className="text-xl font-bold">{table.name}</h2>
+                    <h2 className="text-[18px] font-bold">{table.name}</h2>
                     <div>
                       <button
                         onClick={() => setEditingTableIndex(tableIndex)}
@@ -404,24 +403,25 @@ const PaymentTable = () => {
 
               <button
                 onClick={() => toggleTableVisibility(tableIndex)}
-                className="bg-indigo-500 text-white px-4 py-2 rounded-md mb-4"
+                className="bg-indigo-500 text-white px-4 py-2 rounded-md mb-4 text-[14px]"
               >
                 {isTableVisible[tableIndex] ? (
                   <>
                     <FaEyeSlash className="inline-block mr-2" />
-                    Hide Table
-                  </>
+                        Hide Table</>
+                  
                 ) : (
                   <>
                     <FaEye className="inline-block mr-2" />
                     Show Table
-                  </>
+                    
+                    </>
                 )}
               </button>
 
               <button
                 onClick={() => addRow(tableIndex)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 ml-2"
+                className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 ml-2 text-[14px]"
               >
                 <FaPlus className="inline-block mr-2" />
                 Add Row
@@ -440,12 +440,12 @@ const PaymentTable = () => {
                               {row.months.map((month, monthIndex) => (
                                 <th
                                   key={monthIndex}
-                                  className="py-2 px-4 border text-center bg-gray-200"
+                                  className="py-2 px-4 border text-center bg-gray-200 text-[13px]"
                                 >
                                   {month}
                                 </th>
                               ))}
-                              <th className="py-2 px-4 border text-center bg-gray-200">
+                              <th className="py-2 px-4 border text-center bg-gray-200 text-[13px]">
                                 Actions
                               </th>
                             </tr>
@@ -453,7 +453,7 @@ const PaymentTable = () => {
                               {row.values.map((value, monthIndex) => (
                                 <td
                                   key={monthIndex}
-                                  className="py-2 px-4 border"
+                                  className="py-2 px-4 border text-[13px]"
                                 >
                                   <input
                                     type="text"
