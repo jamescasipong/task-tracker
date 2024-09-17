@@ -1,9 +1,11 @@
 import axios from "axios";
+import _ from 'lodash';
 import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
 import LoadingTable from "./LoadingTable";
+
 
 const Table = () => {
   const [data, setData] = useState([]);
@@ -27,7 +29,7 @@ const Table = () => {
     },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [pendingChanges, setPendingChanges] = useState({ updates: [], additions: [] });
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -74,15 +76,8 @@ const Table = () => {
     setSelectedBrand(e.target.value);
   };
 
-  const handleInputChange = (index, key, value) => {
-    const updatedData = [...data];
-    updatedData[index] = { ...updatedData[index], [key]: value };
-    setData(updatedData);
-    setPendingChanges(prev => ({
-        ...prev,
-        updates: [...prev.updates, { id: updatedData[index]._id, changes: { [key]: value } }]
-    }));
-};
+
+
 
 
 const handleRowInputChange = (rowIndex, key, value) => {
@@ -95,32 +90,77 @@ const handleRowInputChange = (rowIndex, key, value) => {
   }));
 };
 
+const [pendingChanges, setPendingChanges] = useState({ updates: [], additions: [] });
 
+const [values, setValuesz] = useState("");
+
+const handleInputChange = (index, key, event) => {
+  const updatedData = [...data];
+  let newValue = event.target.value;
+
+
+  updatedData[index] = { ...updatedData[index], [key]: newValue };
+  setData(updatedData);
+
+  setPendingChanges(prev => ({
+      ...prev,
+      updates: [...prev.updates, { id: updatedData[index]._id, changes: { [key]: newValue } }]
+  }));
+
+
+};
+
+
+
+// Debounced function to handle saving changes
+const debouncedUpdate = _.debounce(async (update) => {
+  console.log("Updating device with ID:", update.id);
+  console.log("Changes:", update.changes);
+  try {
+    await axios.put(`/dataRoute/update-device/${update.id}`, update.changes);
+
+
+    const response = await axios.get("/dataRoute/");
+    setData(response.data);
+  } catch (error) {
+    console.error("Failed to update device:", error);
+  }
+});  // 500 ms delay before triggering the update
 
 const saveChanges = async () => {
   try {
-      // Save updated devices
-      await Promise.all(
-          pendingChanges.updates.map(update =>
-              axios.put(`/dataRoute/update-device/${update.id}`, update.changes)
-          )
-      );
+    // Filter out empty changes before making requests
+    const validUpdates = pendingChanges.updates.filter(
+      update => Object.keys(update.changes).length > 0
+    );
 
-      // Save new devices
-      await Promise.all(
-          pendingChanges.additions.map(row => axios.post("/dataRoute/add-device", row))
-      );
+    console.log("Valid updates:", validUpdates);
 
-      // Refresh data
-      const response = await axios.get("/dataRoute/");
-      setData(response.data);
+    // Save updated devices with debounced function
+    await Promise.all(validUpdates.map(update => debouncedUpdate(update)));
 
-      // Clear pending changes
-      setPendingChanges({ updates: [], additions: [] });
+    // Save new devices
+    await Promise.all(
+      pendingChanges.additions.map(row => {
+        console.log("Adding new device:", row);
+        return axios.post("/dataRoute/add-device", row);
+      })
+    );
+
+    // Refresh data
+    
+
+    // Clear pending changes
+    setPendingChanges({ updates: [], additions: [] });
+
+    // Optional: Provide feedback to user
+    console.log("Changes saved and data refreshed.");
+
   } catch (error) {
-      console.error("Failed to save changes:", error);
+    console.error("Failed to save changes:", error);
   }
 };
+
 
 
   const addNewRows = async () => {
@@ -488,7 +528,7 @@ const saveChanges = async () => {
                     type="text"
                     value={device[key] || ""}
                     onChange={(e) =>
-                      handleInputChange(index, key, e.target.value)
+                      handleInputChange(index, key, e)
                     }
                     className={`w-full ${key}`}
                   />

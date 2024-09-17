@@ -1,12 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { CiViewTable } from "react-icons/ci";
-import { FaEdit, FaEye, FaEyeSlash, FaPlus, FaRegSave, FaTrash } from "react-icons/fa";
+import {
+  FaEdit,
+  FaEye,
+  FaEyeSlash,
+  FaPlus,
+  FaRegSave,
+  FaTrash,
+} from "react-icons/fa";
 import { MdCancelPresentation, MdFileDownload } from "react-icons/md";
 import XLSX from "xlsx-js-style"; // Import xlsx
-import LoadingTable from './LoadingTable';
-
-
+import LoadingTable from "./LoadingTable";
 
 const PaymentTable = () => {
   const [tables, setTables] = useState([]);
@@ -15,6 +19,9 @@ const PaymentTable = () => {
   const [editingTableIndex, setEditingTableIndex] = useState(null);
   const [editedTableName, setEditedTableName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [darkMode, setDarkMode] = useState(
+    localStorage.getItem("theme") === "dark" ? true : false
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,15 +47,28 @@ const PaymentTable = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
   const handleInputChange = (tableIndex, rowIndex, monthIndex, event) => {
     const updatedTables = [...tables];
-    updatedTables[tableIndex].rows[rowIndex].values[monthIndex] = event.target.value;
+    updatedTables[tableIndex].rows[rowIndex].values[monthIndex] =
+      event.target.value;
     setTables(updatedTables);
   };
 
   const exportToXLSX = async () => {
     try {
-      const response = await axios.get("/payments/get", { responseType: "json" });
+      const response = await axios.get("/payments/get", {
+        responseType: "json",
+      });
       const tablesData = response.data.tables;
       const exportData = [];
       const merges = [];
@@ -139,7 +159,9 @@ const PaymentTable = () => {
       newYear = 2024;
     } else {
       const lastYear = parseInt(
-        tables[tableIndex].rows[tables[tableIndex].rows.length - 1].months[0].split(" ")[1],
+        tables[tableIndex].rows[
+          tables[tableIndex].rows.length - 1
+        ].months[0].split(" ")[1],
         10
       );
       newYear = lastYear + 1;
@@ -154,9 +176,18 @@ const PaymentTable = () => {
     }
 
     const newMonths = [
-      `January ${newYear}`, `February ${newYear}`, `March ${newYear}`, `April ${newYear}`,
-      `May ${newYear}`, `June ${newYear}`, `July ${newYear}`, `August ${newYear}`,
-      `September ${newYear}`, `October ${newYear}`, `November ${newYear}`, `December ${newYear}`,
+      `January ${newYear}`,
+      `February ${newYear}`,
+      `March ${newYear}`,
+      `April ${newYear}`,
+      `May ${newYear}`,
+      `June ${newYear}`,
+      `July ${newYear}`,
+      `August ${newYear}`,
+      `September ${newYear}`,
+      `October ${newYear}`,
+      `November ${newYear}`,
+      `December ${newYear}`,
     ];
 
     const updatedTables = [...tables];
@@ -166,7 +197,7 @@ const PaymentTable = () => {
     });
     setTables(updatedTables);
 
-    enableTable(tableIndex);
+    setIsTableVisible((prevState) => ({ ...prevState, [tableIndex]: true }));
   };
 
   const deleteRow = (tableIndex, rowIndex) => {
@@ -185,9 +216,18 @@ const PaymentTable = () => {
 
     const newTableIndex = tables.length;
     const newMonths = [
-      `January ${2024}`, `February ${2024}`, `March ${2024}`, `April ${2024}`,
-      `May ${2024}`, `June ${2024}`, `July ${2024}`, `August ${2024}`,
-      `September ${2024}`, `October ${2024}`, `November ${2024}`, `December ${2024}`,
+      `January ${2024}`,
+      `February ${2024}`,
+      `March ${2024}`,
+      `April ${2024}`,
+      `May ${2024}`,
+      `June ${2024}`,
+      `July ${2024}`,
+      `August ${2024}`,
+      `September ${2024}`,
+      `October ${2024}`,
+      `November ${2024}`,
+      `December ${2024}`,
     ];
 
     setTables([
@@ -211,9 +251,27 @@ const PaymentTable = () => {
     setIsTableVisible(updatedVisibility);
 
     if (updatedTables.length > 0) {
-      const firstTableIndex = Math.min(...Object.keys(updatedVisibility).map(Number));
+      const firstTableIndex = Math.min(
+        ...Object.keys(updatedVisibility).map(Number)
+      );
       setIsTableVisible({ [firstTableIndex]: true });
     }
+  };
+
+  const toggleTableVisibility = (index) => {
+    setIsTableVisible({
+      ...isTableVisible,
+      [index]: !isTableVisible[index],
+    });
+  };
+
+  const getTableBodyStyle = (tableIndex) => {
+    return {
+      maxHeight: isTableVisible[tableIndex] ? "500px" : "0", // Adjust maxHeight as needed
+      opacity: isTableVisible[tableIndex] ? 1 : 0,
+
+      transition: "max-height 0.5s ease-in-out, opacity 0.5s ease-in-out",
+    };
   };
 
   const renameTable = (tableIndex) => {
@@ -239,180 +297,253 @@ const PaymentTable = () => {
     }
   };
 
-  const enableTable = (index) => {
-    setIsTableVisible({
-      ...isTableVisible,
-      [index]: true,
-    });
-  };
 
-  const toggleTableVisibility = (index) => {
-    setIsTableVisible({
-      ...isTableVisible,
-      [index]: !isTableVisible[index],
-    });
-  };
-
-  const getTableBodyStyle = (tableIndex) => {
-    return {
-      maxHeight: isTableVisible[tableIndex] ? "500px" : "0", // Adjust maxHeight as needed
-      opacity: isTableVisible[tableIndex] ? 1 : 0,
-
-      transition: "max-height 0.5s ease-in-out, opacity 0.5s ease-in-out",
-    };
-  };
-
-  if (loading) {
-    return (
-      <LoadingTable />
-    );
-  }
 
   return (
-    <div className="p-4">
-      <div className="mb-4 flex gap-2 items-center">
-        <input
-          type="text"
-          placeholder="New table name"
-          value={newTableName}
-          onChange={(e) => setNewTableName(e.target.value)}
-          className="px-2 py-1 border rounded"
-        />
+    <div
+      className={`min-h-screen p-4 ${
+        darkMode ? "dark bg-gray-800 text-white" : "light bg-white text-black"
+      }`}
+    >
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold mb-4">Payment Tables</h1>
         <button
-          onClick={addTable}
-          className="ml-2 px-4 py-2 bg-cyan-500 text-white rounded hover:bg-cyan-600 flex gap-2 items-center"
+          className="px-4 py-2 bg-indigo-500 text-white rounded-md"
+          onClick={() => setDarkMode(!darkMode)}
         >
-          Add Table
-          <CiViewTable />
-        </button>
-        <button
-          onClick={exportToXLSX}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 flex gap-2 items-center"
-        >
-          <MdFileDownload />
-          Export
-        </button>
-        <button
-          onClick={saveData}
-          className=" px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 flex gap-2 items-center"
-        >
-          Save
-          <FaRegSave />
-
+          Toggle {darkMode ? "Light" : "Dark"} Mode
         </button>
       </div>
-      {tables.map((table, tableIndex) => (
-        <div
-          key={tableIndex}
-          className="mb-4 overflow-auto shadow-lg border rounded-lg"
-        >
-          
-          <table className={`min-w-full bg-white border flex flex-col ${isTableVisible[tableIndex] ? "overflow" : "overflow-hidden"}`}>
-            <thead className="bg-blue-500 text-white w-full">
-              <tr className="flex">
-                <th className="py-3 px-4 flex justify-between items-center gap-5">
-                  {editingTableIndex === tableIndex ? (<></>) : (<span className="text-[22px]">{table.name}</span>) }
-                  <div className="flex items-center gap-2">
-                    {editingTableIndex === tableIndex ? (
-                      <>
-                        <input
-                          type="text"
-                          value={editedTableName}
-                          onChange={(e) => setEditedTableName(e.target.value)}
-                          className="px-2 py-1 border rounded text-black"
-                        />
-                        <button
-                          onClick={() => renameTable(tableIndex)}
-                          className="px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-                        >
-                          <FaRegSave className="w-6 h-6"/>
-                        </button>
-                        <button
-                          onClick={() => setEditingTableIndex(null)}
-                          className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                          <MdCancelPresentation   className="w-6 h-6 "/>
-                        </button>
-                      </>
-                    ) :  
-                      (<>
-                        <button
-                          onClick={() => setEditingTableIndex(tableIndex)}
-                          className={`px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600`}
-                        >
-                          
-                          <FaEdit className="w-6 h-6"/>
-                        </button>
-                        <button
-                          onClick={() => removeTable(tableIndex)}
-                          className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                        >
-                          <FaTrash className="w-6 h-6"/>
-                        </button>
-                      </>)}
-                    <button
-                      onClick={() => toggleTableVisibility(tableIndex)}
-                      className={`px-2 py-1 bg-gray-500 text-white rounded hover:bg-gray-600 ${editingTableIndex === tableIndex ? "hidden" : "block"}`}
-                    >
-                      {isTableVisible[tableIndex] ? <FaEyeSlash className="w-6 h-6"/> : <FaEye className="w-6 h-6"/>}
-                    </button>
-                    <button
-                    onClick={() => addRow(tableIndex)}
-                    className={`px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600 ${editingTableIndex === tableIndex ? "hidden" : "block"}`}
-                  >
-                    <FaPlus className="w-6 h-6"/>
-                  </button>
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            <tbody
-              style={getTableBodyStyle(tableIndex)}
-              className="transition-all duration-500 ease-in-out"
-            >
-              {table.rows.map((row, rowIndex) => (
-                <React.Fragment key={rowIndex}>
-                  <tr>
-                    {row.months.map((month, monthIndex) => (
-                      <th
-                        key={monthIndex}
-                        className="py-2 px-4 border text-center bg-gray-200"
-                      >
-                        {month}
-                      </th>
-                    ))}
-                    <th className="py-2 px-4 border text-center bg-gray-200">Actions</th>
-                  </tr>
-                  <tr>
-                    {row.values.map((value, monthIndex) => (
-                      <td key={monthIndex} className="py-2 px-4 border">
-                        <input
-                          type="text"
-                          placeholder={`Amount`}
-                          value={value}
-                          onChange={(event) =>
-                            handleInputChange(tableIndex, rowIndex, monthIndex, event)
-                          }
-                          className="w-full px-2 py-1 border rounded"
-                        />
-                      </td>
-                    ))}
-                    <td className="py-2 px-4 border text-center">
+
+      {loading ? (
+        <LoadingTable />
+      ) : (
+        <>
+          <input
+            type="text"
+            value={newTableName}
+            onChange={(e) => setNewTableName(e.target.value)}
+            placeholder="Enter new table name"
+            className={`border p-2 mr-2  ${
+              darkMode
+                ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                : "text-black"
+            }`}
+          />
+          <button
+            onClick={addTable}
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            <FaPlus className="inline-block mr-2" />
+            Add Table
+          </button>
+
+          <button
+            onClick={exportToXLSX}
+            className="px-4 py-2 bg-green-500 text-white rounded-md mb-4 ml-2"
+          >
+            <MdFileDownload className="inline-block mr-2" />
+            Export to XLSX
+          </button>
+
+          <button
+            onClick={saveData}
+            className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 ml-2"
+          >
+            <FaRegSave className="inline-block mr-2" />
+            Save Data
+          </button>
+
+          {tables.map((table, tableIndex) => (
+            <div key={tableIndex} className="mt-8 border p-4 rounded-md overflow-auto">
+              <div className="flex justify-between items-center mb-2 overflow-auto">
+                {editingTableIndex === tableIndex ? (
+                  <>
+                    <input
+                      type="text"
+                      value={editedTableName}
+                      placeholder="Enter a new name"
+                      onChange={(e) => setEditedTableName(e.target.value)}
+                      className={`border p-2 ${darkMode ? "dark:bg-gray-800 dark:text-white border-gray-600" : "text-black "}`}
+                    />
+                    <div>
                       <button
-                        onClick={() => deleteRow(tableIndex, rowIndex)}
-                        className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                        onClick={() => renameTable(tableIndex)}
+                        className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
                       >
-                        <FaTrash className="w-5 h-5"/>
+                        <FaRegSave />
                       </button>
-                    </td>
-                  </tr>
-                </React.Fragment>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      ))}
-      
+                      <button
+                        onClick={() => setEditingTableIndex(null)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      >
+                        <MdCancelPresentation />
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-xl font-bold">{table.name}</h2>
+                    <div>
+                      <button
+                        onClick={() => setEditingTableIndex(tableIndex)}
+                        className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
+                      >
+                        <FaEdit />
+                      </button>
+                      <button
+                        onClick={() => removeTable(tableIndex)}
+                        className="bg-red-500 text-white px-4 py-2 rounded-md"
+                      >
+                        <FaTrash />
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              <button
+                onClick={() => toggleTableVisibility(tableIndex)}
+                className="bg-indigo-500 text-white px-4 py-2 rounded-md mb-4"
+              >
+                {isTableVisible[tableIndex] ? (
+                  <>
+                    <FaEyeSlash className="inline-block mr-2" />
+                    Hide Table
+                  </>
+                ) : (
+                  <>
+                    <FaEye className="inline-block mr-2" />
+                    Show Table
+                  </>
+                )}
+              </button>
+
+              <button
+                onClick={() => addRow(tableIndex)}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 ml-2"
+              >
+                <FaPlus className="inline-block mr-2" />
+                Add Row
+              </button>
+
+              
+                <table className={`min-w-full border flex flex-col ${isTableVisible[tableIndex] ? "overflow" : "overflow-hidden"}`}>
+                  <tbody
+                    style={getTableBodyStyle(tableIndex)}
+                    className="transition-all duration-500 ease-in-out overflow"
+                  >
+                    {!darkMode
+                      ? table.rows.map((row, rowIndex) => (
+                          <React.Fragment key={rowIndex}>
+                            <tr>
+                              {row.months.map((month, monthIndex) => (
+                                <th
+                                  key={monthIndex}
+                                  className="py-2 px-4 border text-center bg-gray-200"
+                                >
+                                  {month}
+                                </th>
+                              ))}
+                              <th className="py-2 px-4 border text-center bg-gray-200">
+                                Actions
+                              </th>
+                            </tr>
+                            <tr>
+                              {row.values.map((value, monthIndex) => (
+                                <td
+                                  key={monthIndex}
+                                  className="py-2 px-4 border"
+                                >
+                                  <input
+                                    type="text"
+                                    placeholder={`Amount`}
+                                    value={value}
+                                    onChange={(event) =>
+                                      handleInputChange(
+                                        tableIndex,
+                                        rowIndex,
+                                        monthIndex,
+                                        event
+                                      )
+                                    }
+                                    className="w-full px-2 py-1 border rounded text-black"
+                                  />
+                                </td>
+                              ))}
+                              <td className="py-2 px-4 border text-center">
+                                <button
+                                  onClick={() =>
+                                    deleteRow(tableIndex, rowIndex)
+                                  }
+                                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                                >
+                                  <FaTrash className="w-5 h-5" />
+                                </button>
+                              </td>
+                            </tr>
+                          </React.Fragment>
+                        ))
+                      : table.rows.map((row, rowIndex) => (
+                          <React.Fragment key={rowIndex}>
+                            <tr>
+                              {row.months.map((month, monthIndex) => (
+                                <th
+                                  key={monthIndex}
+                                  className="py-2 px-4 border text-center bg-gray-200 dark:bg-gray-700 dark:text-white"
+                                >
+                                  {month}
+                                </th>
+                              ))}
+                              <th className="py-2 px-4 border text-center bg-gray-200 dark:bg-gray-700 dark:text-white">
+                                Actions
+                              </th>
+                            </tr>
+                            <tr>
+                              {row.values.map((value, monthIndex) => (
+                                <td
+                                  key={monthIndex}
+                                  className="py-2 px-4 border dark:border-gray-600"
+                                >
+                                  <input
+                                    type="text"
+                                    placeholder={`Amount`}
+                                    value={value}
+                                    onChange={(event) =>
+                                      handleInputChange(
+                                        tableIndex,
+                                        rowIndex,
+                                        monthIndex,
+                                        event
+                                      )
+                                    }
+                                    className="w-full px-2 py-1 border rounded text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                                  />
+                                </td>
+                              ))}
+
+                              <td className="py-2 px-4 border text-center">
+                                <button
+                                  onClick={() =>
+                                    deleteRow(tableIndex, rowIndex)
+                                  }
+                                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                                >
+                                  <FaTrash className="w-5 h-5" />
+                                </button>
+                              </td>
+                            </tr>
+                          </React.Fragment>
+                        ))}
+                  </tbody>
+                </table>
+              
+
+              
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 };
