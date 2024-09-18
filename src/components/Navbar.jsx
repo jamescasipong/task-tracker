@@ -12,7 +12,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
             className={`text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'table' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
             onClick={() => setCurrentView('table')}
           >
-            Table
+            Hardware Inventory
           </button>
           {/*<button
             className={`text-white px-4 py-2 rounded-md mx-2 transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'excelToJson' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
@@ -24,7 +24,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
             className={`ml-3 text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'paymentTable' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
             onClick={() => setCurrentView('paymentTable')}
           >
-            Payment Table
+            Payments
           </button>
         </div>
 
