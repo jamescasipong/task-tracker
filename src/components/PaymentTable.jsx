@@ -331,7 +331,7 @@ const PaymentTable = () => {
           />
           <button
             onClick={addTable}
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+            className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md"
           >
             <FaPlus className="inline-block mr-2" />
             Add Table
@@ -339,7 +339,7 @@ const PaymentTable = () => {
 
           <button
             onClick={exportToXLSX}
-            className="px-4 py-2 bg-green-500 text-white rounded-md mb-4 ml-2"
+            className="px-4 py-2 bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white rounded-md mb-4 ml-2"
           >
             <MdFileDownload className="inline-block mr-2" />
             Export
@@ -347,7 +347,7 @@ const PaymentTable = () => {
 
           <button
             onClick={saveData}
-            className="bg-green-500 text-white px-4 py-2 rounded-md mt-4 ml-2"
+            className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md mt-4 ml-2"
           >
             <FaRegSave className="inline-block mr-2" />
             Save
@@ -368,13 +368,13 @@ const PaymentTable = () => {
                     <div>
                       <button
                         onClick={() => renameTable(tableIndex)}
-                        className="bg-green-500 text-white px-4 py-2 rounded-md mr-2"
+                        className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-4 py-2 rounded-md mr-2"
                       >
                         <FaRegSave />
                       </button>
                       <button
                         onClick={() => setEditingTableIndex(null)}
-                        className="bg-red-500 text-white px-4 py-2 rounded-md"
+                        className="bg-red-500 hover:bg-red-600 transition-colors duration-300  text-white px-4 py-2 rounded-md"
                       >
                         <MdCancelPresentation />
                       </button>
@@ -386,13 +386,13 @@ const PaymentTable = () => {
                     <div>
                       <button
                         onClick={() => setEditingTableIndex(tableIndex)}
-                        className="bg-yellow-500 text-white px-4 py-2 rounded-md mr-2"
+                        className="bg-yellow-500 text-white px-4 py-2 hover:bg-yellow-600 transition-colors duration-300 ease-in-out rounded-md mr-2"
                       >
                         <FaEdit />
                       </button>
                       <button
                         onClick={() => removeTable(tableIndex)}
-                        className="bg-red-500 text-white px-4 py-2 rounded-md"
+                        className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md"
                       >
                         <FaTrash />
                       </button>
@@ -403,7 +403,7 @@ const PaymentTable = () => {
 
               <button
                 onClick={() => toggleTableVisibility(tableIndex)}
-                className="bg-indigo-500 text-white px-4 py-2 rounded-md mb-4 text-[14px]"
+                className="bg-indigo-500 hover:bg-indigo-600 transition-colors duration-300 text-white px-4 py-2 rounded-md mb-4 text-[14px]"
               >
                 {isTableVisible[tableIndex] ? (
                   <>
@@ -421,7 +421,7 @@ const PaymentTable = () => {
 
               <button
                 onClick={() => addRow(tableIndex)}
-                className="bg-blue-500 text-white px-4 py-2 rounded-md mt-4 ml-2 text-[14px]"
+                className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md mt-4 ml-2 text-[14px]"
               >
                 <FaPlus className="inline-block mr-2" />
                 Add Row

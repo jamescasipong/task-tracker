@@ -6,7 +6,7 @@ import { MdOutlineIntegrationInstructions } from "react-icons/md";
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   return (
     <nav className='bg-gray-800 p-4 w-full relative'>
-      <div className='container mx-[0px] flex justify-between items-center'>
+      <div className='container mx-[100px] flex justify-between items-center'>
         <div className='flex'>
           <button
             className={`text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'table' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
@@ -28,7 +28,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
           </button>
         </div>
 
-        <div className='absolute right-[1%] flex gap-5'>
+        <div className='absolute right-[7%] flex gap-5'>
         <button
           className='sm:flex hidden items-center bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300 ease-in-out gap-2'
         >
