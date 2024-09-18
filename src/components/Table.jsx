@@ -89,15 +89,14 @@ const Table = () => {
     additions: [],
   });
 
-
   const handleInputChange = (index, key, event) => {
     const updatedData = [...sortedData];
     const newValue = event.target.value;
-  
+
     // Update data
     updatedData[index] = { ...updatedData[index], [key]: newValue };
     setData(updatedData);
-    
+
     // Update pending changes
     setPendingChanges((prev) => {
       const updatedUpdates = prev.updates.map((update, i) => {
@@ -112,7 +111,7 @@ const Table = () => {
         }
         return update; // Keep existing updates for other indices
       });
-  
+
       // Add a new entry if it doesn't exist
       if (!updatedUpdates[index]) {
         updatedUpdates[index] = {
@@ -120,7 +119,7 @@ const Table = () => {
           changes: { [key]: newValue },
         };
       }
-  
+
       return { ...prev, updates: updatedUpdates };
     });
   };
@@ -148,16 +147,18 @@ const Table = () => {
         const validUpdates = pendingChanges.updates.filter(
           (update) => Object.keys(update.changes).length > 0
         );
-  
-        await Promise.all(validUpdates.map((update) => debouncedUpdate(update)));
-  
+
+        await Promise.all(
+          validUpdates.map((update) => debouncedUpdate(update))
+        );
+
         // Save new devices
         await Promise.all(
           pendingChanges.additions.map((row) =>
             axios.post("/dataRoute/add-device", row)
           )
         );
-  
+
         // Clear pending changes
         setPendingChanges({ updates: [], additions: [] });
         console.log("Changes saved and data refreshed.");
@@ -198,8 +199,10 @@ const Table = () => {
 
   const deleteDevice = async (id) => {
     try {
-      await axios.delete(`/dataRoute/delete-device/${id}`);
-      setData(data.filter((device) => device._id !== id));
+      if (confirm("Are you sure you want to delete this?")) {
+        await axios.delete(`/dataRoute/delete-device/${id}`);
+        setData(data.filter((device) => device._id !== id));
+      }
     } catch (error) {
       console.error("Failed to delete device:", error);
     }
@@ -248,86 +251,90 @@ const Table = () => {
 
   const exportToXlsx = async () => {
     try {
-      // Fetch data from the backend
-      const response = await axios.get("/dataRoute/export/excel", {
-        responseType: "json",
-      });
-
-      // Convert the response to JSON
-      const data = response.data;
-
-      // Convert JSON data to worksheet
-      const worksheet = XLSX.utils.json_to_sheet(data);
-
-      const headerStyle = {
-        font: { bold: true, color: { rgb: "FFFFFF" } },
-        fill: { fgColor: { rgb: "4F81BD" } },
-        border: {
-          top: { style: "thin", color: { rgb: "000000" } },
-          bottom: { style: "thin", color: { rgb: "000000" } },
-          left: { style: "thin", color: { rgb: "000000" } },
-          right: { style: "thin", color: { rgb: "000000" } },
-        },
-        alignment: { horizontal: "center", vertical: "center" },
-      };
-
-      const bodyStyle = {
-        font: { color: { rgb: "000000" } },
-        border: {
-          top: { style: "thin", color: { rgb: "000000" } },
-          bottom: { style: "thin", color: { rgb: "000000" } },
-          left: { style: "thin", color: { rgb: "000000" } },
-          right: { style: "thin", color: { rgb: "000000" } },
-        },
-        alignment: { horizontal: "left", vertical: "center" },
-      };
-
-      const totalColumns = 10;
-
-      // Apply styles to the header row (row 1)
-      const headers = Object.keys(data[0]);
-      for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
-        const headerValue = headers[colIndex] || `Column ${colIndex + 1}`; // Default header if undefined
-        if (!worksheet[cellAddress]) {
-          worksheet[cellAddress] = { v: headerValue };
-        }
-        worksheet[cellAddress].s = headerStyle; // Set style to header cell
-      }
-
-      // Apply styles to the rest of the rows
-      data.forEach((row, rowIndex) => {
-        for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
-          const cellAddress = XLSX.utils.encode_cell({
-            r: rowIndex + 1,
-            c: colIndex,
-          });
-          const cellValue = row[headers[colIndex]] || ""; // Default value if undefined
-          if (!worksheet[cellAddress]) {
-            worksheet[cellAddress] = { v: cellValue };
-          }
-          worksheet[cellAddress].s = bodyStyle; // Set style to body cells
-        }
-      });
-
-      // Dynamically calculate the column widths based on content
-      const colWidths = headers.map((header, colIndex) => {
-        let maxLength = header.length; // Start with header length
-        data.forEach((row) => {
-          const cellValue = row[header] ? row[header].toString() : "";
-          maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
+      if (confirm("You want to export it right?")) {
+        // Fetch data from the backend
+        const response = await axios.get("/dataRoute/export/excel", {
+          responseType: "json",
         });
-        return { wch: maxLength + 2 }; // Add some padding (2 characters)
-      });
 
-      worksheet["!cols"] = colWidths; // Set the column widths
+        // Convert the response to JSON
+        const data = response.data;
 
-      // Create a new workbook and append the styled worksheet
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Device Inventory");
+        // Convert JSON data to worksheet
+        const worksheet = XLSX.utils.json_to_sheet(data);
 
-      // Export the workbook to a file
-      XLSX.writeFile(workbook, "Device Inventory.xlsx");
+        const headerStyle = {
+          font: { bold: true, color: { rgb: "FFFFFF" } },
+          fill: { fgColor: { rgb: "4F81BD" } },
+          border: {
+            top: { style: "thin", color: { rgb: "000000" } },
+            bottom: { style: "thin", color: { rgb: "000000" } },
+            left: { style: "thin", color: { rgb: "000000" } },
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
+          alignment: { horizontal: "center", vertical: "center" },
+        };
+
+        const bodyStyle = {
+          font: { color: { rgb: "000000" } },
+          border: {
+            top: { style: "thin", color: { rgb: "000000" } },
+            bottom: { style: "thin", color: { rgb: "000000" } },
+            left: { style: "thin", color: { rgb: "000000" } },
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
+          alignment: { horizontal: "left", vertical: "center" },
+        };
+
+        const totalColumns = 10;
+
+        // Apply styles to the header row (row 1)
+        const headers = Object.keys(data[0]);
+        for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
+          const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+
+          console.log(cellAddress);
+          const headerValue = headers[colIndex]; // Default header if undefined
+          if (!worksheet[cellAddress]) {
+            worksheet[cellAddress] = { v: headerValue };
+          }
+          worksheet[cellAddress].s = headerStyle; // Set style to header cell
+        }
+
+        // Apply styles to the rest of the rows
+        data.forEach((row, rowIndex) => {
+          for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
+            const cellAddress = XLSX.utils.encode_cell({
+              r: rowIndex + 1,
+              c: colIndex,
+            });
+            const cellValue = row[headers[colIndex]] || ""; // Default value if undefined
+            if (!worksheet[cellAddress]) {
+              worksheet[cellAddress] = { v: cellValue };
+            }
+            worksheet[cellAddress].s = bodyStyle; // Set style to body cells
+          }
+        });
+
+        // Dynamically calculate the column widths based on content
+        const colWidths = headers.map((header, colIndex) => {
+          let maxLength = header.length; // Start with header length
+          data.forEach((row) => {
+            const cellValue = row[header] ? row[header].toString() : "";
+            maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
+          });
+          return { wch: maxLength + 2 }; // Add some padding (2 characters)
+        });
+
+        worksheet["!cols"] = colWidths; // Set the column widths
+
+        // Create a new workbook and append the styled worksheet
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Device Inventory");
+
+        // Export the workbook to a file
+        XLSX.writeFile(workbook, "Device Inventory.xlsx");
+      }
     } catch (error) {
       console.error("Error exporting data:", error.message);
     }
@@ -488,6 +495,7 @@ const Table = () => {
               "Department_1",
               "Owner_2",
               "Department_2",
+              "Action",
             ].map((header) => (
               <th
                 key={header}
@@ -531,14 +539,14 @@ const Table = () => {
                   />
                 </td>
               ))}
-              {/*<td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
+              <td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
                 <button
                   onClick={() => deleteDevice(device._id)}
                   className="bg-red-500 text-white px-4 py-1 rounded"
                 >
                   Delete
                 </button>
-              </td>*/}
+              </td>
             </tr>
           ))}
         </tbody>
