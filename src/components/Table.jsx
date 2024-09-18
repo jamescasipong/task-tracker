@@ -1,11 +1,10 @@
 import axios from "axios";
-import _ from 'lodash';
+import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
 import LoadingTable from "./LoadingTable";
-
 
 const Table = () => {
   const [data, setData] = useState([]);
@@ -16,7 +15,7 @@ const Table = () => {
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [newRows, setNewRows] = useState([
     {
-      No: "", 
+      No: "",
       SerialNumber: "",
       Brand: "",
       Model: "",
@@ -29,7 +28,6 @@ const Table = () => {
     },
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,99 +74,95 @@ const Table = () => {
     setSelectedBrand(e.target.value);
   };
 
-
-
-
-
-const handleRowInputChange = (rowIndex, key, value) => {
-  const updatedRows = [...newRows];
-  updatedRows[rowIndex] = { ...updatedRows[rowIndex], [key]: value };
-  setNewRows(updatedRows);
-  setPendingChanges(prev => ({
+  const handleRowInputChange = (rowIndex, key, value) => {
+    const updatedRows = [...newRows];
+    updatedRows[rowIndex] = { ...updatedRows[rowIndex], [key]: value };
+    setNewRows(updatedRows);
+    setPendingChanges((prev) => ({
       ...prev,
-      additions: [...prev.additions, updatedRows[rowIndex]]
-  }));
-};
+      additions: [...prev.additions, updatedRows[rowIndex]],
+    }));
+  };
 
-const [pendingChanges, setPendingChanges] = useState({ updates: [], additions: [] });
+  const [pendingChanges, setPendingChanges] = useState({
+    updates: [],
+    additions: [],
+  });
 
-const [values, setValuesz] = useState("");
+  const [values, setValuesz] = useState("");
 
-const handleInputChange = (index, key, event) => {
-  const updatedData = [...data];
-  let newValue = event.target.value;
+  const handleInputChange = (index, key, event) => {
+    const updatedData = [...data];
+    let newValue = event.target.value;
 
+    updatedData[index] = { ...updatedData[index], [key]: newValue };
+    setData(updatedData);
 
-  updatedData[index] = { ...updatedData[index], [key]: newValue };
-  setData(updatedData);
-
-  setPendingChanges(prev => ({
+    setPendingChanges((prev) => ({
       ...prev,
-      updates: [...prev.updates, { id: updatedData[index]._id, changes: { [key]: newValue } }]
-  }));
+      updates: [
+        ...prev.updates,
+        { id: updatedData[index]._id, changes: { [key]: newValue } },
+      ],
+    }));
+  };
 
+  // Debounced function to handle saving changes
+  const debouncedUpdate = _.debounce(async (update) => {
+    console.log("Updating device with ID:", update.id);
+    console.log("Changes:", update.changes);
+    try {
+      setLoading(true)
 
-};
+      await axios.put(`/dataRoute/update-device/${update.id}`, update.changes);
 
+      const response = await axios.get("/dataRoute/");
+      setData(response.data);
 
+      setLoading(false)
+      alert("Saved successfully!");
+    } catch (error) {
+      console.error("Failed to update device:", error);
+    }
+  }); // 500 ms delay before triggering the update
 
-// Debounced function to handle saving changes
-const debouncedUpdate = _.debounce(async (update) => {
-  console.log("Updating device with ID:", update.id);
-  console.log("Changes:", update.changes);
-  try {
-    await axios.put(`/dataRoute/update-device/${update.id}`, update.changes);
+  const saveChanges = async () => {
+    try {
+      if (confirm("Are you sure you want to save this?")) {
 
+        const validUpdates = pendingChanges.updates.filter(
+          (update) => Object.keys(update.changes).length > 0
+        );
 
-    const response = await axios.get("/dataRoute/");
-    setData(response.data);
-  } catch (error) {
-    console.error("Failed to update device:", error);
-  }
-});  // 500 ms delay before triggering the update
+        console.log("Valid updates:", validUpdates);
 
-const saveChanges = async () => {
-  try {
-    if(confirm("Are you sure you want to save this?")){
-    const validUpdates = pendingChanges.updates.filter(
-      update => Object.keys(update.changes).length > 0
-    );
+        // Save updated devices with debounced function
+        await Promise.all(
+          validUpdates.map((update) => debouncedUpdate(update))
+        );
 
-    console.log("Valid updates:", validUpdates);
+        // Save new devices
+        await Promise.all(
+          pendingChanges.additions.map((row) => {
+            console.log("Adding new device:", row);
+            return axios.post("/dataRoute/add-device", row);
+          })
+        );
 
-    // Save updated devices with debounced function
-    await Promise.all(validUpdates.map(update => debouncedUpdate(update)));
+        // Refresh data
 
-    // Save new devices
-    await Promise.all(
-      pendingChanges.additions.map(row => {
-        console.log("Adding new device:", row);
-        return axios.post("/dataRoute/add-device", row);
-      })
-    );
-
-    // Refresh data
-    
-
-    // Clear pending changes
-    setPendingChanges({ updates: [], additions: [] });
-
-
-    // Optional: Provide feedback to user
-    console.log("Changes saved and data refreshed.");
-    alert("Saved successfully!")
-  }
-
-  else {
-    alert("You didn't save it!")
-  }
-
-  } catch (error) {
-    console.error("Failed to save changes:", error);
-  }
-};
-
-
+        // Clear pending changes
+        setPendingChanges({ updates: [], additions: [] });
+        // Optional: Provide feedback to user
+        console.log("Changes saved and data refreshed.");
+        
+      } else {
+        alert("You didn't save it!");
+      }
+    } catch (error) {
+      console.error("Failed to save changes:", error);
+    }
+  };
 
   const addNewRows = async () => {
     try {
@@ -196,8 +190,6 @@ const saveChanges = async () => {
       console.error("Failed to add new devices:", error);
     }
   };
-
-
 
   const deleteDevice = async (id) => {
     try {
@@ -249,113 +241,110 @@ const saveChanges = async () => {
     return sortableData;
   }, [filteredData, sortConfig]);
 
-  
   const exportToXlsx = async () => {
-  try {
-    // Fetch data from the backend
-    const response = await axios.get('/dataRoute/export/excel', { responseType: 'json' });
-    
-    // Convert the response to JSON
-    const data = response.data;
-
-    // Convert JSON data to worksheet
-    const worksheet = XLSX.utils.json_to_sheet(data);
-
-    const headerStyle = {
-      font: { bold: true, color: { rgb: "FFFFFF" } },
-      fill: { fgColor: { rgb: "4F81BD" } },
-      border: {
-        top: { style: "thin", color: { rgb: "000000" } },
-        bottom: { style: "thin", color: { rgb: "000000" } },
-        left: { style: "thin", color: { rgb: "000000" } },
-        right: { style: "thin", color: { rgb: "000000" } },
-      },
-      alignment: { horizontal: "center", vertical: "center" }
-    };
-
-    const bodyStyle = {
-      font: { color: { rgb: "000000" } },
-      border: {
-        top: { style: "thin", color: { rgb: "000000" } },
-        bottom: { style: "thin", color: { rgb: "000000" } },
-        left: { style: "thin", color: { rgb: "000000" } },
-        right: { style: "thin", color: { rgb: "000000" } },
-      },
-      alignment: { horizontal: "left", vertical: "center" }
-    };
-
-    const totalColumns = 10;
-
-    // Apply styles to the header row (row 1)
-    const headers = Object.keys(data[0]);
-    for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
-      const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
-      const headerValue = headers[colIndex] || `Column ${colIndex + 1}`; // Default header if undefined
-      if (!worksheet[cellAddress]) {
-        worksheet[cellAddress] = { v: headerValue };
-      }
-      worksheet[cellAddress].s = headerStyle; // Set style to header cell
-    }
-
-    // Apply styles to the rest of the rows
-    data.forEach((row, rowIndex) => {
-      for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
-        const cellAddress = XLSX.utils.encode_cell({ r: rowIndex + 1, c: colIndex });
-        const cellValue = row[headers[colIndex]] || ''; // Default value if undefined
-        if (!worksheet[cellAddress]) {
-          worksheet[cellAddress] = { v: cellValue };
-        }
-        worksheet[cellAddress].s = bodyStyle; // Set style to body cells
-      }
-    });
-
-    // Dynamically calculate the column widths based on content
-    const colWidths = headers.map((header, colIndex) => {
-      let maxLength = header.length; // Start with header length
-      data.forEach(row => {
-        const cellValue = row[header] ? row[header].toString() : '';
-        maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
+    try {
+      // Fetch data from the backend
+      const response = await axios.get("/dataRoute/export/excel", {
+        responseType: "json",
       });
-      return { wch: maxLength + 2 }; // Add some padding (2 characters)
-    });
 
-    worksheet['!cols'] = colWidths; // Set the column widths
+      // Convert the response to JSON
+      const data = response.data;
 
-    // Create a new workbook and append the styled worksheet
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Device Inventory');
+      // Convert JSON data to worksheet
+      const worksheet = XLSX.utils.json_to_sheet(data);
 
-    // Export the workbook to a file
-    XLSX.writeFile(workbook, 'Device Inventory.xlsx');
-  } catch (error) {
-    console.error('Error exporting data:', error.message);
-  }
-};
+      const headerStyle = {
+        font: { bold: true, color: { rgb: "FFFFFF" } },
+        fill: { fgColor: { rgb: "4F81BD" } },
+        border: {
+          top: { style: "thin", color: { rgb: "000000" } },
+          bottom: { style: "thin", color: { rgb: "000000" } },
+          left: { style: "thin", color: { rgb: "000000" } },
+          right: { style: "thin", color: { rgb: "000000" } },
+        },
+        alignment: { horizontal: "center", vertical: "center" },
+      };
 
-  
+      const bodyStyle = {
+        font: { color: { rgb: "000000" } },
+        border: {
+          top: { style: "thin", color: { rgb: "000000" } },
+          bottom: { style: "thin", color: { rgb: "000000" } },
+          left: { style: "thin", color: { rgb: "000000" } },
+          right: { style: "thin", color: { rgb: "000000" } },
+        },
+        alignment: { horizontal: "left", vertical: "center" },
+      };
 
-  
+      const totalColumns = 10;
 
+      // Apply styles to the header row (row 1)
+      const headers = Object.keys(data[0]);
+      for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
+        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
+        const headerValue = headers[colIndex] || `Column ${colIndex + 1}`; // Default header if undefined
+        if (!worksheet[cellAddress]) {
+          worksheet[cellAddress] = { v: headerValue };
+        }
+        worksheet[cellAddress].s = headerStyle; // Set style to header cell
+      }
+
+      // Apply styles to the rest of the rows
+      data.forEach((row, rowIndex) => {
+        for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
+          const cellAddress = XLSX.utils.encode_cell({
+            r: rowIndex + 1,
+            c: colIndex,
+          });
+          const cellValue = row[headers[colIndex]] || ""; // Default value if undefined
+          if (!worksheet[cellAddress]) {
+            worksheet[cellAddress] = { v: cellValue };
+          }
+          worksheet[cellAddress].s = bodyStyle; // Set style to body cells
+        }
+      });
+
+      // Dynamically calculate the column widths based on content
+      const colWidths = headers.map((header, colIndex) => {
+        let maxLength = header.length; // Start with header length
+        data.forEach((row) => {
+          const cellValue = row[header] ? row[header].toString() : "";
+          maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
+        });
+        return { wch: maxLength + 2 }; // Add some padding (2 characters)
+      });
+
+      worksheet["!cols"] = colWidths; // Set the column widths
+
+      // Create a new workbook and append the styled worksheet
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Device Inventory");
+
+      // Export the workbook to a file
+      XLSX.writeFile(workbook, "Device Inventory.xlsx");
+    } catch (error) {
+      console.error("Error exporting data:", error.message);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key === 's') {
+      if (event.ctrlKey && event.key === "s") {
         event.preventDefault(); // Prevent the default browser save action
         saveChanges();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [saveChanges]);
 
   if (loading) {
-    return (
-      <LoadingTable />
-    );
+    return <LoadingTable />;
   }
 
   return (
@@ -382,8 +371,7 @@ const saveChanges = async () => {
           onClick={openModal}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 ml-4"
         >
-          <IoMdAdd  className="w-7 h-7" />
-
+          <IoMdAdd className="w-7 h-7" />
           Add devices
         </button>
         <button
@@ -391,12 +379,11 @@ const saveChanges = async () => {
           className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
         >
           <FaRegFileExcel className="w-7 h-7" />
-
           Export
         </button>
 
-
-        {pendingChanges.updates.length > 0 || pendingChanges.additions.length > 0 ? (
+        {pendingChanges.updates.length > 0 ||
+        pendingChanges.additions.length > 0 ? (
           <button
             onClick={saveChanges}
             className="bg-yellow-500 text-white px-4 py-2 rounded ml-4"
@@ -534,9 +521,7 @@ const saveChanges = async () => {
                   <input
                     type="text"
                     value={device[key] || ""}
-                    onChange={(e) =>
-                      handleInputChange(index, key, e)
-                    }
+                    onChange={(e) => handleInputChange(index, key, e)}
                     className={`w-full ${key}`}
                   />
                 </td>
@@ -552,9 +537,7 @@ const saveChanges = async () => {
             </tr>
           ))}
         </tbody>
-        
       </table>
-      
     </div>
   );
 };

@@ -201,11 +201,13 @@ const PaymentTable = () => {
   };
 
   const deleteRow = (tableIndex, rowIndex) => {
-    const updatedTables = [...tables];
-    updatedTables[tableIndex].rows = updatedTables[tableIndex].rows.filter(
-      (_, index) => index !== rowIndex
-    );
-    setTables(updatedTables);
+    if (confirm("Are you sure you want to delete ?")) {
+      const updatedTables = [...tables];
+      updatedTables[tableIndex].rows = updatedTables[tableIndex].rows.filter(
+        (_, index) => index !== rowIndex
+      );
+      setTables(updatedTables);
+    }
   };
 
   const addTable = () => {
@@ -288,26 +290,21 @@ const PaymentTable = () => {
 
   const saveData = async () => {
     try {
+      if (confirm("Are you sure you want to save this?")) {
+        console.log("Saving the following data:", tables);
 
-      if (confirm("Are you sure you want to save this?")){
-      console.log("Saving the following data:", tables);
-      
-      setLoading(true);
-      const response = await axios.post("/payments/save", { tables });
+        setLoading(true);
+        const response = await axios.post("/payments/save", { tables });
 
-      setLoading(false);
-      alert(response.data.message)
-    }
-      else {
-      alert("You didn't save it!");
+        setLoading(false);
+        alert(response.data.message);
+      } else {
+        alert("You didn't save it!");
       }
-    
     } catch (error) {
       console.error("Error saving data:", error);
     }
   };
-
-
 
   return (
     <div
@@ -364,7 +361,10 @@ const PaymentTable = () => {
           </button>
 
           {tables.map((table, tableIndex) => (
-            <div key={tableIndex} className="mt-8 border p-4 rounded-md overflow-auto">
+            <div
+              key={tableIndex}
+              className="mt-8 border p-4 rounded-md overflow-auto"
+            >
               <div className="flex gap-5 items-center mb-2 overflow-auto">
                 {editingTableIndex === tableIndex ? (
                   <>
@@ -373,7 +373,11 @@ const PaymentTable = () => {
                       value={editedTableName}
                       placeholder="Enter a new name"
                       onChange={(e) => setEditedTableName(e.target.value)}
-                      className={`border p-2 ${darkMode ? "dark:bg-gray-800 dark:text-white border-gray-600" : "text-black "}`}
+                      className={`border p-2 ${
+                        darkMode
+                          ? "dark:bg-gray-800 dark:text-white border-gray-600"
+                          : "text-black "
+                      }`}
                     />
                     <div>
                       <button
@@ -418,14 +422,13 @@ const PaymentTable = () => {
                 {isTableVisible[tableIndex] ? (
                   <>
                     <FaEyeSlash className="inline-block mr-2" />
-                        Hide Table</>
-                  
+                    Hide Table
+                  </>
                 ) : (
                   <>
                     <FaEye className="inline-block mr-2" />
                     Show Table
-                    
-                    </>
+                  </>
                 )}
               </button>
 
@@ -437,119 +440,115 @@ const PaymentTable = () => {
                 Add Row
               </button>
 
-              
-                <table className={`min-w-full border flex flex-col ${isTableVisible[tableIndex] ? "overflow" : "overflow-hidden"}`}>
-                  <tbody
-                    style={getTableBodyStyle(tableIndex)}
-                    className="transition-all duration-500 ease-in-out overflow"
-                  >
-                    {!darkMode
-                      ? table.rows.map((row, rowIndex) => (
-                          <React.Fragment key={rowIndex}>
-                            <tr>
-                              {row.months.map((month, monthIndex) => (
-                                <th
-                                  key={monthIndex}
-                                  className="py-2 px-4 border text-center bg-gray-200 text-[13px]"
-                                >
-                                  {month}
-                                </th>
-                              ))}
-                              <th className="py-2 px-4 border text-center bg-gray-200 text-[13px]">
-                                Actions
+              <table
+                className={`min-w-full border flex flex-col ${
+                  isTableVisible[tableIndex] ? "overflow" : "overflow-hidden"
+                }`}
+              >
+                <tbody
+                  style={getTableBodyStyle(tableIndex)}
+                  className="transition-all duration-500 ease-in-out overflow"
+                >
+                  {!darkMode
+                    ? table.rows.map((row, rowIndex) => (
+                        <React.Fragment key={rowIndex}>
+                          <tr>
+                            {row.months.map((month, monthIndex) => (
+                              <th
+                                key={monthIndex}
+                                className="py-2 px-4 border text-center bg-gray-200 text-[13px]"
+                              >
+                                {month}
                               </th>
-                            </tr>
-                            <tr>
-                              {row.values.map((value, monthIndex) => (
-                                <td
-                                  key={monthIndex}
-                                  className="py-2 px-4 border text-[13px]"
-                                >
-                                  <input
-                                    type="text"
-                                    placeholder={`Amount`}
-                                    value={value}
-                                    onChange={(event) =>
-                                      handleInputChange(
-                                        tableIndex,
-                                        rowIndex,
-                                        monthIndex,
-                                        event
-                                      )
-                                    }
-                                    className="w-full px-2 py-1 border rounded text-black"
-                                  />
-                                </td>
-                              ))}
-                              <td className="py-2 px-4 border text-center">
-                                <button
-                                  onClick={() =>
-                                    deleteRow(tableIndex, rowIndex)
+                            ))}
+                            <th className="py-2 px-4 border text-center bg-gray-200 text-[13px]">
+                              Actions
+                            </th>
+                          </tr>
+                          <tr>
+                            {row.values.map((value, monthIndex) => (
+                              <td
+                                key={monthIndex}
+                                className="py-2 px-4 border text-[13px]"
+                              >
+                                <input
+                                  type="text"
+                                  placeholder={`Amount`}
+                                  value={value}
+                                  onChange={(event) =>
+                                    handleInputChange(
+                                      tableIndex,
+                                      rowIndex,
+                                      monthIndex,
+                                      event
+                                    )
                                   }
-                                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                                >
-                                  <FaTrash className="w-5 h-5" />
-                                </button>
+                                  className="w-full px-2 py-1 border rounded text-black"
+                                />
                               </td>
-                            </tr>
-                          </React.Fragment>
-                        ))
-                      : table.rows.map((row, rowIndex) => (
-                          <React.Fragment key={rowIndex}>
-                            <tr>
-                              {row.months.map((month, monthIndex) => (
-                                <th
-                                  key={monthIndex}
-                                  className="py-2 px-4 border text-center bg-gray-200 dark:bg-gray-700 dark:text-white"
-                                >
-                                  {month}
-                                </th>
-                              ))}
-                              <th className="py-2 px-4 border text-center bg-gray-200 dark:bg-gray-700 dark:text-white">
-                                Actions
+                            ))}
+                            <td className="py-2 px-4 border text-center">
+                              <button
+                                onClick={() => deleteRow(tableIndex, rowIndex)}
+                                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                              >
+                                <FaTrash className="w-5 h-5" />
+                              </button>
+                            </td>
+                          </tr>
+                        </React.Fragment>
+                      ))
+                    : table.rows.map((row, rowIndex) => (
+                        <React.Fragment key={rowIndex}>
+                          <tr>
+                            {row.months.map((month, monthIndex) => (
+                              <th
+                                key={monthIndex}
+                                className="py-2 px-4 border text-center bg-gray-200 dark:bg-gray-700 dark:text-white"
+                              >
+                                {month}
                               </th>
-                            </tr>
-                            <tr>
-                              {row.values.map((value, monthIndex) => (
-                                <td
-                                  key={monthIndex}
-                                  className="py-2 px-4 border dark:border-gray-600"
-                                >
-                                  <input
-                                    type="text"
-                                    placeholder={`Amount`}
-                                    value={value}
-                                    onChange={(event) =>
-                                      handleInputChange(
-                                        tableIndex,
-                                        rowIndex,
-                                        monthIndex,
-                                        event
-                                      )
-                                    }
-                                    className="w-full px-2 py-1 border rounded text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                                  />
-                                </td>
-                              ))}
-
-                              <td className="py-2 px-4 border text-center">
-                                <button
-                                  onClick={() =>
-                                    deleteRow(tableIndex, rowIndex)
+                            ))}
+                            <th className="py-2 px-4 border text-center bg-gray-200 dark:bg-gray-700 dark:text-white">
+                              Actions
+                            </th>
+                          </tr>
+                          <tr>
+                            {row.values.map((value, monthIndex) => (
+                              <td
+                                key={monthIndex}
+                                className="py-2 px-4 border dark:border-gray-600"
+                              >
+                                <input
+                                  type="text"
+                                  placeholder={`Amount`}
+                                  value={value}
+                                  onChange={(event) =>
+                                    handleInputChange(
+                                      tableIndex,
+                                      rowIndex,
+                                      monthIndex,
+                                      event
+                                    )
                                   }
-                                  className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-                                >
-                                  <FaTrash className="w-5 h-5" />
-                                </button>
+                                  className="w-full px-2 py-1 border rounded text-black dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                                />
                               </td>
-                            </tr>
-                          </React.Fragment>
-                        ))}
-                  </tbody>
-                </table>
-              
+                            ))}
 
-              
+                            <td className="py-2 px-4 border text-center">
+                              <button
+                                onClick={() => deleteRow(tableIndex, rowIndex)}
+                                className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                              >
+                                <FaTrash className="w-5 h-5" />
+                              </button>
+                            </td>
+                          </tr>
+                        </React.Fragment>
+                      ))}
+                </tbody>
+              </table>
             </div>
           ))}
         </>

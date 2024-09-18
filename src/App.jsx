@@ -21,6 +21,7 @@ function App() {
     return savedAuth ? JSON.parse(savedAuth) : false;
   });
   const [loading, setLoading] = useState(false);
+  const [state, setState] = useState("");
 
   useEffect(() => {
     localStorage.setItem("currentView", JSON.stringify(currentView));
@@ -31,20 +32,24 @@ function App() {
   }, [isAuthenticated]);
 
   const handleSignIn = () => {
+    setState("Logging in..");
     setLoading(true);
     setTimeout(() => {
       setIsAuthenticated(true);
       setLoading(false);
+      setState("");
     }, 1000); // Simulate loading time
   };
 
   const handleLogout = () => {
+    setState("Logging out..");
     setLoading(true);
     setTimeout(() => {
       setIsAuthenticated(false);
       localStorage.removeItem("userDetails"); // Optional: Clear saved user details
       setCurrentView("table"); // Optionally reset the view upon logout
       setLoading(false);
+      setState("");
     }, 1000); // Simulate loading time
   };
 
@@ -57,7 +62,7 @@ function App() {
   return (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
-        <LoadingSignIn></LoadingSignIn>
+        <LoadingSignIn message={state}></LoadingSignIn>
       ) : isAuthenticated ? (
         <>
           <Navbar
@@ -71,10 +76,15 @@ function App() {
               {/*currentView === 'excelToJson' && <ExcelToJson />*/}
               {currentView === "paymentTable" && <PaymentTable />}
             </div>
+            
           </div>
         </>
       ) : (
+        <>
         <SignIn onSignIn={handleSignIn} />
+        
+
+        </>
       )}
     </div>
   );

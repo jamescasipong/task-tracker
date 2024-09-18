@@ -1,15 +1,15 @@
-import { Transition } from '@headlessui/react';
-import React, { useState } from 'react';
+import { Transition } from "@headlessui/react";
+import React, { useState } from "react";
 
 function SignIn({ onSignIn }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const userName = "admin";
-  const correctPassword = 'Admin123$$';
+  const correctPassword = "Admin123$$";
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -28,8 +28,8 @@ function SignIn({ onSignIn }) {
     setLoading(true);
     setTimeout(() => {
       if (password === correctPassword && username === userName) {
-        setUsername('');
-        setPassword('');
+        setUsername("");
+        setPassword("");
         setLoading(false);
         onSignIn();
       } else {
@@ -41,18 +41,23 @@ function SignIn({ onSignIn }) {
 
   return (
     <div className="bg-gray-50 font-[sans-serif]">
+      
       <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-        <div className="max-w-md w-full">
-          <div className="p-8 rounded-2xl bg-white shadow">
+        <div className="max-w-lg w-full">
+          <div className="p-8 rounded-2xl bg-white shadow mb-20">
             {/* Header with logo and website name */}
             <div className="flex items-center justify-center mb-6">
               {/*<img src="/path/to/logo.png" alt="Logo" className="w-12 h-12 mr-2" />*/}
             </div>
-            <h2 className="text-gray-800 text-center text-[25px] font-bold">Sign in</h2>
-            
+            <h2 className="text-gray-800 text-center text-[25px] font-bold">
+              Sign in
+            </h2>
+
             <form onSubmit={handleSubmit} className="mt-8 space-y-4">
               <div>
-                <label className="text-gray-800 text-sm mb-2 block">User name</label>
+                <label className="text-gray-800 text-sm mb-2 block">
+                  User name
+                </label>
                 <div className="relative flex items-center">
                   <input
                     name="username"
@@ -85,7 +90,9 @@ function SignIn({ onSignIn }) {
               </div>
 
               <div>
-                <label className="text-gray-800 text-sm mb-2 block">Password</label>
+                <label className="text-gray-800 text-sm mb-2 block">
+                  Password
+                </label>
                 <div className="relative flex items-center">
                   <input
                     name="password"
@@ -143,15 +150,11 @@ function SignIn({ onSignIn }) {
                   type="submit"
                   className="w-full py-3 px-4 text-sm tracking-wide rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none flex items-center justify-center gap-2 mt-[50px]"
                 >
-                  {loading && (
+                  {loading && <div className="loader-signin"></div>}
 
-                <div className="loader-signin"></div>
-                  )}
-
-                  {loading ? (<>Loading...</>) : (<>Sign In</>)}
+                  {loading ? <>Loading...</> : <>Sign In</>}
                 </button>
               </div>
-              
             </form>
             {showError && (
               <Transition
@@ -163,13 +166,17 @@ function SignIn({ onSignIn }) {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-                <p className="text-red-500 text-sm mt-4 text-center">Incorrect username or password!</p>
+                <p className="text-red-500 text-sm mt-4 text-center">
+                  Incorrect username or password!
+                </p>
               </Transition>
             )}
           </div>
           {/* Footer */}
           <footer className="text-center text-gray-600 mt-6">
-            <p className='text-[15px]'>© 2024 Monitoring System All Rights Reserved.</p>
+            <p className="text-[15px]">
+              © 2024 Monitoring System All Rights Reserved.
+            </p>
           </footer>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import React from 'react';
-import { FaSpinner } from 'react-icons/fa';
+import React from "react";
+import { FaSpinner } from "react-icons/fa";
 
 const LoadingSignIn = ({ message }) => {
   return (
@@ -7,7 +7,7 @@ const LoadingSignIn = ({ message }) => {
       <div className="flex items-center mb-4">
         <FaSpinner className="animate-spin h-12 w-12 text-blue-500" />
       </div>
-      <p className="text-lg text-gray-700">{message || 'Processing...'}</p>
+      <p className="text-lg text-gray-700">{message || "Processing..."}</p>
     </div>
   );
 };
