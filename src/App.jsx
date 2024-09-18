@@ -41,16 +41,19 @@ function App() {
     }, 1000); // Simulate loading time
   };
 
+
   const handleLogout = () => {
-    setState("Logging out..");
-    setLoading(true);
-    setTimeout(() => {
-      setIsAuthenticated(false);
-      localStorage.removeItem("userDetails"); // Optional: Clear saved user details
-      setCurrentView("table"); // Optionally reset the view upon logout
-      setLoading(false);
-      setState("");
-    }, 1000); // Simulate loading time
+    if (confirm("Are you sure you want to logout?")) {
+      setState("Logging out..");
+      setLoading(true);
+      setTimeout(() => {
+        setIsAuthenticated(false);
+        localStorage.removeItem("userDetails"); // Optional: Clear saved user details
+        setCurrentView("table"); // Optionally reset the view upon logout
+        setLoading(false);
+        setState("");
+      }, 1000); // Simulate loading time
+    }
   };
 
   const handleViewChange = (view) => {
@@ -76,14 +79,11 @@ function App() {
               {/*currentView === 'excelToJson' && <ExcelToJson />*/}
               {currentView === "paymentTable" && <PaymentTable />}
             </div>
-            
           </div>
         </>
       ) : (
         <>
-        <SignIn onSignIn={handleSignIn} />
-        
-
+          <SignIn onSignIn={handleSignIn} />
         </>
       )}
     </div>

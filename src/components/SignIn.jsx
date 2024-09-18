@@ -14,15 +14,7 @@ function SignIn({ onSignIn }) {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const handleForgotPassword = () => {
-    // Handle forgot password logic
-  };
-
-  const handleSignup = () => {
-    // Handle signup logic
-  };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);

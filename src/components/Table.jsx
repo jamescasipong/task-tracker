@@ -89,37 +89,53 @@ const Table = () => {
     additions: [],
   });
 
-  const [values, setValuesz] = useState("");
 
   const handleInputChange = (index, key, event) => {
     const updatedData = [...data];
-    let newValue = event.target.value;
-
+    const newValue = event.target.value;
+  
+    // Update data
     updatedData[index] = { ...updatedData[index], [key]: newValue };
     setData(updatedData);
-
-    setPendingChanges((prev) => ({
-      ...prev,
-      updates: [
-        ...prev.updates,
-        { id: updatedData[index]._id, changes: { [key]: newValue } },
-      ],
-    }));
+    
+    // Update pending changes
+    setPendingChanges((prev) => {
+      const updatedUpdates = prev.updates.map((update, i) => {
+        if (i === index) {
+          return {
+            id: updatedData[index]._id,
+            changes: {
+              ...update.changes,
+              [key]: newValue,
+            },
+          };
+        }
+        return update; // Keep existing updates for other indices
+      });
+  
+      // Add a new entry if it doesn't exist
+      if (!updatedUpdates[index]) {
+        updatedUpdates[index] = {
+          id: updatedData[index]._id,
+          changes: { [key]: newValue },
+        };
+      }
+  
+      return { ...prev, updates: updatedUpdates };
+    });
   };
 
   // Debounced function to handle saving changes
   const debouncedUpdate = _.debounce(async (update) => {
-    console.log("Updating device with ID:", update.id);
-    console.log("Changes:", update.changes);
     try {
-      setLoading(true)
+      setLoading(true);
 
       await axios.put(`/dataRoute/update-device/${update.id}`, update.changes);
 
       const response = await axios.get("/dataRoute/");
       setData(response.data);
 
-      setLoading(false)
+      setLoading(false);
       alert("Saved successfully!");
     } catch (error) {
       console.error("Failed to update device:", error);
@@ -129,33 +145,22 @@ const Table = () => {
   const saveChanges = async () => {
     try {
       if (confirm("Are you sure you want to save this?")) {
-
         const validUpdates = pendingChanges.updates.filter(
           (update) => Object.keys(update.changes).length > 0
         );
-
-        console.log("Valid updates:", validUpdates);
-
-        // Save updated devices with debounced function
-        await Promise.all(
-          validUpdates.map((update) => debouncedUpdate(update))
-        );
-
+  
+        await Promise.all(validUpdates.map((update) => debouncedUpdate(update)));
+  
         // Save new devices
         await Promise.all(
-          pendingChanges.additions.map((row) => {
-            console.log("Adding new device:", row);
-            return axios.post("/dataRoute/add-device", row);
-          })
+          pendingChanges.additions.map((row) =>
+            axios.post("/dataRoute/add-device", row)
+          )
         );
-
-        // Refresh data
-
+  
         // Clear pending changes
         setPendingChanges({ updates: [], additions: [] });
-        // Optional: Provide feedback to user
         console.log("Changes saved and data refreshed.");
-        
       } else {
         alert("You didn't save it!");
       }
