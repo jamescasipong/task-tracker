@@ -7,7 +7,7 @@ import SignIn from "./components/SignIn";
 import Table from "./components/Table";
 import "./index.css";
 
-let isLocal = false;
+let isLocal = true;
 axios.defaults.baseURL = isLocal ? "http://localhost:3002/api":"https://tasktracker-server.vercel.app/api";
 axios.defaults.withCredentials = true;
 
