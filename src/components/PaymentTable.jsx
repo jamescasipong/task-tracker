@@ -333,7 +333,7 @@ const PaymentTable = () => {
             value={newTableName}
             onChange={(e) => setNewTableName(e.target.value)}
             placeholder="Enter new table name"
-            className={`border p-2 mr-2  ${
+            className={`border p-2 mr-2 w-[250px]  ${
               darkMode
                 ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
                 : "text-black"

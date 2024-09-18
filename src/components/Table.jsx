@@ -129,7 +129,7 @@ const debouncedUpdate = _.debounce(async (update) => {
 
 const saveChanges = async () => {
   try {
-    // Filter out empty changes before making requests
+    if(confirm("Are you sure you want to save this?")){
     const validUpdates = pendingChanges.updates.filter(
       update => Object.keys(update.changes).length > 0
     );
@@ -153,8 +153,15 @@ const saveChanges = async () => {
     // Clear pending changes
     setPendingChanges({ updates: [], additions: [] });
 
+
     // Optional: Provide feedback to user
     console.log("Changes saved and data refreshed.");
+    alert("Saved successfully!")
+  }
+
+  else {
+    alert("You didn't save it!")
+  }
 
   } catch (error) {
     console.error("Failed to save changes:", error);
