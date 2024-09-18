@@ -288,10 +288,20 @@ const PaymentTable = () => {
 
   const saveData = async () => {
     try {
+
+      if (confirm("Are you sure you want to save this?")){
       console.log("Saving the following data:", tables);
+      
+      setLoading(true);
       const response = await axios.post("/payments/save", { tables });
 
-      alert(response.data.message);
+      setLoading(false);
+      alert(response.data.message)
+    }
+      else {
+      alert("You didn't save it!");
+      }
+    
     } catch (error) {
       console.error("Error saving data:", error);
     }
