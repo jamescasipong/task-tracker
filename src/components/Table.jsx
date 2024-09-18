@@ -91,7 +91,7 @@ const Table = () => {
 
 
   const handleInputChange = (index, key, event) => {
-    const updatedData = [...data];
+    const updatedData = [...sortedData];
     const newValue = event.target.value;
   
     // Update data
@@ -355,13 +355,13 @@ const Table = () => {
   return (
     <div className="overflow-x-auto p-4">
       <div className="mb-4 flex items-center">
-        {/*<input
+        <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearchChange}
           className="border border-gray-300 p-2 mr-4 w-[700px]"
-        />*/}
+        />
         <select
           value={selectedBrand}
           onChange={handleBrandFilterChange}
