@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 
-function SignIn({ onSignIn }) {
+const SignIn = ({ onSignIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);

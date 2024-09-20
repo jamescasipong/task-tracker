@@ -1,6 +1,7 @@
-import React from "react";
 import { FaSignOutAlt } from "react-icons/fa"; // Import the logout icon
 import { MdOutlineIntegrationInstructions } from "react-icons/md";
+
+
 
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   return (

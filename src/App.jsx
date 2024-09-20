@@ -1,14 +1,14 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import LoadingSignIn from "./components/LoadingSignIn";
-import Navbar from "./components/Navbar";
-import PaymentTable from "./components/PaymentTable";
-import SignIn from "./components/SignIn";
-import Table from "./components/Table";
+import { useEffect, useState } from "react";
+import Navbar from "./components/common/Navbar";
+import SignIn from "./components/forms/SignIn";
+import LoadingSignIn from "./components/loading/LoadingSignIn";
+import PaymentTable from "./components/tables/PaymentTable";
+import Table from "./components/tables/Table";
 import "./index.css";
 
 let isLocal = false;
-axios.defaults.baseURL = isLocal ? "http://localhost:3002/api":"https://tasktracker-server.vercel.app/api";
+axios.defaults.baseURL = isLocal ? "http://localhost:3002/api":"https://tasktracker-server.vercel.app/api/";
 axios.defaults.withCredentials = true;
 
 function App() {
@@ -40,7 +40,6 @@ function App() {
       setState("");
     }, 1000); // Simulate loading time
   };
-
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to logout?")) {
@@ -74,7 +73,7 @@ function App() {
             onLogout={handleLogout}
           />
           <div className="bg-primary flex justify-center items-start">
-            <div className="sm:w-[1700px]">
+            <div className="">
               {currentView === "table" && <Table />}
               {/*currentView === 'excelToJson' && <ExcelToJson />*/}
               {currentView === "paymentTable" && <PaymentTable />}

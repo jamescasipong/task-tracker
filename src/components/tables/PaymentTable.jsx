@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import { MdCancelPresentation, MdFileDownload } from "react-icons/md";
 import XLSX from "xlsx-js-style"; // Import xlsx
-import LoadingTable from "./LoadingTable";
+import LoadingTable from "../loading/LoadingTable";
 
 const PaymentTable = () => {
   const [tables, setTables] = useState([]);
@@ -155,24 +155,28 @@ const PaymentTable = () => {
   const addRow = (tableIndex) => {
     let newYear;
 
-    if (tables[tableIndex].rows.length === 0) {
-      newYear = 2024;
+    if (confirm("Add specific year or no?")) {
+      newYear = Number(prompt("Please enter a year:", ""));
     } else {
-      const lastYear = parseInt(
-        tables[tableIndex].rows[
-          tables[tableIndex].rows.length - 1
-        ].months[0].split(" ")[1],
-        10
+      if (tables[tableIndex].rows.length === 0) {
+        newYear = 2024;
+      } else {
+        const lastYear = parseInt(
+          tables[tableIndex].rows[
+            tables[tableIndex].rows.length - 1
+          ].months[0].split(" ")[1],
+          10
+        );
+        newYear = lastYear + 1;
+      }
+
+      const existingYearRow = tables[tableIndex].rows.find((row) =>
+        row.months[0].includes(newYear.toString())
       );
-      newYear = lastYear + 1;
-    }
 
-    const existingYearRow = tables[tableIndex].rows.find((row) =>
-      row.months[0].includes(newYear.toString())
-    );
-
-    if (existingYearRow) {
-      return;
+      if (existingYearRow) {
+        return;
+      }
     }
 
     const newMonths = [

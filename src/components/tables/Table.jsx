@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
-import LoadingTable from "./LoadingTable";
+import LoadingTable from "../loading/LoadingTable";
 
 const Table = () => {
   const [data, setData] = useState([]);
@@ -90,7 +90,7 @@ const Table = () => {
   });
 
   const handleInputChange = (index, key, event) => {
-    const updatedData = [...sortedData];
+    const updatedData = [...sortedData]; // create an instance of sortedData
     const newValue = event.target.value;
 
     // Update data
@@ -227,6 +227,7 @@ const Table = () => {
   }, [data, searchTerm, selectedBrand]);
 
   const sortedData = React.useMemo(() => {
+
     let sortableData = [...filteredData];
     if (sortConfig !== null) {
       sortableData.sort((a, b) => {
@@ -246,6 +247,8 @@ const Table = () => {
         return 0;
       });
     }
+
+    console.log(sortableData)
     return sortableData;
   }, [filteredData, sortConfig]);
 

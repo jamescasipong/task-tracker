@@ -1,9 +1,8 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import TaskTracker from './TaskTracker'
-import Table from './Table';
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import Table from '../components/tables/Table';
 
-import {james} from '../assets';
+import { james } from '../assets';
 
 const user = {
   name: 'Tom Cook',
