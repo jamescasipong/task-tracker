@@ -30,7 +30,7 @@ const Table = () => {
 
   const deleteRows = async () => {
     
-
+    
     let number;
 
     if (data == 0) {
