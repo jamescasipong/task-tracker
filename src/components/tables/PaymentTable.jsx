@@ -280,6 +280,8 @@ const PaymentTable = () => {
     };
   };
 
+
+
   const renameTable = (tableIndex) => {
     if (editedTableName.trim()) {
       const updatedTables = [...tables];
@@ -291,6 +293,7 @@ const PaymentTable = () => {
       alert("Table name cannot be empty.");
     }
   };
+
 
   const saveData = async () => {
     try {
@@ -310,9 +313,10 @@ const PaymentTable = () => {
     }
   };
 
+
   return (
     <div
-      className={`min-h-screen p-4 ${
+      className={`w-[1700px] min-h-screen p-4 ${
         darkMode ? "dark bg-gray-800 text-white" : "light bg-white text-black"
       }`}
     >

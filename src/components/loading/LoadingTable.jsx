@@ -1,9 +1,8 @@
-import React from "react";
 
 const LoadingTable = ({ darkMode }) => {
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
+    <div className="w-full overflow-x-auto">
+      <table className="w-full divide-y divide-gray-200">
         <thead className="dark:border-gray-600">
           <tr>
             <th

@@ -11,7 +11,6 @@ const Table = () => {
   const [loading, setLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
-
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [newRows, setNewRows] = useState([
     {
@@ -361,6 +360,7 @@ const Table = () => {
   if (loading) {
     return <LoadingTable />;
   }
+
 
   return (
     <div className="overflow-x-auto p-4">
