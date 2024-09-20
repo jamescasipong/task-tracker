@@ -80,7 +80,7 @@ function App() {
 
 
 
-  return ip == "124.83.41.231" ? (
+  return ip == "124.83.41.231"|| ip == "152.32.99.73" ? (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
         <LoadingSignIn message={state}></LoadingSignIn>
@@ -100,9 +100,7 @@ function App() {
       ) : (
         <>
           <SignIn onSignIn={handleSignIn} />
-          
         </>
-        
       )}
     </div>
   ): (<div class="grid h-screen place-content-center bg-white px-4">
