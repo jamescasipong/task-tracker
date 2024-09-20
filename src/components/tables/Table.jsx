@@ -29,9 +29,7 @@ const Table = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const deleteRows = async () => {
-    const response = await axios.get("/dataRoute/");
-
-    let fetchedData = response.data;
+    
 
     let number;
 
@@ -39,7 +37,7 @@ const Table = () => {
       alert("Empty Row. Please Insert A Row");
       return;
     }
-    let fetchedLength = fetchedData.length;
+    let fetchedLength = data.length;
 
     console.log(fetchedData[fetchedLength-1])
     if(fetchedLength < 10){
