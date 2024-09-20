@@ -76,7 +76,7 @@ function App() {
     };
 
     fetchIp();
-}, []);
+}, [ip]);
 
 
 
