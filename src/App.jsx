@@ -65,7 +65,7 @@ function App() {
 
     useEffect(() => {
         const fetchIp = async () => {
-            const response = await axios.get('/ip');
+            const response = await axios.get('/dataRoute/ip');
             const data = await response.json();
             setIp(data.ip);
         };
