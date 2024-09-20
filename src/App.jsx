@@ -65,7 +65,7 @@ function App() {
 
     useEffect(() => {
         const fetchIp = async () => {
-            const response = await fetch('http://localhost:5000/api/ip', {
+            const response = await fetch('/api/ip', {
                 credentials: 'include',
             });
             const data = await response.json();
