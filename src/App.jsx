@@ -62,7 +62,7 @@ function App() {
   };
 
   const [ip, setIp] = useState('');
-  const [loading404, setLoading404] = useState(false);
+  const [loading404, setLoading404] = useState(true);
 
   useEffect(() => {
     const fetchIp = async () => {
