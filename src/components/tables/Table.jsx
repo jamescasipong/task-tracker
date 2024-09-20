@@ -33,27 +33,27 @@ const Table = () => {
 
     let number;
 
-    if (fetchedData == 0) {
+    if (data == 0) {
       alert("Empty Row. Please Insert A Row");
       return;
     }
     let fetchedLength = data.length;
 
-    console.log(fetchedData[fetchedLength-1])
+    console.log(data[fetchedLength-1])
     if(fetchedLength < 10){
       number = window.prompt(
         `Write No. that you want to delete starting first to last, eg. ${
-          fetchedData[0].No + "-" + fetchedData[fetchedLength - 1].No
+          data[0].No + "-" + data[fetchedLength - 1].No
         }`,
-        `${fetchedData[0].No + "-" + fetchedData[fetchedLength - 1].No}`
+        `${data[0].No + "-" + data[fetchedLength - 1].No}`
       );
     }
     else {
       number = window.prompt(
         `Write No. that you want to delete starting first to last, eg. ${
-          fetchedData[0].No + "-" + fetchedData[10].No
+          data[0].No + "-" + data[10].No
         }`,
-        `${fetchedData[0].No + "-" + fetchedData[10].No}`
+        `${data[0].No + "-" + data[10].No}`
       );
     }
 
