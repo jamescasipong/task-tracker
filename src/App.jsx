@@ -65,9 +65,7 @@ function App() {
 
     useEffect(() => {
         const fetchIp = async () => {
-            const response = await fetch('https://tasktracker-server.vercel.app/api/ip', {
-                credentials: 'include',
-            });
+            const response = await axios.get('/api/ip');
             const data = await response.json();
             setIp(data.ip);
         };
