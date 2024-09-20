@@ -63,14 +63,14 @@ function App() {
 
   const [ip, setIp] = useState('');
 
-useEffect(() => {
+  useEffect(() => {
     const fetchIp = async () => {
         try {
             const response = await axios.get('/dataRoute/ip');
             // No need to call .json() here; just access the data directly
             setIp(response.data.ip);
 
-            console.log("ip", response.data.ip)
+            console.log("ip", typeof response.data.ip)
         } catch (error) {
             console.error('Error fetching IP:', error);
         }
