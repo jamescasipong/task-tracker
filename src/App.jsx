@@ -61,6 +61,23 @@ function App() {
     }, 500); // Simulate view change time
   };
 
+  const [ip, setIp] = useState('');
+
+    useEffect(() => {
+        const fetchIp = async () => {
+            const response = await fetch('http://localhost:5000/api/ip', {
+                credentials: 'include',
+            });
+            const data = await response.json();
+            setIp(data.ip);
+        };
+
+        fetchIp();
+    }, []);
+
+
+  console.log(ip)
+
   return (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
@@ -81,7 +98,9 @@ function App() {
       ) : (
         <>
           <SignIn onSignIn={handleSignIn} />
+          
         </>
+        
       )}
     </div>
   );
