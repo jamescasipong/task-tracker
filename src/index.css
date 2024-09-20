@@ -18,6 +18,26 @@
   scroll-behavior: smooth;
 }
 
+.transition-transform {
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+}
+
+
+.translate-y-0 {
+  transform: translateY(0);
+  inset: 0;
+  display: flex;
+  opacity: 1;
+}
+
+.translate-y-100 {
+  transform: translateY(-100%);
+  display: flex;
+  inset: 0;
+  opacity: 0;
+}
+
+
 .text-gradient {
   background: radial-gradient(
     64.18% 64.18% at 71.16% 35.69%,

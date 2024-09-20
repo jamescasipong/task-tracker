@@ -28,6 +28,67 @@ const Table = () => {
   ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const deleteRows = async () => {
+    const response = await axios.get("/dataRoute/");
+
+    let fetchedData = response.data;
+
+    let number;
+
+    if (fetchedData == 0) {
+      alert("Empty Row. Please Insert A Row");
+      return;
+    }
+    let fetchedLength = fetchedData.length;
+
+    console.log(fetchedData[fetchedLength-1])
+    if(fetchedLength < 10){
+      number = window.prompt(
+        `Write No. that you want to delete starting first to last, eg. ${
+          fetchedData[0].No + "-" + fetchedData[fetchedLength - 1].No
+        }`,
+        `${fetchedData[0].No + "-" + fetchedData[fetchedLength - 1].No}`
+      );
+    }
+    else {
+      number = window.prompt(
+        `Write No. that you want to delete starting first to last, eg. ${
+          fetchedData[0].No + "-" + fetchedData[10].No
+        }`,
+        `${fetchedData[0].No + "-" + fetchedData[10].No}`
+      );
+    }
+
+    if (number != null) {
+      const arrayOfObject = [];
+
+      // Split the string by the hyphen and trim any whitespace
+      const numbers = number.split("-").map((num) => num.trim());
+
+      // Convert the string numbers to integers and store them
+      const startNum = Number(numbers[0]);
+      const endNum = Number(numbers[1]);
+
+      for (let i = startNum; i <= endNum; i++) {
+        arrayOfObject.push({ No: i });
+      }
+
+      console.log("delete", arrayOfObject);
+
+      try {
+        await axios.delete("/dataRoute/delete", { data: arrayOfObject });
+        console.log("Deletion successful");
+
+        const response = await axios.get("/dataRoute/");
+        setData(response.data);
+      } catch (error) {
+        console.error("Error during deletion:", error);
+      }
+    }
+  };
+
+  // Example usage
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -169,8 +230,11 @@ const Table = () => {
     }
   };
 
+  const [addLoading, setAddLoading] = useState(false);
+
   const addNewRows = async () => {
     try {
+      setAddLoading(true);
       const responses = await Promise.all(
         newRows.map((row) => axios.post("/dataRoute/add-device", row))
       );
@@ -190,6 +254,7 @@ const Table = () => {
           Department_2: "",
         },
       ]);
+      setAddLoading(false);
       closeModal(); // Close modal after adding the rows
     } catch (error) {
       console.error("Failed to add new devices:", error);
@@ -226,7 +291,6 @@ const Table = () => {
   }, [data, searchTerm, selectedBrand]);
 
   const sortedData = React.useMemo(() => {
-
     let sortableData = [...filteredData];
     if (sortConfig !== null) {
       sortableData.sort((a, b) => {
@@ -247,7 +311,7 @@ const Table = () => {
       });
     }
 
-    console.log(sortableData)
+    console.log(sortableData);
     return sortableData;
   }, [filteredData, sortConfig]);
 
@@ -361,10 +425,9 @@ const Table = () => {
     return <LoadingTable />;
   }
 
-
   return (
-    <div className="overflow-x-auto p-4">
-      <div className="mb-4 flex items-center">
+    <div className={`overflow-x-auto p-4 `}>
+      <div className={`mb-4 flex items-center `}>
         <input
           type="text"
           placeholder="Search..."
@@ -397,92 +460,114 @@ const Table = () => {
           Export
         </button>
 
-        {pendingChanges.updates.length > 0 ||
+        <button
+          onClick={saveChanges}
+          className="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded ml-4"
+        >
+          Save Changes
+        </button>
+
+        <button
+          onClick={deleteRows}
+          className="bg-red-400 hover:bg-red-500 transition-all duration-300 text-white px-4 py-2 rounded ml-4"
+        >
+          Delete Multiple Rows
+        </button>
+
+        {/*pendingChanges.updates.length > 0 ||
         pendingChanges.additions.length > 0 ? (
           <button
             onClick={saveChanges}
-            className="bg-yellow-500 text-white px-4 py-2 rounded ml-4"
+            className="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded ml-4"
           >
             Save Changes
           </button>
-        ) : null}
+        ) : null*/}
       </div>
 
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
-          <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
-            <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
-            {newRows.map((row, rowIndex) => (
-              <div key={rowIndex} className="mb-4">
-                <h3 className="text-md font-medium mb-2">
-                  Device {rowIndex + 1}
-                </h3>
-                <div className="flex flex-wrap gap-4">
-                  {Object.keys(row).map((key) => (
-                    <div key={key} className="flex-1">
-                      <label className="block text-sm font-medium text-gray-700">
-                        {key}
-                      </label>
-                      <input
-                        type="text"
-                        value={row[key]}
-                        onChange={(e) =>
-                          handleRowInputChange(rowIndex, key, e.target.value)
-                        }
-                        className="border border-gray-300 p-2 mt-1 w-full"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={() => deleteRow(rowIndex)}
-                  className="bg-red-500 text-white px-4 py-1 rounded mt-2"
-                >
-                  Delete Row
-                </button>
+      <div
+        className={`transition-transform ${
+          isModalOpen ? "translate-y-0 " : "translate-y-100"
+        }  items-centers	bg-gray-800 bg-opacity-50 z-0 w-full  h-full fixed  justify-center  items-center`}
+      >
+        <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
+          <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
+          {newRows.map((row, rowIndex) => (
+            <div key={rowIndex} className="mb-4">
+              <h3 className="text-md font-medium mb-2">
+                Device {rowIndex + 1}
+              </h3>
+              <div className="flex flex-wrap gap-4">
+                {Object.keys(row).map((key) => (
+                  <div key={key} className="flex-1">
+                    <label className="block text-sm font-medium text-gray-700">
+                      {key}
+                    </label>
+                    <input
+                      type="text"
+                      value={row[key]}
+                      onChange={(e) =>
+                        handleRowInputChange(rowIndex, key, e.target.value)
+                      }
+                      className="border border-gray-300 p-2 mt-1 w-full"
+                    />
+                  </div>
+                ))}
               </div>
-            ))}
-            <button
-              onClick={() =>
-                setNewRows([
-                  ...newRows,
-                  {
-                    No:
-                      Math.max(
-                        ...newRows.map((item) => Number(item.No) || 0),
-                        0
-                      ) + 1,
-                    SerialNumber: "",
-                    Brand: "",
-                    Model: "",
-                    Owner: "",
-                    Department: "",
-                    Owner_1: "",
-                    Department_1: "",
-                    Owner_2: "",
-                    Department_2: "",
-                  },
-                ])
-              }
-              className="bg-blue-500 text-white px-4 py-2 rounded mt-4"
-            >
-              Add Another Row
-            </button>
-            <button
-              onClick={addNewRows}
-              className="bg-blue-500 text-white px-4 py-2 rounded mt-4 ml-2"
-            >
-              Add Rows
-            </button>
-            <button
-              onClick={closeModal}
-              className="bg-gray-500 text-white px-4 py-2 rounded mt-4 ml-2"
-            >
-              Cancel
-            </button>
-          </div>
+              <button
+                onClick={() => deleteRow(rowIndex)}
+                className="bg-red-500 text-white px-4 py-1 rounded mt-2"
+              >
+                Delete Row
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={() =>
+              setNewRows([
+                ...newRows,
+                {
+                  No:
+                    Math.max(
+                      ...newRows.map((item) => Number(item.No) || 0),
+                      0
+                    ) + 1,
+                  SerialNumber: "",
+                  Brand: "",
+                  Model: "",
+                  Owner: "",
+                  Department: "",
+                  Owner_1: "",
+                  Department_1: "",
+                  Owner_2: "",
+                  Department_2: "",
+                },
+              ])
+            }
+            className="bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-2 rounded mt-4"
+          >
+            Add Another Row
+          </button>
+          <button
+            onClick={addNewRows}
+            className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
+          >
+            {addLoading ? (
+              <div className="flex gap-2">
+                <div>Loading...</div>
+              </div>
+            ) : (
+              <div>Add Rows</div>
+            )}
+          </button>
+          <button
+            onClick={closeModal}
+            className="bg-gray-500 hover:bg-gray-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
+          >
+            Cancel
+          </button>
         </div>
-      )}
+      </div>
 
       <table className={`min-w-full bg-white border border-gray-300 `}>
         <thead>

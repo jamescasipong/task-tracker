@@ -275,7 +275,6 @@ const PaymentTable = () => {
     return {
       maxHeight: isTableVisible[tableIndex] ? "500px" : "0", // Adjust maxHeight as needed
       opacity: isTableVisible[tableIndex] ? 1 : 0,
-
       transition: "max-height 0.5s ease-in-out, opacity 0.5s ease-in-out",
     };
   };
