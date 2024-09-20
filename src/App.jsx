@@ -63,18 +63,22 @@ function App() {
 
   const [ip, setIp] = useState('');
 
-    useEffect(() => {
-        const fetchIp = async () => {
+useEffect(() => {
+    const fetchIp = async () => {
+        try {
             const response = await axios.get('/dataRoute/ip');
-            const data = await response.json();
-            setIp(data.ip);
-        };
+            // No need to call .json() here; just access the data directly
+            setIp(response.data.ip);
+        } catch (error) {
+            console.error('Error fetching IP:', error);
+        }
+    };
 
-        fetchIp();
-    }, []);
+    fetchIp();
+}, []);
 
+console.log(ip);
 
-  console.log(ip)
 
   return (
     <div className="bg-primary w-full overflow-hidden">
