@@ -65,7 +65,7 @@ function App() {
 
     useEffect(() => {
         const fetchIp = async () => {
-            const response = await axios.get('/api/ip');
+            const response = await axios.get('/ip');
             const data = await response.json();
             setIp(data.ip);
         };
