@@ -61,7 +61,7 @@ function App() {
   const handleViewChange = (view) => {
     setTimeout(() => {
       setCurrentView(view);
-    }, 500); // Simulate view change time
+    }); // Simulate view change time
   };
 
   const [ip, setIp] = useState("");
