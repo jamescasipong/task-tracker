@@ -419,12 +419,27 @@ const Table = () => {
     };
   }, [saveChanges]);
 
+  const styleInput = (key) => {
+    const style = {};
+    switch(key){
+      case "No":
+        style["width"] = "50px";
+        style["textAlign"] = "center";
+
+        break;
+      default:
+        break;
+    }
+
+    return style;
+  }
+
   if (loading) {
-    return <LoadingTable />;
+    return <div className="mt-5 w-[1700px]"><LoadingTable /> </div>;
   }
 
   return (
-    <div className={`overflow-x-auto p-4 `}>
+    <div className={`w-[1700px] overflow-x-auto p-4 `}>
       <div className={`mb-4 flex items-center `}>
         <input
           type="text"
@@ -615,17 +630,18 @@ const Table = () => {
               ].map((key) => (
                 <td
                   key={key}
-                  className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700"
+                  className="py-1 border-b border-gray-300 text-sm text-gray-700"
                 >
                   <input
                     type="text"
                     value={device[key] || ""}
                     onChange={(e) => handleInputChange(index, key, e)}
-                    className={`w-full ${key}`}
+                    style={styleInput(key)}
+                    className={`w-full ${key} rounded p-2`}
                   />
                 </td>
               ))}
-              <td className="px-6 py-4 border-b border-gray-300 text-sm text-gray-700">
+              <td className="px-6  border-b border-gray-300 text-sm text-gray-700">
                 <button
                   onClick={() => deleteDevice(device._id)}
                   className="bg-red-500 text-white px-4 py-1 rounded"

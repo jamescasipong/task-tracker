@@ -189,3 +189,23 @@
   background: rgba(255, 255, 255, 0.6);
   filter: blur(750px);
 }
+
+
+/* styles.css */
+
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: lightblue; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(150, 206, 224); /* Color on hover */
+}
