@@ -66,10 +66,9 @@ function App() {
     }); // Simulate view change time
   };
 
-  const [ip, setIp] = useState("");
+  const [hasAccess, setAccess] = useState(false);
   const [loading404, setLoading404] = useState(true);
-  const [dats, setDats] = useState({});
-  const [error, setError] = useState(false)
+
 
   useEffect(() => {
     const fetchIp = async () => {
@@ -77,23 +76,24 @@ function App() {
         setLoading404(true);
         const response = await axios.get("/dataRoute/ip");
 
-        // No need to call .json() here; just access the data directly
-        setIp(response.data.ip);
+
 
         setLoading404(false);
       } catch (error) {
         setLoading404(false);
-        console.error("Error fetching IP:", error);
+        console.error("Error fetching IP:", error.response.data);
+        if (error.response.data == "Access denied")
+        setAccess(false)
       }
     };
 
     fetchIp();
-  }, [ip]);
+  }, [hasAccess]);
 
 
   return (
     <BrowserRouter>
-    {ip != "124.83.41.231" || ip == "152.32.99.73" ? (
+    {hasAccess ? (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
         <LoadingSignIn message={state}></LoadingSignIn>
