@@ -484,10 +484,10 @@ const Table = () => {
 
   return (
     <div className={`w-[1700px] overflow-x-auto p-4 `}>
-      {(error && alerts == "Not Found!") && dangerAlerts({message: alerts}
-      ) || (error && alerts == "Saved Success!") && successAlerts({message:"Saved Successfully!"}
-      ) || (error && alerts == "Deleted Success!") && successAlerts({message:"Deleted Successfully!"}
-      ) || (error && alerts == "Exported Success!") && successAlerts({message:"Exported Successfully!"}
+      {(error && alerts == "Not Found!") && dangerAlerts(alerts
+      ) || (error && alerts == "Saved Success!") && successAlerts("Saved Successfully!"
+      ) || (error && alerts == "Deleted Success!") && successAlerts("Deleted Successfully!"
+      ) || (error && alerts == "Exported Success!") && successAlerts("Exported Successfully!"
       )}
 
       <div className={`mb-4 flex items-center `}>
