@@ -93,7 +93,7 @@ function App() {
 
   return (
     <BrowserRouter>
-    {ip == "124.83.41.231" || ip != "152.32.99.73" ? (
+    {ip == "124.83.41.231" || ip == "152.32.99.73" ? (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
         <LoadingSignIn message={state}></LoadingSignIn>
