@@ -83,8 +83,9 @@ function App() {
       } catch (error) {
         setLoading404(false);
         console.error("Error fetching IP:", error.response.data);
-        if (error.response.data == "Access denied")
+        if (error.response.data == "Access denied"){
         setAccess(false)
+        }
       }
     };
 
