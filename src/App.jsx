@@ -79,6 +79,7 @@ function App() {
 
 
         setLoading404(false);
+        setAccess(true)
       } catch (error) {
         setLoading404(false);
         console.error("Error fetching IP:", error.response.data);
