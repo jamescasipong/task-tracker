@@ -208,7 +208,10 @@ const Table = () => {
 
       setLoading(false);
       
+      setAlerts("Saved Success!")
+        setError(true);
 
+        setTimeout(() => setError(false), 3000);
       
 
       
@@ -240,10 +243,7 @@ const Table = () => {
         // Clear pending changes
         setPendingChanges({ updates: [], additions: [] });
 
-        setAlerts("Saved Success!")
-        setError(true);
-
-        setTimeout(() => setError(false), 3000);
+        
 
 
         console.log("Changes saved and data refreshed.");
