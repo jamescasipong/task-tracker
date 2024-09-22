@@ -295,7 +295,7 @@ const Table = () => {
 
         setData(data.filter((device) => device._id !== id));
 
-        setAlerts("Saved Success!")
+        setAlerts("Deleted Success!")
         setError(true);
 
         setTimeout(() => setError(false), 3000);
