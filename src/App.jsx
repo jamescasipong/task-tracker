@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import SignIn from "./components/forms/SignIn";
 import LoadingSignIn from "./components/loading/LoadingSignIn";
@@ -7,6 +8,7 @@ import NotFound from "./components/NotFound";
 import PaymentTable from "./components/tables/PaymentTable";
 import Table from "./components/tables/Table";
 import "./index.css";
+
 
 let isLocal = false;
 axios.defaults.baseURL = isLocal
@@ -67,6 +69,7 @@ function App() {
   const [ip, setIp] = useState("");
   const [loading404, setLoading404] = useState(true);
   const [dats, setDats] = useState({});
+  const [error, setError] = useState(false)
 
   useEffect(() => {
     const fetchIp = async () => {
@@ -87,7 +90,10 @@ function App() {
     fetchIp();
   }, [ip]);
 
-  return ip == "124.83.41.231" || ip == "152.32.99.73" ? (
+
+  return (
+    <BrowserRouter>
+    {ip == "124.83.41.231" || ip != "152.32.99.73" ? (
     <div className="bg-primary w-full overflow-hidden">
       {loading ? (
         <LoadingSignIn message={state}></LoadingSignIn>
@@ -114,7 +120,11 @@ function App() {
     <NotFound></NotFound>
   ) : (
     <LoadingSignIn message="processing"></LoadingSignIn>
-  );
+  )
+};
+
+  </BrowserRouter>
+);
 }
 
 export default App;

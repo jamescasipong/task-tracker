@@ -5,13 +5,15 @@ import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
 import LoadingTable from "../loading/LoadingTable";
-
+import { dangerAlerts, successAlerts } from "../modals/alerts";
 const Table = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" });
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedBrand, setSelectedBrand] = useState("All");
+  const [error, setError] = useState(false);
+  const [alerts, setAlerts] = useState("");
   const [newRows, setNewRows] = useState([
     {
       No: "",
@@ -29,8 +31,6 @@ const Table = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const deleteRows = async () => {
-    
-    
     let number;
 
     if (data == 0) {
@@ -39,16 +39,15 @@ const Table = () => {
     }
     let fetchedLength = data.length;
 
-    console.log(data[fetchedLength-1])
-    if(fetchedLength < 10){
+    console.log(data[fetchedLength - 1]);
+    if (fetchedLength < 10) {
       number = window.prompt(
         `Write No. that you want to delete starting first to last, eg. ${
           data[0].No + "-" + data[fetchedLength - 1].No
         }`,
         `${data[0].No + "-" + data[fetchedLength - 1].No}`
       );
-    }
-    else {
+    } else {
       number = window.prompt(
         `Write No. that you want to delete starting first to last, eg. ${
           data[0].No + "-" + data[10].No
@@ -75,12 +74,27 @@ const Table = () => {
 
       try {
         await axios.delete("/dataRoute/delete", { data: arrayOfObject });
-        console.log("Deletion successful");
+        
 
         const response = await axios.get("/dataRoute/");
         setData(response.data);
+
+        setAlerts("Deleted Success!")
+        setError(true);
+
+        setTimeout(() => setError(false), 3000);
+
       } catch (error) {
-        console.error("Error during deletion:", error);
+        setError(true);
+        setTimeout(() => setError(false), 3000);
+        if (error.response.status == 404) {
+          console.error(error.response.data.message);
+          setAlerts("Not Found!")
+          // Optionally, show a message to the user or handle it accordingly
+        } else {
+          console.error("An error occurred:", error);
+          // H
+        }
       }
     }
   };
@@ -186,14 +200,18 @@ const Table = () => {
   const debouncedUpdate = _.debounce(async (update) => {
     try {
       setLoading(true);
-
+      
       await axios.put(`/dataRoute/update-device/${update.id}`, update.changes);
 
       const response = await axios.get("/dataRoute/");
       setData(response.data);
 
       setLoading(false);
-      alert("Saved successfully!");
+      
+
+      
+
+      
     } catch (error) {
       console.error("Failed to update device:", error);
     }
@@ -202,6 +220,8 @@ const Table = () => {
   const saveChanges = async () => {
     try {
       if (confirm("Are you sure you want to save this?")) {
+
+        
         const validUpdates = pendingChanges.updates.filter(
           (update) => Object.keys(update.changes).length > 0
         );
@@ -219,7 +239,16 @@ const Table = () => {
 
         // Clear pending changes
         setPendingChanges({ updates: [], additions: [] });
+
+        setAlerts("Saved Success!")
+        setError(true);
+
+        setTimeout(() => setError(false), 3000);
+
+
         console.log("Changes saved and data refreshed.");
+
+        
       } else {
         alert("You didn't save it!");
       }
@@ -263,7 +292,13 @@ const Table = () => {
     try {
       if (confirm("Are you sure you want to delete this?")) {
         await axios.delete(`/dataRoute/delete-device/${id}`);
+
         setData(data.filter((device) => device._id !== id));
+
+        setAlerts("Saved Success!")
+        setError(true);
+
+        setTimeout(() => setError(false), 3000);
       }
     } catch (error) {
       console.error("Failed to delete device:", error);
@@ -398,6 +433,11 @@ const Table = () => {
 
         // Export the workbook to a file
         XLSX.writeFile(workbook, "Device Inventory.xlsx");
+
+        setAlerts("Exported Success!")
+        setError(true);
+
+        setTimeout(() => setError(false), 3000);
       }
     } catch (error) {
       console.error("Error exporting data:", error.message);
@@ -421,7 +461,7 @@ const Table = () => {
 
   const styleInput = (key) => {
     const style = {};
-    switch(key){
+    switch (key) {
       case "No":
         style["width"] = "50px";
         style["textAlign"] = "center";
@@ -432,16 +472,26 @@ const Table = () => {
     }
 
     return style;
-  }
+  };
 
   if (loading) {
-    return <div className="mt-5 w-[1700px]"><LoadingTable /> </div>;
+    return (
+      <div className="mt-5 w-[1700px]">
+        <LoadingTable />{" "}
+      </div>
+    );
   }
 
   return (
     <div className={`w-[1700px] overflow-x-auto p-4 `}>
+      {(error && alerts == "Not Found!") && dangerAlerts({message: alerts}
+      ) || (error && alerts == "Saved Success!") && successAlerts({message:"Saved Successfully!"}
+      ) || (error && alerts == "Deleted Success!") && successAlerts({message:"Deleted Successfully!"}
+      ) || (error && alerts == "Exported Success!") && successAlerts({message:"Exported Successfully!"}
+      )}
+
       <div className={`mb-4 flex items-center `}>
-        <input
+        <input 
           type="text"
           placeholder="Search..."
           value={searchTerm}
@@ -457,6 +507,8 @@ const Table = () => {
           <option value="APPLE">APPLE</option>
           <option value="HP">HP</option>
           <option value="ACER">ACER</option>
+          <option value="ASUS">ASUS</option>
+          <option value="WINDOWS">WINDOWS</option>
         </select>
         <button
           onClick={openModal}
@@ -504,9 +556,12 @@ const Table = () => {
         }  items-centers	bg-gray-800 bg-opacity-50 z-0 w-full  h-full fixed  justify-center  items-center`}
       >
         <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
-          <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
+          <div className="flex">
+            <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
+          </div>
+
           {newRows.map((row, rowIndex) => (
-            <div key={rowIndex} className="mb-4">
+            <div key={rowIndex} className="mb-4bg-slate-100 p-5 rounded-md">
               <h3 className="text-md font-medium mb-2">
                 Device {rowIndex + 1}
               </h3>
@@ -522,7 +577,7 @@ const Table = () => {
                       onChange={(e) =>
                         handleRowInputChange(rowIndex, key, e.target.value)
                       }
-                      className="border border-gray-300 p-2 mt-1 w-full"
+                      className="border border-gray-300 p-2 mt-1 w-full rounded-md"
                     />
                   </div>
                 ))}
@@ -584,7 +639,7 @@ const Table = () => {
 
       <table className={`min-w-full bg-white border border-gray-300 `}>
         <thead>
-          <tr className="bg-gray-200">
+          <tr className="bg-gray-200 ">
             {[
               "No",
               "SerialNumber",
@@ -600,7 +655,7 @@ const Table = () => {
             ].map((header) => (
               <th
                 key={header}
-                className="px-6 py-3 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700 cursor-pointer"
+                className="px-2 py-5 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700 cursor-pointer"
                 onClick={() => handleSort(header)}
               >
                 {header}{" "}
