@@ -60,9 +60,7 @@ function App() {
   };
 
   const handleViewChange = (view) => {
-    setTimeout(() => {
       setCurrentView(view);
-    }); // Simulate view change time
   };
 
   const [hasAccess, setAccess] = useState(false);

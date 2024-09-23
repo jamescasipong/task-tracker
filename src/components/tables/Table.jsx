@@ -1,19 +1,19 @@
 import axios from "axios";
-import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
 import LoadingTable from "../loading/LoadingTable";
 import { dangerAlerts, successAlerts } from "../modals/alerts";
+
 const Table = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" });
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedBrand, setSelectedBrand] = useState("All");
-  const [error, setError] = useState(false);
-  const [alerts, setAlerts] = useState("");
+  const [data, setData] = useState([]); // Store the fetched data
+  const [loading, setLoading] = useState(true); // Loading state
+  const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" }); // Sorting configuration
+  const [searchTerm, setSearchTerm] = useState(""); // Search term
+  const [selectedBrand, setSelectedBrand] = useState("All"); // Selected brand filter
+  const [error, setError] = useState(false); // Error state
+  const [alerts, setAlerts] = useState(""); // Alert message
   const [newRows, setNewRows] = useState([
     {
       No: "",
@@ -27,28 +27,40 @@ const Table = () => {
       Owner_2: "",
       Department_2: "",
     },
-  ]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  ]); // New rows to add
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
+  const [pendingChanges, setPendingChanges] = useState({
+    updates: [],
+    additions: [],
+  }); // Pending changes
+  const [addLoading, setAddLoading] = useState(false); // Add loading state
 
+  // Delete multiple rows
   const deleteRows = async () => {
-    let number;
+    // Prompt the user to enter the range of rows to delete
+    let rowRange;
 
+    // Check if there is no data
     if (data == 0) {
       alert("Empty Row. Please Insert A Row");
       return;
     }
+
+    // Get the length of the fetched data
     let fetchedLength = data.length;
 
-    console.log(data[fetchedLength - 1]);
+    // Check if there are less than 10 rows
     if (fetchedLength < 10) {
-      number = window.prompt(
+      // If there are less than 10 rows, set the range to the last row
+      rowRange = window.prompt(
         `Write No. that you want to delete starting first to last, eg. ${
           data[0].No + "-" + data[fetchedLength - 1].No
         }`,
         `${data[0].No + "-" + data[fetchedLength - 1].No}`
       );
     } else {
-      number = window.prompt(
+      // If there are more than 10 rows, set the range to the first and tenth row
+      rowRange = window.prompt(
         `Write No. that you want to delete starting first to last, eg. ${
           data[0].No + "-" + data[10].No
         }`,
@@ -56,40 +68,50 @@ const Table = () => {
       );
     }
 
-    if (number != null) {
+    // If the user cancels the prompt, return early
+    if (rowRange != null) {
       const arrayOfObject = [];
 
       // Split the string by the hyphen and trim any whitespace
-      const numbers = number.split("-").map((num) => num.trim());
+      const numbers = rowRange.split("-").map((num) => num.trim());
 
       // Convert the string numbers to integers and store them
       const startNum = Number(numbers[0]);
       const endNum = Number(numbers[1]);
 
+      // Check if the start number is greater than the end number
       for (let i = startNum; i <= endNum; i++) {
-        arrayOfObject.push({ No: i });
+        arrayOfObject.push({ No: i }); // Push the numbers to the array
       }
 
+      // Log the array of objects to the console
       console.log("delete", arrayOfObject);
 
       try {
+        // Delete the rows
         await axios.delete("/dataRoute/delete", { data: arrayOfObject });
-        
 
+        // Fetch the data again
         const response = await axios.get("/dataRoute/");
+
+        // Set the data to the fetched data
         setData(response.data);
 
-        setAlerts("Deleted Success!")
+        // Set the alert message
+        setAlerts("Deleted Success!");
+
+        // Set the error state to true
         setError(true);
 
+        // Set the error state to false after 3 seconds
         setTimeout(() => setError(false), 3000);
-
       } catch (error) {
         setError(true);
         setTimeout(() => setError(false), 3000);
+
         if (error.response.status == 404) {
           console.error(error.response.data.message);
-          setAlerts("Not Found!")
+          setAlerts("Not Found!");
           // Optionally, show a message to the user or handle it accordingly
         } else {
           console.error("An error occurred:", error);
@@ -156,11 +178,6 @@ const Table = () => {
     }));
   };
 
-  const [pendingChanges, setPendingChanges] = useState({
-    updates: [],
-    additions: [],
-  });
-
   const handleInputChange = (index, key, event) => {
     const updatedData = [...sortedData]; // create an instance of sortedData
     const newValue = event.target.value;
@@ -197,34 +214,29 @@ const Table = () => {
   };
 
   // Debounced function to handle saving changes
-  const debouncedUpdate = _.debounce(async (update) => {
+  const debouncedUpdate = async (update) => {
     try {
       setLoading(true);
-      
+
       await axios.put(`/dataRoute/update-device/${update.id}`, update.changes);
 
       const response = await axios.get("/dataRoute/");
       setData(response.data);
 
       setLoading(false);
-      
-      setAlerts("Saved Success!")
-        setError(true);
 
-        setTimeout(() => setError(false), 3000);
-      
+      setAlerts("Saved Success!");
+      setError(true);
 
-      
+      setTimeout(() => setError(false), 3000);
     } catch (error) {
       console.error("Failed to update device:", error);
     }
-  }); // 500 ms delay before triggering the update
+  }; // 500 ms delay before triggering the update
 
   const saveChanges = async () => {
     try {
       if (confirm("Are you sure you want to save this?")) {
-
-        
         const validUpdates = pendingChanges.updates.filter(
           (update) => Object.keys(update.changes).length > 0
         );
@@ -243,12 +255,7 @@ const Table = () => {
         // Clear pending changes
         setPendingChanges({ updates: [], additions: [] });
 
-        
-
-
         console.log("Changes saved and data refreshed.");
-
-        
       } else {
         alert("You didn't save it!");
       }
@@ -256,8 +263,6 @@ const Table = () => {
       console.error("Failed to save changes:", error);
     }
   };
-
-  const [addLoading, setAddLoading] = useState(false);
 
   const addNewRows = async () => {
     try {
@@ -295,7 +300,7 @@ const Table = () => {
 
         setData(data.filter((device) => device._id !== id));
 
-        setAlerts("Deleted Success!")
+        setAlerts("Deleted Success!");
         setError(true);
 
         setTimeout(() => setError(false), 3000);
@@ -313,13 +318,20 @@ const Table = () => {
   const closeModal = () => setIsModalOpen(false);
 
   const filteredData = React.useMemo(() => {
-    return data.filter((item) => {
-      const searchMatch = Object.values(item).some((value) =>
-        value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    const matchesSearchTerm = (item) => {
+      const searchValue = searchTerm.toLowerCase();
+
+      return Object.values(item).some((value) =>
+        value.toString().toLowerCase().includes(searchValue)
       );
-      const brandMatch =
-        selectedBrand === "All" || item.Brand === selectedBrand;
-      return searchMatch && brandMatch;
+    };
+
+    const matchesBrand = (item) => {
+      return selectedBrand === "All" || item.Brand === selectedBrand;
+    };
+
+    return data.filter((item) => {
+      return matchesSearchTerm(item) && matchesBrand(item);
     });
   }, [data, searchTerm, selectedBrand]);
 
@@ -330,6 +342,7 @@ const Table = () => {
         const aNo = isNaN(Number(a[sortConfig.key]))
           ? a[sortConfig.key]
           : Number(a[sortConfig.key]);
+
         const bNo = isNaN(Number(b[sortConfig.key]))
           ? b[sortConfig.key]
           : Number(b[sortConfig.key]);
@@ -344,9 +357,18 @@ const Table = () => {
       });
     }
 
-    console.log(sortableData);
     return sortableData;
   }, [filteredData, sortConfig]);
+
+  function compare(a, b) {
+    if (a.last_nom < b.last_nom) {
+      return -1;
+    }
+    if (a.last_nom > b.last_nom) {
+      return 1;
+    }
+    return 0;
+  }
 
   const exportToXlsx = async () => {
     try {
@@ -359,8 +381,13 @@ const Table = () => {
         // Convert the response to JSON
         const data = response.data;
 
+        const sorted = data.toSorted((a, b) => {
+          console.log(b.No - a.No);
+          return b.No - a.No;
+        });
+
         // Convert JSON data to worksheet
-        const worksheet = XLSX.utils.json_to_sheet(data);
+        const worksheet = XLSX.utils.json_to_sheet(sorted);
 
         const headerStyle = {
           font: { bold: true, color: { rgb: "FFFFFF" } },
@@ -388,7 +415,7 @@ const Table = () => {
         const totalColumns = 10;
 
         // Apply styles to the header row (row 1)
-        const headers = Object.keys(data[0]);
+        const headers = Object.keys(sorted[0]);
         for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
           const cellAddress = XLSX.utils.encode_cell({ r: 0, c: colIndex });
 
@@ -401,7 +428,7 @@ const Table = () => {
         }
 
         // Apply styles to the rest of the rows
-        data.forEach((row, rowIndex) => {
+        sorted.forEach((row, rowIndex) => {
           for (let colIndex = 0; colIndex < totalColumns; colIndex++) {
             const cellAddress = XLSX.utils.encode_cell({
               r: rowIndex + 1,
@@ -418,7 +445,7 @@ const Table = () => {
         // Dynamically calculate the column widths based on content
         const colWidths = headers.map((header, colIndex) => {
           let maxLength = header.length; // Start with header length
-          data.forEach((row) => {
+          sorted.forEach((row) => {
             const cellValue = row[header] ? row[header].toString() : "";
             maxLength = Math.max(maxLength, cellValue.length); // Compare with each cell length
           });
@@ -434,7 +461,7 @@ const Table = () => {
         // Export the workbook to a file
         XLSX.writeFile(workbook, "Device Inventory.xlsx");
 
-        setAlerts("Exported Success!")
+        setAlerts("Exported Success!");
         setError(true);
 
         setTimeout(() => setError(false), 3000);
@@ -484,14 +511,19 @@ const Table = () => {
 
   return (
     <div className={`w-[1700px] overflow-x-auto p-4 `}>
-      {(error && alerts == "Not Found!") && dangerAlerts(alerts
-      ) || (error && alerts == "Saved Success!") && successAlerts("Saved Successfully!"
-      ) || (error && alerts == "Deleted Success!") && successAlerts("Deleted Successfully!"
-      ) || (error && alerts == "Exported Success!") && successAlerts("Exported Successfully!"
-      )}
+      {(error && alerts == "Not Found!" && dangerAlerts(alerts)) ||
+        (error &&
+          alerts == "Saved Success!" &&
+          successAlerts("Saved Successfully!")) ||
+        (error &&
+          alerts == "Deleted Success!" &&
+          successAlerts("Deleted Successfully!")) ||
+        (error &&
+          alerts == "Exported Success!" &&
+          successAlerts("Exported Successfully!"))}
 
       <div className={`mb-4 flex items-center `}>
-        <input 
+        <input
           type="text"
           placeholder="Search..."
           value={searchTerm}
