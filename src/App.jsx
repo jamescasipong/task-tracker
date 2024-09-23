@@ -9,7 +9,6 @@ import PaymentTable from "./components/tables/PaymentTable";
 import Table from "./components/tables/Table";
 import "./index.css";
 
-
 let isLocal = false;
 axios.defaults.baseURL = isLocal
   ? "http://localhost:3002/api"
@@ -69,22 +68,19 @@ function App() {
   const [hasAccess, setAccess] = useState(false);
   const [loading404, setLoading404] = useState(true);
 
-
   useEffect(() => {
     const fetchIp = async () => {
       try {
         setLoading404(true);
         const response = await axios.get("/dataRoute/ip");
 
-
-
         setLoading404(false);
-        setAccess(true)
+        setAccess(true);
       } catch (error) {
         setLoading404(false);
         console.error("Error fetching IP:", error.response.data);
-        if (error.response.data == "Access denied"){
-        setAccess(false)
+        if (error.response.data == "Access denied") {
+          setAccess(false);
         }
       }
     };
@@ -92,41 +88,39 @@ function App() {
     fetchIp();
   }, [hasAccess]);
 
-
   return (
     <BrowserRouter>
-    {hasAccess ? (
-    <div className="bg-primary w-full overflow-hidden">
-      {loading ? (
-        <LoadingSignIn message={state}></LoadingSignIn>
-      ) : isAuthenticated ? (
-        <>
-          <Navbar
-            currentView={currentView}
-            setCurrentView={handleViewChange}
-            onLogout={handleLogout}
-          />
-          <div className="bg-primary flex justify-center items-start">
-            {currentView === "table" && <Table />}
-            {/*currentView === 'excelToJson' && <ExcelToJson />*/}
-            {currentView === "paymentTable" && <PaymentTable />}
-          </div>
-        </>
+      {hasAccess ? (
+        <div className="bg-primary w-full overflow-hidden">
+          {loading ? (
+            <LoadingSignIn message={state}></LoadingSignIn>
+          ) : isAuthenticated ? (
+            <>
+              <Navbar
+                currentView={currentView}
+                setCurrentView={handleViewChange}
+                onLogout={handleLogout}
+              />
+              <div className="bg-primary flex justify-center items-start">
+                {currentView === "table" && <Table />}
+                {/*currentView === 'excelToJson' && <ExcelToJson />*/}
+                {currentView === "paymentTable" && <PaymentTable />}
+              </div>
+            </>
+          ) : (
+            <>
+              <SignIn onSignIn={handleSignIn} />
+            </>
+          )}
+        </div>
+      ) : !loading404 ? (
+        <NotFound></NotFound>
       ) : (
-        <>
-          <SignIn onSignIn={handleSignIn} />
-        </>
+        <LoadingSignIn message="processing"></LoadingSignIn>
       )}
-    </div>
-  ) : !loading404 ? (
-    <NotFound></NotFound>
-  ) : (
-    <LoadingSignIn message="processing"></LoadingSignIn>
-  )
-};
-
-  </BrowserRouter>
-);
+      ;
+    </BrowserRouter>
+  );
 }
 
 export default App;
