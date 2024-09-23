@@ -1,5 +1,5 @@
 import { Transition } from "@headlessui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SignIn = ({ onSignIn }) => {
   const [username, setUsername] = useState("");
@@ -7,6 +7,17 @@ const SignIn = ({ onSignIn }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showError, setShowError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const usernameRef = useRef(null);
+
+
+  useEffect(() => {
+    // Focus the username input field when the component mounts
+    if (usernameRef.current) {
+      usernameRef.current.focus();
+    }
+  }, []);
+
+
 
   const userName = "admin";
   const correctPassword = "Admin123$$";
@@ -54,6 +65,7 @@ const SignIn = ({ onSignIn }) => {
                   <input
                     name="username"
                     type="text"
+                    ref={usernameRef}
                     required
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}

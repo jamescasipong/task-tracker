@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaRegFileExcel } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
@@ -7,6 +7,7 @@ import LoadingTable from "../loading/LoadingTable";
 import { dangerAlerts, successAlerts } from "../modals/alerts";
 
 const Table = () => {
+  const findRef = useRef(null);
   const [data, setData] = useState([]); // Store the fetched data
   const [loading, setLoading] = useState(true); // Loading state
   const [sortConfig, setSortConfig] = useState({ key: "No", direction: "asc" }); // Sorting configuration
@@ -151,8 +152,8 @@ const Table = () => {
   }, []);
 
   const handleSort = (key) => {
-    const direction =
-      sortConfig.key === key && sortConfig.direction === "asc" ? "desc" : "asc";
+    const direction = key === sortConfig.key && sortConfig.direction === "asc" ? "desc" : "asc";
+
     setSortConfig({ key, direction });
   };
 
@@ -476,6 +477,15 @@ const Table = () => {
       if (event.ctrlKey && event.key === "s") {
         event.preventDefault(); // Prevent the default browser save action
         saveChanges();
+      } else if (event.ctrlKey && event.key === "f") {
+        event.preventDefault(); // Prevent the default browser find action
+        if (findRef.current) {
+          findRef.current.focus();
+          findRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
       }
     };
 
@@ -525,6 +535,7 @@ const Table = () => {
       <div className={`mb-4 flex items-center `}>
         <input
           type="text"
+          ref={findRef}
           placeholder="Search..."
           value={searchTerm}
           onChange={handleSearchChange}
