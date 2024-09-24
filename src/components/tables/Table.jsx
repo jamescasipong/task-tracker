@@ -478,14 +478,7 @@ const Table = () => {
         event.preventDefault(); // Prevent the default browser save action
         saveChanges();
       } else if (event.ctrlKey && event.key === "f") {
-        event.preventDefault(); // Prevent the default browser find action
-        if (findRef.current) {
-          findRef.current.focus();
-          findRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        }
+        //
       }
     };
 

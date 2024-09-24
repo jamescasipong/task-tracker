@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, Routes } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
+import FileUpload from "./components/FileUpload";
 import SignIn from "./components/forms/SignIn";
 import LoadingSignIn from "./components/loading/LoadingSignIn";
 import NotFound from "./components/NotFound";
@@ -101,6 +102,8 @@ function App() {
               />
               <div className="bg-primary flex justify-center items-start">
                 {currentView === "table" && <Table />}
+                {currentView === "upload" && <FileUpload />}
+
                 {/*currentView === 'excelToJson' && <ExcelToJson />*/}
                 {currentView === "paymentTable" && <PaymentTable />}
               </div>
@@ -117,6 +120,8 @@ function App() {
         <LoadingSignIn message="processing"></LoadingSignIn>
       )}
       ;
+      <Routes>
+      </Routes>
     </BrowserRouter>
   );
 }

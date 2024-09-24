@@ -24,6 +24,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
           >
             Excel to JSON
           </button>*/}
+          
           <button
             className={`ml-3 text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${
               currentView === "paymentTable"
@@ -33,6 +34,17 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
             onClick={() => setCurrentView("paymentTable")}
           >
             Payments
+          </button>
+
+          <button
+            className={`ml-3 text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${
+              currentView === "upload"
+                ? "bg-blue-500"
+                : "bg-gray-700 hover:bg-gray-600"
+            }`}
+            onClick={() => setCurrentView("upload")}
+          >
+            ORsChecker
           </button>
         </div>
 
