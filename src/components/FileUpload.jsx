@@ -67,21 +67,33 @@ const FileUpload = () => {
       console.error("No files selected");
       return;
     }
+    //const endingNo = prompt("Enter the prefix to search for (e.g., 'OR No.:')");
 
     Array.from(files).forEach((file, index) => {
       const reader = new FileReader();
 
-      reader.onload = (event) => {
-        const data = event.target.result;
-        let name = file.name;
+        reader.onload = (event) => {
+          const data = event.target.result;
+          let name = file.name;
 
-        const orNumbers = [];
-        const regex = /OR No.:\s*(\d+)/g;
+          // const regex = /OR No\.\s*:(\d+)
+          
+          // or /OR No\.\s*:(\d+)/g;
+          const orNumbers = [];
+          //const regex = /OR No.:\s*(\d+)/g;
+          //const regexz = new RegExp(`${endingNo}`, "g");
 
-        let match;
-        while ((match = regex.exec(data)) !== null) {
-          orNumbers.push(match[1]);
-        }
+
+          const endingNo = "OR No.:";
+          const regex = new RegExp(`${endingNo}\\s*(\\d+)`, "g");
+
+
+
+
+          let match;
+          while ((match = regex.exec(data)) !== null) {
+            orNumbers.push(match[1]);
+          }
 
         let maxORNumber = Math.max(...orNumbers);
         let minORNumber = Math.min(...orNumbers);
