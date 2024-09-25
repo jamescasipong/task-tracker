@@ -546,6 +546,7 @@ const Table = () => {
           <option value="ASUS">ASUS</option>
           <option value="WINDOWS">WINDOWS</option>
         </select>
+        <div className="hidden">
         <button
           onClick={openModal}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 ml-4"
@@ -574,7 +575,7 @@ const Table = () => {
         >
           Delete Multiple Rows
         </button>
-
+        </div>
         {/*pendingChanges.updates.length > 0 ||
         pendingChanges.additions.length > 0 ? (
           <button
@@ -728,7 +729,7 @@ const Table = () => {
                     value={device[key] || ""}
                     onChange={(e) => handleInputChange(index, key, e)}
                     style={styleInput(key)}
-                    className={`w-full ${key} rounded p-2`}
+                    className={`lg:w-full w-[200px] ${key} rounded p-2`}
                   />
                 </td>
               ))}

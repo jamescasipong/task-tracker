@@ -17,59 +17,59 @@ const FileUpload = () => {
   const [previewIndex, setPreviewIndex] = useState(null);
   const [missingOnly, setMissingOnly] = useState(false);
   const divRef = useRef(null);
-  const [height, setHeight] = useState(768); // State to store the height
+  const [height, setHeight] = useState(768);
 
   const handleFileChange = (event) => {
+    setMissingORNumbers([]);
+    setTotalORNumbers([]);
+    setDownloadUrl(null);
+    setMissingUrl(null);
+    setFileName("");
+    setStart(false);
+    setAlert(false);
+    setLoading(false);
+    setPreviewUrl(null);
+    setPreviewIndex(null);
+    setMissingOnly(false);
+
     const files = Array.from(event.target.files);
     const names = files.map((file) => file.name);
     setFileNames(names);
   };
 
   const generateMissingNumbersFile = async (missingNumbers) => {
-    const content = await missingNumbers
+    const content = missingNumbers
       .map((num, index) => {
-        let object = num;
-        let propertyName = Object.keys(object)[0];
-        let number = index + 1;
-
-        let compiledMissingNumbers = `${number}. ${object[propertyName][0]} from ${object[
+        const object = num;
+        const propertyName = Object.keys(object)[0];
+        const number = index + 1;
+        return `${number}. ${object[propertyName][0]} from ${object[
           propertyName
         ][1].join(", ")} ${object[propertyName][2] || ""} ${
           object[propertyName][3] || ""
         }`;
-
-        return compiledMissingNumbers;
       })
       .join("\n");
 
     const blob = new Blob([content], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
-
     setDownloadUrl(url);
     setAlert(true);
   };
 
   const generateMissing = async (missingNumbers) => {
-    const content = await missingNumbers
+    const content = missingNumbers
       .map((num, index) => {
-        let object = num;
-        let propertyName = Object.keys(object)[0];
-        let number = index + 1;
-
-        let compiledMissingNumbers = `${number}. ${object[propertyName][0]}`;
-
-        return compiledMissingNumbers;
+        const object = num;
+        const propertyName = Object.keys(object)[0];
+        const number = index + 1;
+        return `${number}. ${object[propertyName][0]}`;
       })
       .join("\n");
 
-    const main = "Missing Numbers with a total of " + missingNumbers.length +"\n" + content;
-
-
+    const main = `Missing Numbers with a total of ${missingNumbers.length}\n${content}`;
     const blob = new Blob([main], { type: "text/plain" });
-    const url = missingNumbers.length !== 0 ? URL.createObjectURL(blob) : null;
-
-    console.log("url", url);
-    return url;
+    return missingNumbers.length !== 0 ? URL.createObjectURL(blob) : null;
   };
 
   useEffect(() => {
@@ -78,21 +78,13 @@ const FileUpload = () => {
     }
 
     const date = new Date();
-
-    // Format the date and time as YYYY-MM-DD_HH-MM-SS
-    const formattedDate = date.toISOString().slice(0, 10); // YYYY-MM-DD
-    const formattedTime = date.toTimeString().split(" ")[0].replace(/:/g, "-"); // HH-MM-SS
-
-    const fileName = `missingORs_${formattedDate}_${formattedTime}.txt`;
-
-    setFileName(fileName);
+    const formattedDate = date.toISOString().slice(0, 10);
+    const formattedTime = date.toTimeString().split(" ")[0].replace(/:/g, "-");
+    setFileName(`missingORs_${formattedDate}_${formattedTime}.txt`);
 
     if (divRef.current) {
-      // Get the height of the div
       const divHeight = divRef.current.getBoundingClientRect().height;
-      setHeight(divHeight); // Set the height in state
-
-      console.log("divHeight", divHeight);
+      setHeight(divHeight);
     }
   }, [missingORNumbers, fileName, alert, totalORNumbers]);
 
@@ -100,24 +92,24 @@ const FileUpload = () => {
     setMissingORNumbers([]);
     setTotalORNumbers([]);
     setDownloadUrl(null);
+    setTotalORNumbers([]);
+    setDownloadUrl(null);
 
     const files = document.querySelector('input[type="file"]').files;
-
     if (!files.length) {
       console.error("No files selected");
       return;
     }
+
     const endingNo = prompt(
-      "Enter the prefix to search for (e.g., 'OR No.:'): "
+      "Enter the prefix to search for (e.g., 'OR No.:'): ",
+      "OR No.:"
     );
-
-    Array.from(files).forEach((file, index) => {
+    Array.from(files).forEach((file) => {
       const reader = new FileReader();
-
       reader.onload = async (event) => {
         const data = event.target.result;
-        let name = file.name;
-
+        const name = file.name;
         const orNumbers = [];
         const regex = new RegExp(`${endingNo}\\s*(\\d+)`, "g");
 
@@ -126,44 +118,31 @@ const FileUpload = () => {
           orNumbers.push(match[1]);
         }
 
-        let maxORNumber = Math.max(...orNumbers);
-        let minORNumber = Math.min(...orNumbers);
+        const maxORNumber = Math.max(...orNumbers);
+        const minORNumber = Math.min(...orNumbers);
+        orNumbers.sort((a, b) => a - b);
 
-        orNumbers.sort((a, b) => (a > b ? 1 : a < b ? -1 : 0));
-
-        let withNumbering = orNumbers.map((num, index) => {
-          return `${index + 1}. ${num}`;
-        });
-
+        const withNumbering = orNumbers.map(
+          (num, index) => `${index + 1}. ${num}`
+        );
         const fileBlob = new Blob([data], { type: "text/plain" });
         const fileUrl = URL.createObjectURL(fileBlob);
 
-        console.log("orNumbers:", orNumbers);
-
         const findMissingNumbers = async (array) => {
-          let properties = array;
-          let propertiesLength = properties.length;
           const arrayContainer = [];
-
-          for (let i = 0; i < propertiesLength - 1; i++) {
-            let current = Number(properties[i]);
-            let next = Number(properties[i + 1]);
-
+          for (let i = 0; i < array.length - 1; i++) {
+            const current = Number(array[i]);
+            const next = Number(array[i + 1]);
             if (next - current > 1) {
               for (let j = current + 1; j < next; j++) {
-                let k = j.toString().length;
-                let l = 20;
-                let m = l - k;
-                let n = "0".repeat(m - 1) 
-                + j;
-
-                if (j == current + 1) {
+                const n = "0".repeat(20 - j.toString().length - 1) + j;
+                if (j === current + 1) {
                   arrayContainer.push({
                     missing: [
                       [n],
                       [name],
-                      ["Min: " + minORNumber],
-                      ["Max:" + maxORNumber],
+                      [`Min: ${minORNumber}`],
+                      [`Max: ${maxORNumber}`],
                     ],
                   });
                 } else {
@@ -171,59 +150,39 @@ const FileUpload = () => {
                 }
               }
             }
-
           }
           return arrayContainer;
         };
 
-        let missingORNumber = await findMissingNumbers(orNumbers);
+        const missingORNumber = await findMissingNumbers(orNumbers);
+        const _fileMissing = await generateMissing(missingORNumber);
 
-        console.log("missingORNumber", missingORNumber);
-
-        let _fileMissing = await generateMissing(missingORNumber);
-
-        let objectNumbers = {
+        const objectNumbers = {
           fileName: name,
           orNumbers: [...withNumbering],
-          fileUrl: fileUrl,
+          fileUrl,
           fileMissing: _fileMissing,
         };
 
-        try {
-          setTotalORNumbers((prev) => [...prev, objectNumbers]);
-          console.log("Total OR Numbers:", objectNumbers);
-        } catch (error) {
-          console.error("Error processing files:", error);
-        }
-
+        setTotalORNumbers((prev) => [...prev, objectNumbers]);
         setMissingORNumbers((prev) => [...prev, ...missingORNumber]);
-
-        orNumbers.length = 0;
       };
-
       reader.readAsText(file);
     });
 
-    setTimeout(() => {
-      setStart(true);
-    }, 3000);
+    setTimeout(() => setStart(true), 3000);
     setLoading(true);
-
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    setTimeout(() => setLoading(false), 3000);
   };
 
   const handlePreview = (url, index, urlMissing) => {
-    console.log("Preview URL:", url);
-    console.log("Missing URL:", urlMissing);
     setPreviewUrl(url);
     setPreviewIndex(index);
     setMissingUrl(urlMissing);
   };
 
   return (
-    <div className="h-full w-full mt-[20px] mb-2 flex justify-center">
+    <div className="h-full w-full mt-5 mb-2 flex justify-center">
       <div
         className={`${
           showReview ? "hidden" : "bg-white"
@@ -232,7 +191,6 @@ const FileUpload = () => {
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Upload Files
         </h2>
-
         <input
           type="file"
           multiple
@@ -240,14 +198,12 @@ const FileUpload = () => {
           onChange={handleFileChange}
           className="mb-4 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-
         <button
           onClick={handleProcessFiles}
           className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
         >
-          Process Files
+          Find Something?
         </button>
-
         <ul className="bg-gray-50 border border-gray-300 p-4 rounded-md mt-4">
           {fileNames.length > 0 ? (
             fileNames.slice(0, 10).map((name, index) => (
@@ -258,16 +214,14 @@ const FileUpload = () => {
           ) : (
             <p className="text-sm text-gray-500">No files uploaded yet.</p>
           )}
-
           {fileNames.length > 5 && (
             <p className="text-sm text-gray-500">and more...</p>
           )}
         </ul>
-
         {start ? (
           <div className="mt-4 w-full flex flex-col">
-            {missingORNumbers.length == 0 ? (
-              <p className={`text-md text-gray-500 mt-2 text-center`}>
+            {missingORNumbers.length === 0 ? (
+              <p className="text-md text-gray-500 mt-2 text-center">
                 No missing numbers found.
               </p>
             ) : (
@@ -284,192 +238,190 @@ const FileUpload = () => {
                 </a>
               </>
             )}
-
             <button
-              onClick={() => {
-                setShowReview(true);
-              }}
+              onClick={() => setShowReview(true)}
               className="bg-violet-600 mt-3 text-white py-2 px-4 text-center rounded-md shadow-md hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-opacity-50 transition duration-300"
             >
               Review Accumulated ORs
             </button>
           </div>
         ) : loading ? (
-          <p className={`text-md text-gray-500 mt-2 text-center`}>Loading...</p>
+          <p className="text-md text-gray-500 mt-2 text-center">Loading...</p>
         ) : null}
       </div>
-
+      <div className="flex md:flex-row flex-col">
       {showReview && (
-        <div className="flex flex-col w-full">
-          {showReview ? (
-            <div className="w-full">
-              <div className="flex ga-5 items-center">
-                <button
-                  className={`ml-10 py-3 px-3 text-white justify-start rounded-md items-center flex gap-2 ${
-                    previewUrl != null && previewIndex != null ? "hidden" : ""
-                  } bg-orange-500 hover:bg-orange-600 transition duration-200`}
-                  onClick={() => {
-                    setShowReview(false);
-                    setPreviewUrl(null);
-                    setPreviewIndex(null);
-                  }}
-                >
-                  <IoArrowBackSharp></IoArrowBackSharp> Go Back
-                </button>
-
-                <button
-                  className={`ml-10 py-3 px-3 text-white justify-start rounded-md items-center flex gap-2 ${
-                    previewUrl != null && previewIndex != null ? "hidden" : ""
-                  } bg-red-500 hover:bg-red-600 transition duration-200`}
-                  onClick={() => {
-                    setMissingOnly(prev => !prev);
-                  }}
-                >
-                  {missingOnly ? "Show All" : "Missing No. Only"}
-                </button>
-              </div>
+        <div className="flex flex-col justify-center items-end w-full">
+          <div className="w-full">
+            <div className="flex gap-5 items-center">
+              <button
+                className={`ml-10 py-3 px-3 text-white justify-start rounded-md items-center flex gap-2 ${
+                  previewUrl != null && previewIndex != null ? "hidden" : ""
+                } bg-orange-500 hover:bg-orange-600 transition duration-200`}
+                onClick={() => {
+                  setShowReview(false);
+                  setPreviewUrl(null);
+                  setPreviewIndex(null);
+                }}
+              >
+                <IoArrowBackSharp /> Go Back
+              </button>
+              <button
+                className={`ml-10 py-3 px-3 text-white justify-start rounded-md items-center flex gap-2 ${
+                  previewUrl != null && previewIndex != null ? "hidden" : ""
+                } bg-red-500 hover:bg-red-600 transition duration-200`}
+                onClick={() => setMissingOnly((prev) => !prev)}
+              >
+                {missingOnly ? "Show All" : "Missing No. Only"}
+              </button>
             </div>
-          ) : null}
-
-          {showReview && totalORNumbers.length > 0 ? (
+          </div>
+          {totalORNumbers.length > 0 && (
             <div
               ref={divRef}
-              className="px-5 rounded-lg xsm:grid-cols-1 sm:grid-cols-2 grid md:grid-cols-3 xl:grid-cols-5 hd:grid-cols-5 w-full gap-2 "
+              className="lg:px-5 flex-1 rounded-lg xsm:grid-cols-1 sm:grid-cols-2 grid md:grid-cols-3 xl:grid-cols-5 hd:grid-cols-5 w-full gap-2"
             >
               {totalORNumbers
-  .filter((value) => (missingOnly ? value.fileMissing : value))
-  .map((value, index) => (
-    <div
-      key={value.fileName}
-      className={`col-span-1 ${
-        previewIndex !== null && previewIndex !== index ? "hidden" : ""
-      }`}
-    >
-      <table
-        className={`min-w-full mt-4 bg-white rounded-lg shadow-md border border-radius ${
-          previewUrl != null && previewIndex != null ? "w-[768px]" : ""
-        }`}
-      >
-        <thead className="">
-          <tr className="bg-blue-600 text-white">
-            <th className="py-5 px-4 text-sm font-semibold rouned flex items-center gap-2">
-              <button
-                onClick={() =>
-                  handlePreview(value.fileUrl, index, value.fileMissing)
-                }
-                title="Preview Original File"
-                className={`bg-blue-500 ${
-                  previewUrl != null && previewIndex != null ? "hidden" : ""
-                } text-white py-1 px-2 text-center rounded-md hover:bg-blue-700 focus:outline-none transition duration-300`}
-              >
-                <MdOutlineRemoveRedEye className="w-5 h-5" />
-              </button>
-
-              <p>{value.fileName}</p>
-              {previewUrl == null && value.fileMissing != null && (
-                <div className="ml-10 p-2 rounded-md flex items-center bg-red-500 hover:bg-red-600">
-                  <p className="">Missing Found!</p>
-                </div>
-              )}
-              {value.orNumbers.length > 5 && (
-                <span
-                  className="hover:bg-blue-700 transition duration-200 cursor-pointer h-10 rounded-md items-center justify-center flex"
-                  onClick={() => {
-                    const newTotalORNumbers = [...totalORNumbers];
-                    const filteredIndex = totalORNumbers.findIndex(
-                      (item) => item.fileName === value.fileName
-                    );
-                    newTotalORNumbers[filteredIndex].showAll =
-                      !newTotalORNumbers[filteredIndex].showAll;
-                    setTotalORNumbers(newTotalORNumbers);
-                  }}
-                >
-                  <span
-                    className={`${
-                      (value.orNumbers.length > 5) &
-                      (previewIndex != null) &
-                      (previewUrl != null)
-                        ? ""
-                        : "hidden"
-                    } font-medium py-2 px-4 text-sm text-white`}
+                .filter((value) => (missingOnly ? value.fileMissing : value))
+                .map((value, index) => (
+                  <div
+                    key={value.fileName}
+                    className={`col-span-1 ${
+                      previewIndex !== null && previewIndex !== index
+                        ? "hidden"
+                        : ""
+                    }`}
                   >
-                    {value.showAll ? "Hide" : "Show All"}
-                  </span>
-                </span>
-              )}
-
-              {previewIndex !== null && (
-                <button
-                  onClick={() => {
-                    setPreviewUrl(null);
-                    setPreviewIndex(null);
-                    setHeight(768);
-
-                    for (let i = 0; i < totalORNumbers.length; i++) {
-                      totalORNumbers[i].showAll = false;
-                    }
-                  }}
-                  className="bg-red-500 text-white py-2 px-4 text-center rounded-md shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300"
-                >
-                  Close Preview
-                </button>
-              )}
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {value.orNumbers
-            .slice(0, value.showAll ? value.orNumbers.length : 5)
-            .map((num, index) => (
-              <tr
-                key={index}
-                className="hover:bg-gray-100 transition duration-200"
-              >
-                <td className="border-b border-gray-200 py-2 px-4 text-sm text-gray-700">
-                  {num}
-                </td>
-              </tr>
-            ))}
-          <tr className={`${value.orNumbers.length > 5 ? "" : "hidden"}`}>
-            <td className="border-b border-gray-200 py-2 px-4 text-sm text-gray-700">
-              {value.orNumbers.length > 5
-                ? value.showAll
-                  ? ""
-                  : "More..."
-                : ""}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  ))}
+                    <table
+                      className={`min-w-full mt-4 bg-white rounded-lg shadow-md border border-radius ${
+                        previewUrl != null && previewIndex != null
+                          ? "xl:w-[800px] w-full lg:w-[600px] md:w-[400px] sm:w-[460px] xsm:w-[200px]"
+                          : ""
+                      }`}
+                    >
+                      <thead>
+                        <tr className="bg-blue-600 text-white">
+                          <th className="py-5 px-4 text-sm font-semibold rounded flex items-center gap-2">
+                            <button
+                              onClick={() =>
+                                handlePreview(
+                                  value.fileUrl,
+                                  index,
+                                  value.fileMissing
+                                )
+                              }
+                              title="Preview Original File"
+                              className={`bg-blue-500 ${
+                                previewUrl != null && previewIndex != null
+                                  ? "hidden"
+                                  : ""
+                              } text-white py-1 px-2 text-center rounded-md hover:bg-blue-700 focus:outline-none transition duration-300`}
+                            >
+                              <MdOutlineRemoveRedEye className="w-5 h-5" />
+                            </button>
+                            <p>{value.fileName}</p>
+                            {previewUrl == null &&
+                              value.fileMissing != null && (
+                                <div className="ml-10 p-2 rounded-md lg:flex hidden items-center bg-red-500 hover:bg-red-600">
+                                  <p>Missing Found!</p>
+                                </div>
+                              )}
+                            {value.orNumbers.length > 5 && (
+                              <span
+                                className="hover:bg-blue-700 transition duration-200 cursor-pointer h-10 rounded-md items-center justify-center flex"
+                                onClick={() => {
+                                  const newTotalORNumbers = [...totalORNumbers];
+                                  const filteredIndex =
+                                    totalORNumbers.findIndex(
+                                      (item) => item.fileName === value.fileName
+                                    );
+                                  newTotalORNumbers[filteredIndex].showAll =
+                                    !newTotalORNumbers[filteredIndex].showAll;
+                                  setTotalORNumbers(newTotalORNumbers);
+                                }}
+                              >
+                                <span
+                                  className={`${
+                                    value.orNumbers.length > 5 &&
+                                    previewIndex != null &&
+                                    previewUrl != null
+                                      ? ""
+                                      : "hidden"
+                                  } font-medium py-2 px-4 text-sm text-white`}
+                                >
+                                  {value.showAll ? "Hide" : "Show All"}
+                                </span>
+                              </span>
+                            )}
+                            {previewIndex !== null && (
+                              <button
+                                onClick={() => {
+                                  setPreviewUrl(null);
+                                  setPreviewIndex(null);
+                                  setHeight(768);
+                                  totalORNumbers.forEach(
+                                    (item) => (item.showAll = false)
+                                  );
+                                }}
+                                className="bg-red-500 text-white py-2 px-4 text-center rounded-md shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300"
+                              >
+                                Close Preview
+                              </button>
+                            )}
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {value.orNumbers
+                          .slice(0, value.showAll ? value.orNumbers.length : 5)
+                          .map((num, index) => (
+                            <tr
+                              key={index}
+                              className="hover:bg-gray-100 transition duration-200"
+                            >
+                              <td className="border-b border-gray-200 py-2 px-4 text-sm text-gray-700">
+                                {num}
+                              </td>
+                            </tr>
+                          ))}
+                        {value.orNumbers.length > 5 && (
+                          <tr>
+                            <td className="border-b border-gray-200 py-2 px-4 text-sm text-gray-700">
+                              {value.showAll ? "" : "More..."}
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                ))}
             </div>
-          ) : null}
+          )}
         </div>
       )}
-
       {previewUrl && (
         <div
-          className={`mr-5 mt-4 w-full flex flex-row gap-2 items-center ${
+          className={`mr-5 mt-4 w-full flex md:flex-row flex-col gap-2 items-center ${
             previewUrl ? "" : "hidden"
           }`}
         >
           <iframe
             src={previewUrl}
             title="File Preview"
-            className={`w-full border border-gray-300 rounded-md text-center`}
+            className="w-full border border-gray-300 rounded-md text-center resize-y	"
             style={{ height: `${height}px` }}
           ></iframe>
-          {missingUrl && 
-          <iframe
-            src={missingUrl}
-            title="File Preview"
-            className={`w-full border border-gray-300 rounded-md text-center`}
-            style={{ height: `${height}px` }}
-          ></iframe>}
+          {missingUrl && (
+            <iframe
+              src={missingUrl}
+              title="File Preview"
+              className="w-full border border-gray-300 rounded-md text-center resize-y	"
+              style={{ height: `${height}px` }}
+            ></iframe>
+          )}
         </div>
       )}
+    </div>
     </div>
   );
 };
