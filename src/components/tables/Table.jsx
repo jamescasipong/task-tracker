@@ -546,7 +546,7 @@ const Table = () => {
           <option value="ASUS">ASUS</option>
           <option value="WINDOWS">WINDOWS</option>
         </select>
-        <div className="hidden">
+        <div className="lg:flex hidden">
         <button
           onClick={openModal}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 ml-4"
