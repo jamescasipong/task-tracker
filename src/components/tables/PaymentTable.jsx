@@ -328,40 +328,82 @@ const PaymentTable = () => {
         <LoadingTable />
       ) : (
         <>
-          <input
-            type="text"
-            value={newTableName}
-            onChange={(e) => setNewTableName(e.target.value)}
-            placeholder="Enter new table name"
-            className={`border p-2 mr-2 w-full md:w-[250px] ${
-              darkMode
-                ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                : "text-black"
-            }`}
-          />
-          <button
-            onClick={addTable}
-            className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md"
-          >
-            <FaPlus className="inline-block mr-2" />
-            Add Table
-          </button>
+          <div className="sm:block hidden">
+            <input
+              type="text"
+              value={newTableName}
+              onChange={(e) => setNewTableName(e.target.value)}
+              placeholder="Enter new table name"
+              className={`border p-2 mr-2 w-full md:w-[250px] ${
+                darkMode
+                  ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                  : "text-black"
+              }`}
+            />
+            <button
+              onClick={addTable}
+              className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md"
+            >
+              <FaPlus className="inline-block mr-2" />
+              Add Table
+            </button>
 
-          <button
-            onClick={exportToXLSX}
-            className="px-4 py-2 bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white rounded-md mb-4 ml-2"
-          >
-            <MdFileDownload className="inline-block mr-2" />
-            Export
-          </button>
+            <button
+              onClick={exportToXLSX}
+              className="px-4 py-2 bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white rounded-md mb-4 ml-2"
+            >
+              <MdFileDownload className="inline-block mr-2" />
+              Export
+            </button>
 
-          <button
-            onClick={saveData}
-            className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md mt-4 ml-2"
-          >
-            <FaRegSave className="inline-block mr-2" />
-            Save
-          </button>
+            <button
+              onClick={saveData}
+              className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md mt-4 ml-2"
+            >
+              <FaRegSave className="inline-block mr-2" />
+              Save
+            </button>
+          </div>
+
+          <div className="flex sm:hidden flex-col gap-4 p-4 max-w-md mx-auto">
+            <input
+              type="text"
+              value={newTableName}
+              onChange={(e) => setNewTableName(e.target.value)}
+              placeholder="Enter new table name"
+              className={`border rounded-md p-2 w-full ${
+                darkMode
+                  ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                  : "text-black border-gray-300"
+              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            />
+
+            <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+              <button
+                onClick={addTable}
+                className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
+              >
+                <FaPlus className="mr-2" />
+                Add Table
+              </button>
+
+              <button
+                onClick={exportToXLSX}
+                className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
+              >
+                <MdFileDownload className="mr-2" />
+                Export
+              </button>
+
+              <button
+                onClick={saveData}
+                className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
+              >
+                <FaRegSave className="mr-2" />
+                Save
+              </button>
+            </div>
+          </div>
 
           {tables.map((table, tableIndex) => (
             <div
@@ -489,7 +531,9 @@ const PaymentTable = () => {
                               ))}
                               <td className="py-2 px-4 border text-center">
                                 <button
-                                  onClick={() => deleteRow(tableIndex, rowIndex)}
+                                  onClick={() =>
+                                    deleteRow(tableIndex, rowIndex)
+                                  }
                                   className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                 >
                                   <FaTrash className="w-5 h-5" />
@@ -538,7 +582,9 @@ const PaymentTable = () => {
 
                               <td className="py-2 px-4 border text-center">
                                 <button
-                                  onClick={() => deleteRow(tableIndex, rowIndex)}
+                                  onClick={() =>
+                                    deleteRow(tableIndex, rowIndex)
+                                  }
                                   className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
                                 >
                                   <FaTrash className="w-5 h-5" />
@@ -550,7 +596,7 @@ const PaymentTable = () => {
                   </tbody>
                 </table>
               </div>
-              </div>
+            </div>
           ))}
         </>
       )}
