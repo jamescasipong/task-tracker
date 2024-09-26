@@ -308,7 +308,7 @@ const FileUpload = () => {
                         }`}
                       >
                         <table
-                          className={` min-w-full mt-4 bg-white rounded-lg shadow-md border border-radius ${
+                          className={` min-w-full ${previewUrl ? "" : "mt-4"} bg-white rounded-lg shadow-md border border-radius ${
                             previewUrl != null && previewIndex != null
                               ? "xl:w-[800px] w-full lg:w-[600px] md:w-[400px] sm:w-[485px] xsm:w-[200px]"
                               : ""
