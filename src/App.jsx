@@ -77,7 +77,7 @@ function App() {
         setAccess(true);
       } catch (error) {
         setLoading404(false);
-        console.error("Error fetching IP:", error.response.data);
+        console.error("Error fetching IP:");
         if (error.response.data == "Access denied") {
           setAccess(false);
         }

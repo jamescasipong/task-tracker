@@ -40,7 +40,7 @@ const PaymentTable = () => {
         setLoading(false);
       } catch (error) {
         setLoading(false);
-        console.error("Error fetching data:", error);
+        console.error("Error fetching data:");
       }
     };
 
@@ -148,7 +148,7 @@ const PaymentTable = () => {
       XLSX.utils.book_append_sheet(workbook, worksheet, "Payment Data");
       XLSX.writeFile(workbook, "Payment Data.xlsx");
     } catch (error) {
-      console.error("Error exporting data:", error.message);
+      //console.error("Error exporting data:", error.message);
     }
   };
 
@@ -308,7 +308,7 @@ const PaymentTable = () => {
         alert("You didn't save it!");
       }
     } catch (error) {
-      console.error("Error saving data:", error);
+      console.error("Error saving data:");
     }
   };
 

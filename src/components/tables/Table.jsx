@@ -111,11 +111,11 @@ const Table = () => {
         setTimeout(() => setError(false), 3000);
 
         if (error.response.status == 404) {
-          console.error(error.response.data.message);
+          //console.error(error.response.data.message);
           setAlerts("Not Found!");
           // Optionally, show a message to the user or handle it accordingly
         } else {
-          console.error("An error occurred:", error);
+          //console.error("An error occurred:", error);
           // H
         }
       }
@@ -231,7 +231,7 @@ const Table = () => {
 
       setTimeout(() => setError(false), 3000);
     } catch (error) {
-      console.error("Failed to update device:", error);
+      console.error("Failed to update device");
     }
   }; // 500 ms delay before triggering the update
 
@@ -261,7 +261,7 @@ const Table = () => {
         alert("You didn't save it!");
       }
     } catch (error) {
-      console.error("Failed to save changes:", error);
+      console.error("Failed to save changes");
     }
   };
 
@@ -290,7 +290,7 @@ const Table = () => {
       setAddLoading(false);
       closeModal(); // Close modal after adding the rows
     } catch (error) {
-      console.error("Failed to add new devices:", error);
+      console.error("Failed to add new devices:");
     }
   };
 
@@ -307,7 +307,7 @@ const Table = () => {
         setTimeout(() => setError(false), 3000);
       }
     } catch (error) {
-      console.error("Failed to delete device:", error);
+      console.error("Failed to delete device:");
     }
   };
 
@@ -468,7 +468,7 @@ const Table = () => {
         setTimeout(() => setError(false), 3000);
       }
     } catch (error) {
-      console.error("Error exporting data:", error.message);
+      //console.error("Error exporting data:", error.message);
     }
   };
 
