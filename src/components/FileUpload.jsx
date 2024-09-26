@@ -12,9 +12,12 @@ const FileUpload = () => {
   const [fileName, setFileName] = useState("");
   const [start, setStart] = useState(false);
   const [customAlert, setAlert] = useState(false);
+  const [isOrignal, setIsOriginal] = useState(false);
+
   const [loading, setLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [previewIndex, setPreviewIndex] = useState(null);
+  const [originalORNumbers, setOriginalORNumbers] = useState("orNumbers");
   const [missingOnly, setMissingOnly] = useState(false);
   const divRef = useRef(null);
   const [height, setHeight] = useState(768);
@@ -131,6 +134,10 @@ const FileUpload = () => {
           //oconsole.log(match[1]);
         }
 
+        let originalOrNumbers = orNumbers.map(
+          (num, index) => index + 1 + ". " + num
+        );
+
         const maxORNumber = Math.max(...orNumbers);
         const minORNumber = Math.min(...orNumbers);
         orNumbers.sort((a, b) => a - b);
@@ -176,6 +183,7 @@ const FileUpload = () => {
           fileUrl,
           fileMissing: _fileMissing,
           missingNumbers: missingORNumber,
+          originalOrNumbers: [...originalOrNumbers],
         };
 
         setTotalORNumbers((prev) => [...prev, objectNumbers]);
@@ -216,7 +224,7 @@ const FileUpload = () => {
           onClick={handleProcessFiles}
           className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
         >
-          Find Something :D 
+          Find Something :D
         </button>
         <ul className="bg-gray-50 border border-gray-300 p-4 rounded-md mt-4">
           {fileNames.length > 0 ? (
@@ -308,7 +316,9 @@ const FileUpload = () => {
                         }`}
                       >
                         <table
-                          className={` min-w-full ${previewUrl ? "" : "mt-4"} bg-white rounded-lg shadow-md border border-radius ${
+                          className={` min-w-full ${
+                            previewUrl ? "" : "mt-4"
+                          } bg-white rounded-lg shadow-md border border-radius ${
                             previewUrl != null && previewIndex != null
                               ? "xl:w-[800px] w-full lg:w-[600px] md:w-[400px] sm:w-[485px] xsm:w-[200px]"
                               : ""
@@ -381,30 +391,55 @@ const FileUpload = () => {
                                           : "hidden"
                                       } font-medium py-2 px-4 text-sm text-white`}
                                     >
-                                      {value.showAll ? "Hide" : "Show All"}
+                                      {value.showAll ? "Show Less" : "Show All"}
                                     </span>
                                   </span>
                                 )}
                                 {previewIndex !== null && (
-                                  <button
-                                    onClick={() => {
-                                      setPreviewUrl(null);
-                                      setPreviewIndex(null);
-                                      setHeight(768);
-                                      totalORNumbers.forEach(
-                                        (item) => (item.showAll = false)
-                                      );
-                                    }}
-                                    className="bg-red-500 text-white py-2 px-4 text-center rounded-md shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300"
-                                  >
-                                    Close Preview
-                                  </button>
+                                  <>
+                                    <button
+                                      onClick={() => {
+                                        setPreviewUrl(null);
+                                        setPreviewIndex(null);
+                                        setHeight(768);
+                                        totalORNumbers.forEach(
+                                          (item) => (item.showAll = false)
+                                        );
+                                      }}
+                                      className="bg-red-500 text-white py-2 px-4 text-center rounded-md shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300"
+                                    >
+                                      Close <span className="sm:hidden block">Preview</span>
+                                    </button>
+
+                                    {value.missingNumbers.length > 0 && (
+                                      <button
+                                        onClick={() => {
+                                          setIsOriginal((prev) => !prev);
+
+                                          if (isOrignal) {
+                                            setOriginalORNumbers("orNumbers");
+                                          } else {
+                                            setOriginalORNumbers(
+                                              "originalOrNumbers"
+                                            );
+                                          }
+                                        }}
+                                        className={
+                                          `${isOrignal ? "bg-green-500 hover:bg-green-600 focus:ring-green-500" : "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500"} text-white py-2 px-4 text-center rounded-md shadow-md  focus:outline-none focus:ring-2  focus:ring-opacity-50 transition duration-300`
+                                        }
+                                      >
+                                        {isOrignal
+                                          ? "Unsorted No."
+                                          : "Sorted No."}
+                                      </button>
+                                    )}
+                                  </>
                                 )}
                               </th>
                             </tr>
                           </thead>
                           <tbody>
-                            {value.orNumbers
+                            {value[originalORNumbers]
                               .slice(
                                 0,
                                 value.showAll ? value.orNumbers.length : 5
@@ -419,37 +454,39 @@ const FileUpload = () => {
                                   </td>
                                 </tr>
                               ))}
-                            {value.orNumbers.length > 5 && ( value.showAll ? null :
-                              <tr>
-                                <td
-                                  title="Show All"
-                                  onClick={() => {
-                                    handlePreview(
-                                      value.fileUrl,
-                                      index,
-                                      value.fileMissing
-                                    );
-
-                                    const newTotalORNumbers = [
-                                      ...totalORNumbers,
-                                    ];
-                                    const filteredIndex =
-                                      totalORNumbers.findIndex(
-                                        (item) =>
-                                          item.fileName === value.fileName
+                            {value.orNumbers.length > 5 &&
+                              (value.showAll ? null : (
+                                <tr>
+                                  <td
+                                    title="Show All"
+                                    onClick={() => {
+                                      handlePreview(
+                                        value.fileUrl,
+                                        index,
+                                        value.fileMissing
                                       );
-                                    newTotalORNumbers[filteredIndex].showAll =
-                                      !newTotalORNumbers[filteredIndex].showAll;
-                                    setTotalORNumbers(newTotalORNumbers);
-                                  }}
-                                  className="border-b border-gray-200 font-medium hover:bg-gray-300 cursor-pointer py-2 px-4 text-sm text-gray-700"
-                                >
-                                  {value.showAll
-                                    ? null
-                                    : value.orNumbers.length - 5 + " More.."}
-                                </td>
-                              </tr>
-                            )}
+
+                                      const newTotalORNumbers = [
+                                        ...totalORNumbers,
+                                      ];
+                                      const filteredIndex =
+                                        totalORNumbers.findIndex(
+                                          (item) =>
+                                            item.fileName === value.fileName
+                                        );
+                                      newTotalORNumbers[filteredIndex].showAll =
+                                        !newTotalORNumbers[filteredIndex]
+                                          .showAll;
+                                      setTotalORNumbers(newTotalORNumbers);
+                                    }}
+                                    className="border-b border-gray-200 font-medium hover:bg-gray-300 cursor-pointer py-2 px-4 text-sm text-gray-700"
+                                  >
+                                    {value.showAll
+                                      ? null
+                                      : value.orNumbers.length - 5 + " More.."}
+                                  </td>
+                                </tr>
+                              ))}
                           </tbody>
                         </table>
                       </div>
