@@ -128,7 +128,7 @@ const FileUpload = () => {
         let match;
         while ((match = regex.exec(data)) !== null) {
           orNumbers.push(match[1]);
-          console.log(match[1]);
+          //oconsole.log(match[1]);
         }
 
         const maxORNumber = Math.max(...orNumbers);
