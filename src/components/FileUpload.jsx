@@ -3,28 +3,29 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 
 const FileUpload = () => {
-  const [fileNames, setFileNames] = useState([]);
-  const [missingORNumbers, setMissingORNumbers] = useState([]);
-  const [totalORNumbers, setTotalORNumbers] = useState([]);
-  const [showReview, setShowReview] = useState(false);
-  const [downloadUrl, setDownloadUrl] = useState(null);
-  const [missingUrl, setMissingUrl] = useState(null);
-  const [fileName, setFileName] = useState("");
-  const [start, setStart] = useState(false);
-  const [customAlert, setAlert] = useState(false);
-  const [isOrignal, setIsOriginal] = useState(false);
-
-  const [loading, setLoading] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [previewIndex, setPreviewIndex] = useState(null);
-  const [originalORNumbers, setOriginalORNumbers] = useState("orNumbers");
-  const [missingOnly, setMissingOnly] = useState(false);
-  const divRef = useRef(null);
-  const [height, setHeight] = useState(768);
+  const [fileNames, setFileNames] = useState([]); // Array of file names
+  const [missingORNumbers, setMissingORNumbers] = useState([]); // Array of missing OR numbers
+  const [totalORNumbers, setTotalORNumbers] = useState([]); // Array of total OR numbers
+  const [showReview, setShowReview] = useState(false); // Show review
+  const [downloadUrl, setDownloadUrl] = useState(null); // URL of the download file
+  const [missingUrl, setMissingUrl] = useState(null); // URL of the missing file
+  const [fileName, setFileName] = useState(""); // File name
+  const [start, setStart] = useState(false); // Start processing
+  const [customAlert, setAlert] = useState(false); // Custom alert
+  const [isOrignal, setIsOriginal] = useState(false); // Original or sorted
+  const [loading, setLoading] = useState(false); // Loading state
+  const [previewUrl, setPreviewUrl] = useState(null); // URL of the previewed file
+  const [previewIndex, setPreviewIndex] = useState(null); // Index of the previewed file
+  const [originalORNumbers, setOriginalORNumbers] = useState("orNumbers"); // Default
+  const [missingOnly, setMissingOnly] = useState(false); // Show missing only
+  const divRef = useRef(null); // Reference to the div element
+  const [height, setHeight] = useState(768); // Default height
 
   const handleFileChange = (event) => {
-    setMissingORNumbers([]);
-    setTotalORNumbers([]);
+
+    // Reset all states every time a new file is uploaded
+    setMissingORNumbers([]); 
+    setTotalORNumbers([]); 
     setDownloadUrl(null);
     setMissingUrl(null);
     setFileName("");
@@ -35,6 +36,7 @@ const FileUpload = () => {
     setPreviewIndex(null);
     setMissingOnly(false);
 
+    // Get the files
     const files = Array.from(event.target.files);
     const names = files.map((file) => file.name);
     setFileNames(names);
@@ -80,6 +82,9 @@ const FileUpload = () => {
       generateMissingNumbersFile(missingORNumbers);
     }
 
+    
+    
+
     const date = new Date();
     const formattedDate = date.toISOString().slice(0, 10);
     const formattedTime = date.toTimeString().split(" ")[0].replace(/:/g, "-");
@@ -99,6 +104,8 @@ const FileUpload = () => {
     setDownloadUrl(null);
 
     const files = document.querySelector('input[type="file"]').files;
+
+    localStorage.setItem("files", JSON.stringify(files));
     if (!files.length) {
       console.error("No files selected");
       alert("No files selected");
@@ -429,8 +436,8 @@ const FileUpload = () => {
                                         }
                                       >
                                         {isOrignal
-                                          ? "Unsorted No."
-                                          : "Sorted No."}
+                                          ? "Sorted No."
+                                          : "Unsorted No."}
                                       </button>
                                     )}
                                   </>
