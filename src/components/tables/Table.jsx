@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { FaRegFileExcel } from "react-icons/fa";
+import { FaRegFileExcel, FaRegSave, FaTrash } from "react-icons/fa";
 import { IoMdAdd } from "react-icons/io";
 import XLSX from "xlsx-js-style";
 import LoadingTable from "../loading/LoadingTable";
@@ -152,7 +152,8 @@ const Table = () => {
   }, []);
 
   const handleSort = (key) => {
-    const direction = key === sortConfig.key && sortConfig.direction === "asc" ? "desc" : "asc";
+    const direction =
+      key === sortConfig.key && sortConfig.direction === "asc" ? "desc" : "asc";
 
     setSortConfig({ key, direction });
   };
@@ -504,6 +505,9 @@ const Table = () => {
     return style;
   };
 
+ 
+
+
   if (loading) {
     return (
       <div className="mt-5 w-[1700px]">
@@ -524,58 +528,93 @@ const Table = () => {
         (error &&
           alerts == "Exported Success!" &&
           successAlerts("Exported Successfully!"))}
+      <div className="flex lg:flex-row flex-col">
+          <div className={`mb-4 flex items-center sm:flex-row flex-col`}>
+            <input
+              type="text"
+              ref={findRef}
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="border border-gray-300 p-2 sm:mr-4 sm:w-[700px] w-full sm:m-0 m-4"
+            />
+            <select
+              value={selectedBrand}
+              onChange={handleBrandFilterChange}
+              className="border border-gray-300 sm:max-w-[125px] w-full p-2 items-center"
+            >
+              <option value="All">All Brands</option>
+              <option value="APPLE">APPLE</option>
+              <option value="HP">HP</option>
+              <option value="ACER">ACER</option>
+              <option value="ASUS">ASUS</option>
+              <option value="WINDOWS">WINDOWS</option>
+            </select>
+          </div>
+          <div className="xl:flex hidden md:flex-row mb-5 gap-2">
+            <button
+              onClick={openModal}
+              className="ml-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-2"
+            >
+              <IoMdAdd  />
+              Add devices
+            </button>
+            <button
+              onClick={exportToXlsx}
+              className=" px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
+            >
+              <FaRegFileExcel />
+              Export
+            </button>
 
-      <div className={`mb-4 flex items-center `}>
-        <input
-          type="text"
-          ref={findRef}
-          placeholder="Search..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="border border-gray-300 p-2 mr-4 w-[700px]"
-        />
-        <select
-          value={selectedBrand}
-          onChange={handleBrandFilterChange}
-          className="border border-gray-300 p-2"
-        >
-          <option value="All">All Brands</option>
-          <option value="APPLE">APPLE</option>
-          <option value="HP">HP</option>
-          <option value="ACER">ACER</option>
-          <option value="ASUS">ASUS</option>
-          <option value="WINDOWS">WINDOWS</option>
-        </select>
-        <div className="lg:flex hidden">
-        <button
-          onClick={openModal}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 ml-4"
-        >
-          <IoMdAdd className="w-7 h-7" />
-          Add devices
-        </button>
-        <button
-          onClick={exportToXlsx}
-          className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
-        >
-          <FaRegFileExcel className="w-7 h-7" />
-          Export
-        </button>
+            <button
+              onClick={saveChanges}
+              className="bg-yellow-400 flex items-center gap-2 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded"
+            >
+              <FaRegSave></FaRegSave>
+              Save Changes
+            </button>
 
-        <button
-          onClick={saveChanges}
-          className="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded ml-4"
-        >
-          Save Changes
-        </button>
+            <button
+              onClick={deleteRows}
+              className="bg-red-400 hover:bg-red-500 flex items-center gap-2 transition-all duration-300 text-white px-4 py-2 rounded"
+            >
+              <FaTrash></FaTrash>
+              Delete Rows
+            </button>
+          </div>
 
-        <button
-          onClick={deleteRows}
-          className="bg-red-400 hover:bg-red-500 transition-all duration-300 text-white px-4 py-2 rounded ml-4"
-        >
-          Delete Multiple Rows
-        </button>
-        </div>
+          <div className="lg:hidden flex md:flex-row gap-2 mb-5 w-full ">
+            <button
+              onClick={openModal}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 "
+            >
+              <IoMdAdd className="" />
+            </button>
+            <button
+              onClick={exportToXlsx}
+              className=" px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
+            >
+              <FaRegFileExcel className="" />
+            </button>
+
+            <button
+              onClick={saveChanges}
+              className="bg-yellow-400 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded "
+            >
+              <FaRegSave></FaRegSave>
+            </button>
+
+            <button
+              onClick={deleteRows}
+              className="bg-red-400 hover:bg-red-500 transition-all duration-300 text-white px-4 py-2 rounded "
+            >
+              <FaTrash></FaTrash>
+            </button>
+          </div>
+
+
+          
         {/*pendingChanges.updates.length > 0 ||
         pendingChanges.additions.length > 0 ? (
           <button
