@@ -22,10 +22,9 @@ const FileUpload = () => {
   const [height, setHeight] = useState(768); // Default height
 
   const handleFileChange = (event) => {
-
     // Reset all states every time a new file is uploaded
-    setMissingORNumbers([]); 
-    setTotalORNumbers([]); 
+    setMissingORNumbers([]);
+    setTotalORNumbers([]);
     setDownloadUrl(null);
     setMissingUrl(null);
     setFileName("");
@@ -81,9 +80,6 @@ const FileUpload = () => {
     if (missingORNumbers.length > 0) {
       generateMissingNumbersFile(missingORNumbers);
     }
-
-    
-    
 
     const date = new Date();
     const formattedDate = date.toISOString().slice(0, 10);
@@ -156,10 +152,14 @@ const FileUpload = () => {
         const fileUrl = URL.createObjectURL(fileBlob);
 
         const findMissingNumbers = async (array) => {
+          const arrays = [...array];
           const arrayContainer = [];
-          for (let i = 0; i < array.length - 1; i++) {
-            const current = Number(array[i]);
-            const next = Number(array[i + 1]);
+          for (let i = 0; i < arrays.length - 1; i++) {
+            const current = Number(arrays[i]);
+            const next = Number(arrays[i + 1]);
+
+            // && current > array[0] && next > array[0]
+
             if (next - current > 1) {
               for (let j = current + 1; j < next; j++) {
                 const n = "0".repeat(20 - j.toString().length - 1) + j;
@@ -415,7 +415,10 @@ const FileUpload = () => {
                                       }}
                                       className="bg-red-500 text-white py-2 px-4 text-center rounded-md shadow-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-300"
                                     >
-                                      Close <span className="sm:hidden block">Preview</span>
+                                      Close{" "}
+                                      <span className="sm:hidden block">
+                                        Preview
+                                      </span>
                                     </button>
 
                                     {value.missingNumbers.length > 0 && (
@@ -431,9 +434,11 @@ const FileUpload = () => {
                                             );
                                           }
                                         }}
-                                        className={
-                                          `${isOrignal ? "bg-green-500 hover:bg-green-600 focus:ring-green-500" : "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500"} text-white py-2 px-4 text-center rounded-md shadow-md  focus:outline-none focus:ring-2  focus:ring-opacity-50 transition duration-300`
-                                        }
+                                        className={`${
+                                          isOrignal
+                                            ? "bg-green-500 hover:bg-green-600 focus:ring-green-500"
+                                            : "bg-yellow-500 hover:bg-yellow-600 focus:ring-yellow-500"
+                                        } text-white py-2 px-4 text-center rounded-md shadow-md  focus:outline-none focus:ring-2  focus:ring-opacity-50 transition duration-300`}
                                       >
                                         {isOrignal
                                           ? "Sorted No."
