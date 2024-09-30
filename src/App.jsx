@@ -112,8 +112,7 @@ function AppContent() {
             <LoadingSignIn message={state} />
           ) : (
             <>
-              {location.pathname !== "/signin" && 
-                (location.pathname === "/table" || location.pathname === "/paymentTable" || location.pathname === "/upload") &&
+              {location.pathname !== "/signin" &&
                 (isAuthenticated ? (
                   <Navbar
                     currentView={currentView}
@@ -149,7 +148,7 @@ function AppContent() {
                       </PrivateRoute>
                     }
                   />
-                  <Route path="*" element={<NotFound message="This page not exist :)"/>} />
+                  {/*<Route path="*" element={<NotFound message="This page not exist :)"/>*/}
                 </Routes>
               </div>
             </>
