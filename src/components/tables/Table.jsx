@@ -771,10 +771,14 @@ const Table = () => {
                 <td className="px-6 border-b border-gray-300 text-sm text-gray-700">
                   <button
                     onClick={() => deleteDevice(device._id)}
-                    className="bg-red-500 text-white px-4 py-1 rounded"
+                    className="bg-red-500 hover:bg-red-600 transition-all 0.2s ease-in-out text-white px-2 py-1 rounded"
                   >
-                    Delete
+                    
+                    <FaTrash className="w-5 h-5" ></FaTrash>
+
+                    
                   </button>
+                  
                 </td>
               </tr>
             ))}

@@ -1,14 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import FileUpload from "./components/FileUpload";
 import SignIn from "./components/forms/SignIn";
 import LoadingSignIn from "./components/loading/LoadingSignIn";
 import NotFound from "./components/NotFound";
+import PrivateRoute from "./components/PrivateRoute";
 import PaymentTable from "./components/tables/PaymentTable";
 import Table from "./components/tables/Table";
-import PrivateRoute from "./components/PrivateRoute";
 import "./index.css";
 
 let isLocal = false;

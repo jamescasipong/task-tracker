@@ -365,7 +365,7 @@ const PaymentTable = () => {
             </button>
           </div>
 
-          <div className="flex sm:hidden flex-col gap-4 p-4 max-w-md mx-auto">
+          <div className="flex sm:hidden flex-col gap-4 p-2 max-w-md mx-auto">
             <input
               type="text"
               value={newTableName}
@@ -378,29 +378,29 @@ const PaymentTable = () => {
               } focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
 
-            <div className="flex flex-col sm:flex-row sm:justify-between gap-2">
+            <div className="flex flex-row sm:flex-row justify-center sm:justify-between gap-2">
               <button
                 onClick={addTable}
                 className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
               >
-                <FaPlus className="mr-2" />
-                Add
+                <FaPlus className="" />
+                
               </button>
 
               <button
                 onClick={exportToXLSX}
                 className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
               >
-                <MdFileDownload className="mr-2" />
-                Export
+                <MdFileDownload className="" />
+                
               </button>
 
               <button
                 onClick={saveData}
                 className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
               >
-                <FaRegSave className="mr-2" />
-                Save
+                <FaRegSave className="" />
+                
               </button>
             </div>
           </div>
@@ -408,9 +408,9 @@ const PaymentTable = () => {
           {tables.map((table, tableIndex) => (
             <div
               key={tableIndex}
-              className="mt-8 border p-4 rounded-md overflow-auto"
+              className="mt-4 border p-4 rounded-md overflow-auto"
             >
-              <div className="flex gap-5 items-center mb-2 overflow-auto">
+              <div className="flex gap-5 items-center  overflow-auto">
                 {editingTableIndex === tableIndex ? (
                   <>
                     <input
