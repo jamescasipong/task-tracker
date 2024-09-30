@@ -345,7 +345,7 @@ const PaymentTable = () => {
               className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md"
             >
               <FaPlus className="inline-block mr-2" />
-              Add Table
+              Add
             </button>
 
             <button
@@ -384,7 +384,7 @@ const PaymentTable = () => {
                 className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
               >
                 <FaPlus className="mr-2" />
-                Add Table
+                Add
               </button>
 
               <button

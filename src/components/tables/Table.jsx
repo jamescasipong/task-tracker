@@ -554,7 +554,7 @@ const Table = () => {
             className="ml-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-2"
           >
             <IoMdAdd />
-            Add devices
+            Add
           </button>
           <button
             onClick={exportToXlsx}
@@ -569,7 +569,7 @@ const Table = () => {
             className="bg-yellow-400 flex items-center gap-2 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded"
           >
             <FaRegSave></FaRegSave>
-            Save Changes
+            Save
           </button>
 
           <button
@@ -577,11 +577,11 @@ const Table = () => {
             className="bg-red-400 hover:bg-red-500 flex items-center gap-2 transition-all duration-300 text-white px-4 py-2 rounded"
           >
             <FaTrash></FaTrash>
-            Delete Rows
+            Delete
           </button>
         </div>
 
-        <div className="lg:hidden flex md:flex-row gap-2 mb-5 w-full ">
+        <div className="lg:hidden flex md:flex-row gap-2 mb-5 w-full justify-center">
           <button
             onClick={openModal}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-1 "
