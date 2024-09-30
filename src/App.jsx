@@ -91,13 +91,11 @@ function AppContent() {
     setCurrentView(view);
   };
 
-  useEffect (() => {
-
+  useEffect(() => {
     if (location.pathname === "/" && isAuthenticated) {
-      setCurrentView("table");
+      navigate("/table");
     }
-  }
-  , [location.pathname, navigate, isAuthenticated]);
+  }, [location.pathname, isAuthenticated, navigate]);
 
   return (
     <>
