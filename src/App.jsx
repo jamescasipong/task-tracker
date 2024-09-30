@@ -124,6 +124,7 @@ function AppContent() {
               }
               <div className="bg-primary flex justify-center items-start">
                 <Routes>
+                  <Route exact from="/" to="signin"></Route>
                   <Route path="/signin" element={<SignIn onSignIn={handleSignIn} />} />
                   <Route
                     path="/table"
