@@ -620,91 +620,92 @@ const Table = () => {
           </button>
         ) : null*/}
       </div>
-
-      <div
-        className={`transition-transform ${
-          isModalOpen ? "translate-y-0" : "translate-y-100"
-        } items-center bg-gray-800 bg-opacity-50 z-0 w-full h-full fixed justify-center`}
-      >
-        <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
-          <div className="flex">
-            <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
-          </div>
-
-          {newRows.map((row, rowIndex) => (
-            <div key={rowIndex} className="mb-4bg-slate-100 p-5 rounded-md">
-              <h3 className="text-md font-medium mb-2">
-                Device {rowIndex + 1}
-              </h3>
-              <div className="flex flex-wrap gap-4">
-                {Object.keys(row).map((key) => (
-                  <div key={key} className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700">
-                      {key}
-                    </label>
-                    <input
-                      type="text"
-                      value={row[key]}
-                      onChange={(e) =>
-                        handleRowInputChange(rowIndex, key, e.target.value)
-                      }
-                      className="border border-gray-300 p-2 mt-1 w-full rounded-md"
-                    />
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={() => deleteRow(rowIndex)}
-                className="bg-red-500 text-white px-4 py-1 rounded mt-2"
-              >
-                Delete Row
-              </button>
+      <div className={` ${isModalOpen ? "bg-gray-800 pointer-events-auto" : "pointer-events-none"} transition bg-opacity-50 top-0 left-0 items-center w-full h-full fixed justify-center`}>
+        <div
+          className={`transition-transform ${
+            isModalOpen ? "translate-y-0" : "translate-y-100"
+          } items-center  bg-opacity-50 w-full h-full fixed justify-center`}
+        >
+          <div className="bg-white p-6 rounded shadow-lg w-[90%] max-h-[90vh] overflow-y-auto">
+            <div className="flex">
+              <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
             </div>
-          ))}
-          <button
-            onClick={() =>
-              setNewRows([
-                ...newRows,
-                {
-                  No:
-                    Math.max(
-                      ...newRows.map((item) => Number(item.No) || 0),
-                      0
-                    ) + 1,
-                  SerialNumber: "",
-                  Brand: "",
-                  Model: "",
-                  Owner: "",
-                  Department: "",
-                  Owner_1: "",
-                  Department_1: "",
-                  Owner_2: "",
-                  Department_2: "",
-                },
-              ])
-            }
-            className="bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-2 rounded mt-4"
-          >
-            Add Another Row
-          </button>
-          <button
-            onClick={addNewRows}
-            className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
-          >
-            {addLoading ? (
-              <div className="flex gap-2">
-                <div>Loading...</div>
+
+            {newRows.map((row, rowIndex) => (
+              <div key={rowIndex} className="mb-4bg-slate-100 p-5 rounded-md">
+                <h3 className="text-md font-medium mb-2">
+                  Device {rowIndex + 1}
+                </h3>
+                <div className="md:flex md:flex-wrap gap-4">
+                  {Object.keys(row).map((key) => (
+                    <div key={key} className="md:flex-1  grid md:grid-cols-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        {key}
+                      </label>
+                      <input
+                        type="text"
+                        value={row[key]}
+                        onChange={(e) =>
+                          handleRowInputChange(rowIndex, key, e.target.value)
+                        }
+                        className="border border-gray-300 p-2 mt-1 w-full rounded-md"
+                      />
+                    </div>
+                  ))}
+                </div>
+                <button
+                  onClick={() => deleteRow(rowIndex)}
+                  className="bg-red-500 hover:bg-red-600 transition-colors 0.2s ease-in-out text-white px-4 py-1 rounded mt-2"
+                >
+                  Delete Row
+                </button>
               </div>
-            ) : (
-              <div>Add Rows</div>
-            )}
-          </button>
-          <button
-            onClick={closeModal}
-            className="bg-gray-500 hover:bg-gray-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
-          >
-            Cancel
-          </button>
+            ))}
+            <button
+              onClick={() =>
+                setNewRows([
+                  ...newRows,
+                  {
+                    No:
+                      Math.max(
+                        ...newRows.map((item) => Number(item.No) || 0),
+                        0
+                      ) + 1,
+                    SerialNumber: "",
+                    Brand: "",
+                    Model: "",
+                    Owner: "",
+                    Department: "",
+                    Owner_1: "",
+                    Department_1: "",
+                    Owner_2: "",
+                    Department_2: "",
+                  },
+                ])
+              }
+              className="bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-2 rounded mt-4"
+            >
+              Add Row
+            </button>
+            <button
+              onClick={addNewRows}
+              className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
+            >
+              {addLoading ? (
+                <div className="flex gap-2">
+                  <div>Loading...</div>
+                </div>
+              ) : (
+                <div>Save</div>
+              )}
+            </button>
+            <button
+              onClick={closeModal}
+              className="bg-gray-500 hover:bg-gray-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
+            >
+              Cancel
+            </button>
+          </div>
         </div>
       </div>
       <div className="w-full overflow-x-auto border border-gray-300 rounded-md ">
@@ -785,9 +786,8 @@ const Table = () => {
 };
 
 export default Table;
-  
 
-  /*return (
+/*return (
     <div className="md:w-[1500px] overflow-x-auto p-4 ">
       {(error && alerts === "Not Found!" && dangerAlerts(alerts)) ||
         (error && alerts === "Saved Success!" && successAlerts("Saved Successfully!")) ||

@@ -14,7 +14,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
       <div className={`max-w-[1700px]  mx-auto px-4 flex justify-between items-center h-16`}> {/* max-w-7xl*/}
         <div className="text-xl font-bold">Monitoring System</div>
 
-        <div className="hidden md:flex items-center space-x-4">
+        <div className="hidden md:flex items-center space-x-4 md:mr-[190px] mr-0 ">
           <button
             className={`px-3 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
             onClick={() => {setCurrentView("table")}}

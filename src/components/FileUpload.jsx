@@ -251,7 +251,7 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="h-full w-[1700px] mt-5 mb-2 flex justify-center">
+    <div className="h-full w-[1700px] mt-44 mb-2 flex justify-center">
       <div
         className={`${
           showReview ? "hidden" : "bg-white"
@@ -271,7 +271,7 @@ const FileUpload = () => {
           onClick={handleProcessFiles}
           className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
         >
-          Find Something :D
+          Find Something
         </button>
         <ul className="bg-gray-50 border border-gray-300 p-4 rounded-md mt-4">
           {fileNames.length > 0 ? (

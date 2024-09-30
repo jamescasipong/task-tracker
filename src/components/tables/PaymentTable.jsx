@@ -511,7 +511,7 @@ const PaymentTable = () => {
                               {row.values.map((value, monthIndex) => (
                                 <td
                                   key={monthIndex}
-                                  className="py-2 px-4 border text-[13px]"
+                                  className="py-2 px-2 border text-[13px]"
                                 >
                                   <input
                                     type="text"
@@ -525,7 +525,7 @@ const PaymentTable = () => {
                                         event
                                       )
                                     }
-                                    className="w-full px-2 py-1 border rounded text-black"
+                                    className="w-full px-2 py-2 border rounded text-black"
                                   />
                                 </td>
                               ))}
