@@ -251,15 +251,18 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="h-full w-[1700px] mt-2 mb-2 flex justify-center">
+    <div className="h-full w-[1700px] mt-4 mb-2 flex justify-center">
       <div
-        className={`${
+        className={`w-[1000px] ${
           showReview ? "hidden" : "bg-white"
         } p-8 rounded-lg shadow-lg w-full max-w-md`}
       >
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Drag & Drop Files Here
+          Upload Files
         </h2>
+        <p className="text-center mb-5">
+        Upload files to find missing OR numbers.
+        </p>
         <input
           type="file"
           multiple
@@ -271,7 +274,7 @@ const FileUpload = () => {
           onClick={handleProcessFiles}
           className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition duration-300"
         >
-          Find Something
+          Process Files
         </button>
         <ul className="bg-gray-50 border border-gray-300 p-4 rounded-md mt-4">
           {fileNames.length > 0 ? (
