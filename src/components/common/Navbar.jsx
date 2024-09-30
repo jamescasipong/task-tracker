@@ -17,19 +17,19 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         <div className="hidden md:flex items-center space-x-4">
           <button
             className={`px-3 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
-            onClick={() => setCurrentView("table")}
+            onClick={() => {setCurrentView("table")}}
           >
             Hardware Inventory
           </button>
           <button
             className={`px-3 py-2 rounded ${currentView === "paymentTable" ? "bg-gray-600" : "hover:bg-gray-700"}`}
-            onClick={() => setCurrentView("paymentTable")}
+            onClick={() => {setCurrentView("paymentTable")}}
           >
             Payments
           </button>
           <button
             className={`px-3 py-2 rounded ${currentView === "upload" ? "bg-gray-600" : "hover:bg-gray-700"}`}
-            onClick={() => setCurrentView("upload")}
+            onClick={() => {setCurrentView("upload")}}
           >
             ORsChecker
           </button>
@@ -87,19 +87,19 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
       <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-gray-800 p-4`}>
         <button
           className={`block w-full px-4 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
-          onClick={() => setCurrentView("table")}
+          onClick={() => {setCurrentView("table"); setIsOpen(false);}}
         >
           Hardware Inventory
         </button>
         <button
           className={`block w-full px-4 py-2 rounded ${currentView === "paymentTable" ? "bg-gray-600" : "hover:bg-gray-700"}`}
-          onClick={() => setCurrentView("paymentTable")}
+          onClick={() => {setCurrentView("paymentTable"); setIsOpen(false);}}
         >
           Payments
         </button>
         <button
           className={`block w-full px-4 py-2 rounded ${currentView === "upload" ? "bg-gray-600" : "hover:bg-gray-700"}`}
-          onClick={() => setCurrentView("upload")}
+          onClick={() => {setCurrentView("upload"); setIsOpen(false);}}
         >
           ORsChecker
         </button>
