@@ -11,7 +11,7 @@ import Table from "./components/tables/Table";
 import PrivateRoute from "./components/PrivateRoute";
 import "./index.css";
 
-let isLocal = true;
+let isLocal = false;
 axios.defaults.baseURL = isLocal
   ? "http://localhost:3002/api"
   : "https://tasktracker-server.vercel.app/api/";
