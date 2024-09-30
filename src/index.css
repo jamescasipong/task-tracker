@@ -16,6 +16,7 @@
 
 * {
   scroll-behavior: smooth;
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
 .transition-transform {
@@ -194,7 +195,8 @@
 /* styles.css */
 
 ::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
+  width: 10px;
+  height: 10px /* Width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {

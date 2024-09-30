@@ -1,82 +1,122 @@
+import React, { useState } from 'react';
 import { FaSignOutAlt } from "react-icons/fa"; // Import the logout icon
-import { IoMdMenu } from "react-icons/io";
 import { MdOutlineIntegrationInstructions } from "react-icons/md";
 
-
-
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <nav className="bg-gray-800 p-4 w-full relative">
-      <div className="container lg:mx-[100px] lg:flex justify-end lg:justify-between items-end">
-        <div className="lg:flex">
+    <nav className="bg-gray-800 text-white">
+      <div className={`max-w-[1700px]  mx-auto px-4 flex justify-between items-center h-16`}> {/* max-w-7xl*/}
+        <div className="text-xl font-bold">Monitoring System</div>
+
+        <div className="hidden md:flex items-center space-x-4">
           <button
-            className={`text-white px-4 py-2 lg:block hidden rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${
-              currentView === "table"
-                ? "bg-blue-500"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
+            className={`px-3 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
             onClick={() => setCurrentView("table")}
           >
             Hardware Inventory
           </button>
-          {/*<button
-            className={`text-white px-4 py-2 rounded-md mx-2 transition-colors duration-300 ease-in-out focus:outline-none ${currentView === 'excelToJson' ? 'bg-blue-500' : 'bg-gray-700 hover:bg-gray-600'}`}
-            onClick={() => setCurrentView('excelToJson')}
-          >
-            Excel to JSON
-          </button>*/}
-          
           <button
-            className={`ml-3 lg:block hidden text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${
-              currentView === "paymentTable"
-                ? "bg-blue-500"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
+            className={`px-3 py-2 rounded ${currentView === "paymentTable" ? "bg-gray-600" : "hover:bg-gray-700"}`}
             onClick={() => setCurrentView("paymentTable")}
           >
             Payments
           </button>
-
           <button
-            className={`ml-3 lg:block hidden text-white px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${
-              currentView === "upload"
-                ? "bg-blue-500"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
+            className={`px-3 py-2 rounded ${currentView === "upload" ? "bg-gray-600" : "hover:bg-gray-700"}`}
             onClick={() => setCurrentView("upload")}
           >
             ORsChecker
           </button>
           
-          {/*<button
-            className={` lg:hidden flex text-white w-full px-4 py-2 rounded-md transition-colors duration-300 ease-in-out focus:outline-none ${
-              currentView === "upload"
-                ? "bg-blue-500"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
-            onClick={() => setCurrentView("upload")}
-          >
-            <CiMenuFries />
-
-          </button>*/}
-  
-          <IoMdMenu className="lg:hidden items-end flex w-7 h-7 my-2 text-yellow-100 hover:text-yellow-200 cursor-pointer transition-colors 0.5s ease-in-out"/>
-
+          {/* Menu Button */}
+          
         </div>
 
-        <div className="absolute hidden right-[7%] lg:flex gap-5">
-          <button onClick={() => {window.location.href = "/instruction.html"}} className="lg:flex hidden items-center bg-yellow-500 text-white px-4 py-2 rounded-md hover:bg-yellow-600 transition-colors duration-300 ease-in-out gap-2">
-            <MdOutlineIntegrationInstructions className="w-7 h-7" />
-            Instructions
-          </button>
-          <button
-            onClick={onLogout}
-            className="flex  items-center bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors duration-300 ease-in-out "
+        <div className="relative hidden md:flex">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 cursor-pointer hover:text-yellow-200"
+              onClick={toggleMenu}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+            {isOpen && (
+              <div className="absolute right-[0px] top-10 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-20">
+                <button
+                  className="flex items-center w-full px-4 py-2 hover:bg-gray-600"
+                  onClick={() => { window.location.href = "/instruction.html"; }}
+                >
+                  <MdOutlineIntegrationInstructions className="mr-2" />
+                  Instructions
+                </button>
+                <button
+                  className="flex items-center w-full px-4 py-2 hover:bg-gray-600"
+                  onClick={onLogout}
+                >
+                  <FaSignOutAlt className="mr-2" />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+
+        <div className="md:hidden">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6 cursor-pointer"
+            onClick={toggleMenu}
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
           >
-            <FaSignOutAlt className="mr-2" /> {/* Add the icon here */}
-            Logout
-          </button>
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+          </svg>
         </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`md:hidden ${isOpen ? 'block' : 'hidden'} bg-gray-800 p-4`}>
+        <button
+          className={`block w-full px-4 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+          onClick={() => setCurrentView("table")}
+        >
+          Hardware Inventory
+        </button>
+        <button
+          className={`block w-full px-4 py-2 rounded ${currentView === "paymentTable" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+          onClick={() => setCurrentView("paymentTable")}
+        >
+          Payments
+        </button>
+        <button
+          className={`block w-full px-4 py-2 rounded ${currentView === "upload" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+          onClick={() => setCurrentView("upload")}
+        >
+          ORsChecker
+        </button>
+        <button
+          className="flex items-center justify-center w-full px-4 py-2 rounded hover:bg-gray-700"
+          onClick={() => { window.location.href = "/instruction.html"; }}
+        >
+          <MdOutlineIntegrationInstructions className="mr-2" />
+          Instructions
+        </button>
+        <button
+          className="flex items-center justify-center w-full px-4 py-2 rounded hover:bg-gray-700"
+          onClick={onLogout}
+        >
+          <FaSignOutAlt className="mr-2" />
+          Logout
+        </button>
       </div>
     </nav>
   );

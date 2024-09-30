@@ -27,6 +27,7 @@ function App() {
   });
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState("");
+  const [isShown, setShown] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("currentView", JSON.stringify(currentView));

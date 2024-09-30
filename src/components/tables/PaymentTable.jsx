@@ -485,7 +485,7 @@ const PaymentTable = () => {
                 Add Row
               </button>
 
-              <div className="overflow-x-auto">
+              <div className={`${isTableVisible[tableIndex] ? "overflow-x-auto" : "overflow-x-hidden"}`}>
                 <table className="min-w-full border flex flex-col">
                   <tbody
                     style={getTableBodyStyle(tableIndex)}
@@ -498,7 +498,7 @@ const PaymentTable = () => {
                               {row.months.map((month, monthIndex) => (
                                 <th
                                   key={monthIndex}
-                                  className="py-2 px-4 border text-center bg-gray-200 text-[13px]"
+                                  className="py-2 px-4 border min-w-[100px] text-center bg-gray-200 text-[13px]"
                                 >
                                   {month}
                                 </th>
