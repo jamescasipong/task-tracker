@@ -143,7 +143,7 @@ const FileUpload = () => {
 
         const maxORNumber = Math.max(...orNumbers);
         const minORNumber = Math.min(...orNumbers);
-        //orNumbers.sort((a, b) => a - b);
+        orNumbers.sort((a, b) => a - b);
 
         const withNumbering = orNumbers.map(
           (num, index) => `${index + 1}. ${num}`
@@ -154,13 +154,13 @@ const FileUpload = () => {
         const findMissingNumbers = async (array) => {
           const arrays = [...array];
           const arrayContainer = [];
-          const numberTracker = [];
-          const skipNumbers = [];
+          //const numberTracker = [];
+          //const skipNumbers = [];
           for (let i = 0; i < arrays.length - 1; i++) {
             const current = Number(arrays[i]);
             const next = Number(arrays[i + 1]);
 
-            if (!numberTracker.includes(current) && array[0] < current) {
+            /*if (!numberTracker.includes(current) && array[0] < current) {
               numberTracker.push(current);
             }
 
@@ -175,8 +175,10 @@ const FileUpload = () => {
                   [`Max: ${maxORNumber}`],
                 ],
               }); 
-            }
-            /*if (next - current > 1 && array[0] < current && array[0] < next && !numberTracker.includes(next)&& !numberTracker.includes(current)) {
+            }*/
+
+
+            if (next - current > 1 /*&& array[0] < current && array[0] < next && !numberTracker.includes(next)&& !numberTracker.includes(current)*/) {
               for (let j = current + 1; j < next; j++) {
                 const n = "0".repeat(20 - j.toString().length - 1) + j;
                 if (j === current + 1) {
@@ -192,10 +194,10 @@ const FileUpload = () => {
                   arrayContainer.push({ missing: [[n], [name]] });
                 }
               }
-            }*/
+            }
           }
 
-          numberTracker.forEach((element, index, array) => {
+          /*numberTracker.forEach((element, index, array) => {
               let current = array[index];
               let next = array[index + 1];
 
@@ -213,7 +215,7 @@ const FileUpload = () => {
                   ],
                 });
               }
-          });
+          });*/
 
           //console.log("numberTracker", numberTracker);
           return arrayContainer;
@@ -406,7 +408,7 @@ const FileUpload = () => {
                                 {previewUrl == null &&
                                   value.fileMissing != null && (
                                     <div className="ml-4 py-1 px-2 rounded-md lg:flex hidden items-center bg-red-500 hover:bg-red-600">
-                                      <p>{value.missingNumbers.length} Miss Skip!</p>
+                                      <p>{value.missingNumbers.length} Miss!</p>
                                     </div>
                                   )}
                                 {value.orNumbers.length > 5 && (
