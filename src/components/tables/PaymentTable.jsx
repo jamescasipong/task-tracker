@@ -311,7 +311,7 @@ const PaymentTable = () => {
 
   return (
     <div
-      className={`lg:w-[1700px] w-full min-h-screen p-4 ${
+      className={`clg:w-[1700px] w-full min-h-screen p-4 ${
         darkMode ? "dark bg-gray-800 text-white" : "light bg-white text-black"
       }`}
     >
