@@ -92,11 +92,8 @@ function AppContent() {
   };
 
   useEffect (() => {
-    if (location.pathname === "/" && !isAuthenticated) {
-      navigate("/signin");
-    }
 
-    if (location.pathname === "/signin" && isAuthenticated) {
+    if (location.pathname === "/" && isAuthenticated) {
       setCurrentView("table");
     }
   }
@@ -112,7 +109,7 @@ function AppContent() {
             <LoadingSignIn message={state} />
           ) : (
             <>
-              {location.pathname !== "/signin" && 
+              {location.pathname !== "/" && 
                 (location.pathname === "/table" || location.pathname === "/paymentTable" || location.pathname === "/upload") &&
                 (isAuthenticated ? (
                   <Navbar
@@ -124,8 +121,7 @@ function AppContent() {
               }
               <div className="bg-primary flex justify-center items-start">
                 <Routes>
-                  <Route exact from="/" to="signin"></Route>
-                  <Route path="/signin" element={<SignIn onSignIn={handleSignIn} />} />
+                  <Route path="/" element={<SignIn onSignIn={handleSignIn} />} />
                   <Route
                     path="/table"
                     element={
