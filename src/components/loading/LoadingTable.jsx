@@ -13,13 +13,13 @@ const LoadingTable = ({ darkMode }) => {
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="md:block hidden px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               <div className="animate-pulse bg-gray-300 h-4 w-24 rounded"></div>
             </th>
             <th
               scope="col"
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              className="md:block hidden px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
               <div className="animate-pulse bg-gray-300 h-4 w-24 rounded"></div>
             </th>
@@ -33,10 +33,10 @@ const LoadingTable = ({ darkMode }) => {
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="animate-pulse bg-gray-300 h-6 w-full rounded"></div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="md:block hidden px-6 py-4 whitespace-nowrap">
                 <div className="animate-pulse bg-gray-300 h-6 w-full rounded"></div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="md:block hidden px-6 py-4 whitespace-nowrap">
                 <div className="animate-pulse bg-gray-300 h-6 w-full rounded"></div>
               </td>
 
