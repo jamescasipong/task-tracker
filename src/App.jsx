@@ -11,7 +11,7 @@ import Table from "./components/tables/Table";
 import PrivateRoute from "./components/PrivateRoute";
 import "./index.css";
 
-let isLocal = false;
+let isLocal = true;
 axios.defaults.baseURL = isLocal
   ? "http://localhost:3002/api"
   : "https://tasktracker-server.vercel.app/api/";
@@ -112,7 +112,8 @@ function AppContent() {
             <LoadingSignIn message={state} />
           ) : (
             <>
-              {location.pathname !== "/signin" &&
+              {location.pathname !== "/signin" && 
+                (location.pathname === "/table" || location.pathname === "/paymentTable" || location.pathname === "/upload") &&
                 (isAuthenticated ? (
                   <Navbar
                     currentView={currentView}
@@ -148,7 +149,7 @@ function AppContent() {
                       </PrivateRoute>
                     }
                   />
-                  {/*<Route path="*" element={<NotFound message="This page not exist :)"/>*/}
+                  <Route path="*" element={<NotFound message="This page not exist :)"/>} />
                 </Routes>
               </div>
             </>
