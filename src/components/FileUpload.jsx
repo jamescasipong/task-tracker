@@ -251,7 +251,7 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="h-full w-full mt-5 mb-2 flex justify-center">
+    <div className="h-full w-[1700px] mt-5 mb-2 flex justify-center">
       <div
         className={`${
           showReview ? "hidden" : "bg-white"

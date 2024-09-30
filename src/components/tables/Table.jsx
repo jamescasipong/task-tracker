@@ -494,7 +494,7 @@ const Table = () => {
     const style = {};
     switch (key) {
       case "No":
-        style["width"] = "50px";
+        style["width"] = "70px";
         style["textAlign"] = "center";
 
         break;
@@ -533,12 +533,12 @@ const Table = () => {
             placeholder="Search..."
             value={searchTerm}
             onChange={handleSearchChange}
-            className="border border-gray-300 p-2 sm:mr-4 sm:w-[700px] w-full sm:m-0 m-4"
+            className="border rounded-md border-gray-300 p-2 sm:mr-4 sm:w-[700px] w-full sm:m-0 m-4"
           />
           <select
             value={selectedBrand}
             onChange={handleBrandFilterChange}
-            className="border border-gray-300 sm:max-w-[125px] w-full p-2 items-center"
+            className="border border-gray-300 rounded-md sm:max-w-[125px] w-full p-2 items-center"
           >
             <option value="All">All Brands</option>
             <option value="APPLE">APPLE</option>
@@ -707,41 +707,10 @@ const Table = () => {
           </button>
         </div>
       </div>
-
-      <table className="min-w-full bg-white border border-gray-300">
-        <thead>
-          <tr className="bg-gray-200 ">
-            {[
-              "No",
-              "SerialNumber",
-              "Brand",
-              "Model",
-              "Owner",
-              "Department",
-              "Owner_1",
-              "Department_1",
-              "Owner_2",
-              "Department_2",
-              "Action",
-            ].map((header) => (
-              <th
-                key={header}
-                className="px-2 py-5 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700 cursor-pointer"
-                onClick={() => handleSort(header)}
-              >
-                {header}{" "}
-                {sortConfig.key === header
-                  ? sortConfig.direction === "asc"
-                    ? "▲"
-                    : "▼"
-                  : ""}
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedData.map((device, index) => (
-            <tr key={device._id} className="hover:bg-gray-100">
+      <div className="w-full overflow-x-auto border border-gray-300 rounded-md ">
+        <table className="min-w-full bg-white border border-gray-200">
+          <thead>
+            <tr className="bg-gray-200">
               {[
                 "No",
                 "SerialNumber",
@@ -753,32 +722,64 @@ const Table = () => {
                 "Department_1",
                 "Owner_2",
                 "Department_2",
-              ].map((key) => (
-                <td
-                  key={key}
-                  className="py-1 border-b border-gray-300 text-sm text-gray-700"
+                "Action",
+              ].map((header) => (
+                <th
+                  key={header}
+                  className="px-2 py-5 border-b-2 border-gray-300 text-left text-sm font-semibold text-gray-700 cursor-pointer"
+                  onClick={() => handleSort(header)}
                 >
-                  <input
-                    type="text"
-                    value={device[key] || ""}
-                    onChange={(e) => handleInputChange(index, key, e)}
-                    style={styleInput(key)}
-                    className={`lg:w-full w-[200px] ${key} rounded p-2`}
-                  />
-                </td>
+                  {header}{" "}
+                  {sortConfig.key === header
+                    ? sortConfig.direction === "asc"
+                      ? "▲"
+                      : "▼"
+                    : ""}
+                </th>
               ))}
-              <td className="px-6  border-b border-gray-300 text-sm text-gray-700">
-                <button
-                  onClick={() => deleteDevice(device._id)}
-                  className="bg-red-500 text-white px-4 py-1 rounded"
-                >
-                  Delete
-                </button>
-              </td>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {sortedData.map((device, index) => (
+              <tr key={device._id} className="hover:bg-gray-100">
+                {[
+                  "No",
+                  "SerialNumber",
+                  "Brand",
+                  "Model",
+                  "Owner",
+                  "Department",
+                  "Owner_1",
+                  "Department_1",
+                  "Owner_2",
+                  "Department_2",
+                ].map((key) => (
+                  <td
+                    key={key}
+                    className="py-1 border-b border-gray-300 text-sm text-gray-700"
+                  >
+                    <input
+                      type="text"
+                      value={device[key] || ""}
+                      onChange={(e) => handleInputChange(index, key, e)}
+                      style={styleInput(key)}
+                      className={`lg:w-full w-[200px] ${key} rounded p-2`}
+                    />
+                  </td>
+                ))}
+                <td className="px-6 border-b border-gray-300 text-sm text-gray-700">
+                  <button
+                    onClick={() => deleteDevice(device._id)}
+                    className="bg-red-500 text-white px-4 py-1 rounded"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
