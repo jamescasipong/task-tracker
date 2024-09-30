@@ -92,7 +92,7 @@ function AppContent() {
   };
 
   useEffect (() => {
-    if (location.pathname === "/") {
+    if (location.pathname === "/" && !isAuthenticated) {
       navigate("/signin");
     }
 
@@ -100,7 +100,7 @@ function AppContent() {
       setCurrentView("table");
     }
   }
-  , [location.pathname, navigate]);
+  , [location.pathname, navigate, isAuthenticated]);
 
   return (
     <>
@@ -149,14 +149,14 @@ function AppContent() {
                       </PrivateRoute>
                     }
                   />
-                  <Route path="*" element={<NotFound />} />
+                  <Route path="*" element={<NotFound message="This page not exist :)"/>} />
                 </Routes>
               </div>
             </>
           )}
         </div>
       ) : (
-        <NotFound />
+        <NotFound message="This site is only authorized to specific ISP. You have no access to this!"/>
       )}
     </>
   );
