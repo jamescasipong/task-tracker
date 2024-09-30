@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Routes } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import FileUpload from "./components/FileUpload";
 import SignIn from "./components/forms/SignIn";
@@ -8,6 +8,7 @@ import LoadingSignIn from "./components/loading/LoadingSignIn";
 import NotFound from "./components/NotFound";
 import PaymentTable from "./components/tables/PaymentTable";
 import Table from "./components/tables/Table";
+import PrivateRoute from "./components/PrivateRoute";
 import "./index.css";
 
 let isLocal = false;
@@ -16,7 +17,7 @@ axios.defaults.baseURL = isLocal
   : "https://tasktracker-server.vercel.app/api/";
 axios.defaults.withCredentials = true;
 
-function App() {
+function AppContent() {
   const [currentView, setCurrentView] = useState(() => {
     const savedView = localStorage.getItem("currentView");
     return savedView ? JSON.parse(savedView) : "table";
@@ -27,7 +28,11 @@ function App() {
   });
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState("");
-  const [isShown, setShown] = useState(false);
+  const [hasAccess, setAccess] = useState(false);
+  const [loading404, setLoading404] = useState(true);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     localStorage.setItem("currentView", JSON.stringify(currentView));
@@ -37,6 +42,26 @@ function App() {
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
   }, [isAuthenticated]);
 
+  useEffect(() => {
+    const fetchIp = async () => {
+      try {
+        setLoading404(true);
+        const response = await axios.get("/dataRoute/ip");
+
+        setLoading404(false);
+        setAccess(true);
+      } catch (error) {
+        setLoading404(false);
+        console.error("Error fetching IP:", error.response.data);
+        if (error.response.data === "Access denied") {
+          setAccess(false);
+        }
+      }
+    };
+
+    fetchIp();
+  }, [hasAccess]);
+
   const handleSignIn = () => {
     setState("Logging in..");
     setLoading(true);
@@ -44,6 +69,7 @@ function App() {
       setIsAuthenticated(true);
       setLoading(false);
       setState("");
+      navigate("/table"); // Redirect to /table after signing in
     }, 1000); // Simulate loading time
   };
 
@@ -62,67 +88,84 @@ function App() {
   };
 
   const handleViewChange = (view) => {
-      setCurrentView(view);
+    setCurrentView(view);
   };
 
-  const [hasAccess, setAccess] = useState(false);
-  const [loading404, setLoading404] = useState(true);
+  useEffect (() => {
+    if (location.pathname === "/") {
+      navigate("/signin");
+    }
 
-  useEffect(() => {
-    const fetchIp = async () => {
-      try {
-        setLoading404(true);
-        const response = await axios.get("/dataRoute/ip");
-
-        setLoading404(false);
-        setAccess(true);
-      } catch (error) {
-        setLoading404(false);
-        console.error("Error fetching IP:", error.response.data);
-        if (error.response.data == "Access denied") {
-          setAccess(false);
-        }
-      }
-    };
-
-    fetchIp();
-  }, [hasAccess]);
+    if (location.pathname === "/signin" && isAuthenticated) {
+      setCurrentView("table");
+    }
+  }
+  , [location.pathname, navigate]);
 
   return (
-    <BrowserRouter>
-      {hasAccess ? (
+    <>
+      {loading404 ? (
+        <LoadingSignIn message="processing" />
+      ) : hasAccess ? (
         <div className="bg-primary w-full overflow-hidden">
           {loading ? (
-            <LoadingSignIn message={state}></LoadingSignIn>
-          ) : isAuthenticated ? (
-            <>
-              <Navbar
-                currentView={currentView}
-                setCurrentView={handleViewChange}
-                onLogout={handleLogout}
-              />
-              <div className="bg-primary flex justify-center items-start">
-                {currentView === "table" && <Table />}
-                {currentView === "upload" && <FileUpload />}
-
-                {/*currentView === 'excelToJson' && <ExcelToJson />*/}
-                {currentView === "paymentTable" && <PaymentTable />}
-              </div>
-            </>
+            <LoadingSignIn message={state} />
           ) : (
             <>
-              <SignIn onSignIn={handleSignIn} />
+              {location.pathname !== "/signin" && 
+                (location.pathname === "/table" || location.pathname === "/paymentTable" || location.pathname === "/upload") &&
+                (isAuthenticated ? (
+                  <Navbar
+                    currentView={currentView}
+                    setCurrentView={handleViewChange}
+                    onLogout={handleLogout}
+                  />
+                ) : null)
+              }
+              <div className="bg-primary flex justify-center items-start">
+                <Routes>
+                  <Route path="/signin" element={<SignIn onSignIn={handleSignIn} />} />
+                  <Route
+                    path="/table"
+                    element={
+                      <PrivateRoute isAuthenticated={isAuthenticated}>
+                        <Table />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/upload"
+                    element={
+                      <PrivateRoute isAuthenticated={isAuthenticated}>
+                        <FileUpload />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="/paymentTable"
+                    element={
+                      <PrivateRoute isAuthenticated={isAuthenticated}>
+                        <PaymentTable />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </div>
             </>
           )}
         </div>
-      ) : !loading404 ? (
-        <NotFound></NotFound>
       ) : (
-        <LoadingSignIn message="processing"></LoadingSignIn>
+        <NotFound />
       )}
-      ;
-      <Routes>
-      </Routes>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppContent />
     </BrowserRouter>
   );
 }

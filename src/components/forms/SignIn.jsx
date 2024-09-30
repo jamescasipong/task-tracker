@@ -40,7 +40,7 @@ const SignIn = ({ onSignIn }) => {
   };
 
   return (
-    <div className="bg-gray-100 font-sans">
+    <div className="w-full bg-gray-100 font-sans">
       <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
         <div className="max-w-lg w-full">
           <div className="p-8 rounded-2xl bg-white shadow-lg">
