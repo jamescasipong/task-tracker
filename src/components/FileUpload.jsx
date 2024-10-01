@@ -325,9 +325,9 @@ const FileUpload = () => {
         {showReview && (
           <div className="flex flex-col justify-center items-end w-full">
             <div className="w-full">
-              <div className="ml-12 mb-5 flex gap-5 items-center">
+              <div className="sm:ml-5 mb-5 flex gap-5 items-center">
                 <button
-                  className={` py-3 px-3 text-white justify-start rounded-md items-center flex gap-2 ${
+                  className={` py-2 px-2 text-white justify-start rounded-md items-center flex gap-2 ${
                     previewUrl != null && previewIndex != null ? "hidden" : ""
                   } bg-orange-500 hover:bg-orange-600 transition duration-200`}
                   onClick={() => {
@@ -336,15 +336,15 @@ const FileUpload = () => {
                     setPreviewIndex(null);
                   }}
                 >
-                  <IoArrowBackSharp /> Go Back
+                  <IoArrowBackSharp />Go Back
                 </button>
                 <button
-                  className={` py-3 px-3 text-white justify-start rounded-md items-center flex gap-2 ${
+                  className={`py-2 px-2 text-white justify-start rounded-md items-center flex gap-2 ${
                     previewUrl != null && previewIndex != null ? "hidden" : ""
                   } bg-red-500 hover:bg-red-600 transition duration-200`}
                   onClick={() => setMissingOnly((prev) => !prev)}
                 >
-                  {missingOnly ? "Show All" : "Show Missing Only"}
+                  {missingOnly ? "Show All" : "Show Missing"}
                 </button>
               </div>
             </div>
