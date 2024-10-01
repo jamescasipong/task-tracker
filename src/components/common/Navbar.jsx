@@ -12,14 +12,14 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
     setIsOpen(!isOpen);
   };
 
-  const [info, setInfo] = useState([]);
+  const [info, setInfo] = useState({});
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const getIp = async () => {
       try {
         setLoading(true);
-
         const response = await axios.get("/dataRoute/ip");
 
         const getIpData = await axios.get(`/dataRoute/ip/${response.data.ip}`);
@@ -28,10 +28,9 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
 
         setLoading(false);
 
-
         console.log(getIpData.data);
       } catch (error) {
-        console.log(error);
+        
       }
     };
 
@@ -43,7 +42,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
       <div className={`max-w-[1700px] mx-auto px-4 flex justify-between items-center h-16`}>
         <div className="text-xl font-bold">Monitoring System</div>
 
-        <div className="hidden md:flex items-center space-x-4 md:mr-[190px] mr-0">
+        <div className="hidden md:flex items-center space-x-4  mr-0"> {/* mr-0 is added to remove the margin-right */} {/*md:mr-[190px] */}
           <button
             className={`px-3 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
             onClick={() => {navigate("table");setCurrentView("table")}}
@@ -65,7 +64,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
 
         <div className="relative hidden md:flex gap-5">
-          {loading ? "loading..." : <p>Your location: {info.city}, {info.ip}</p>}
+          {loading ? "Loading..." : <p>{info.city} - {info.ip}</p>}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer hover:text-yellow-200"
