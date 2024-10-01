@@ -415,7 +415,7 @@ const PaymentTable = () => {
               key={tableIndex}
               className="mt-4 border p-4 rounded-md overflow-auto"
             >
-              <div className="flex gap-5 items-center  overflow-auto">
+              <div className={`flex gap-5 items-center  ${editingTableIndex === tableIndex ? "sm:flex-row flex-col ": ""} `}>
                 {editingTableIndex === tableIndex ? (
                   <>
                     <input
