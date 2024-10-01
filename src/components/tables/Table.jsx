@@ -551,14 +551,14 @@ const Table = () => {
         <div className="xl:flex hidden md:flex-row mb-5 gap-2">
           <button
             onClick={openModal}
-            className="ml-3 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-2"
+            className="ml-3 px-3 py-2 text-[14px] bg-blue-500 text-white rounded hover:bg-blue-600 transition-all  items-center duration-300 flex gap-2"
           >
             <IoMdAdd />
             Add
           </button>
           <button
             onClick={exportToXlsx}
-            className=" px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
+            className=" px-3 py-2 text-[14px] bg-green-500 text-white rounded hover:bg-green-600 transition-all duration-300 flex gap-2 items-center"
           >
             <FaRegFileExcel />
             Export
@@ -566,7 +566,7 @@ const Table = () => {
 
           <button
             onClick={saveChanges}
-            className="bg-yellow-400 flex items-center gap-2 hover:bg-yellow-500 transition-all duration-300 text-white px-4 py-2 rounded"
+            className="bg-yellow-400 text-[14px] flex items-center gap-2 hover:bg-yellow-500 transition-all duration-300 text-white px-3 py-2 rounded"
           >
             <FaRegSave></FaRegSave>
             Save
@@ -574,7 +574,7 @@ const Table = () => {
 
           <button
             onClick={deleteRows}
-            className="bg-red-400 hover:bg-red-500 flex items-center gap-2 transition-all duration-300 text-white px-4 py-2 rounded"
+            className="bg-red-400 text-[14px] hover:bg-red-500 flex items-center gap-2 transition-all duration-300 text-white px-3 py-2 rounded"
           >
             <FaTrash></FaTrash>
             Delete
@@ -771,10 +771,10 @@ const Table = () => {
                 <td className="px-6 border-b border-gray-300 text-sm text-gray-700">
                   <button
                     onClick={() => deleteDevice(device._id)}
-                    className="bg-red-500 hover:bg-red-600 transition-all 0.2s ease-in-out text-white px-2 py-1 rounded"
+                    className="  text-white px-2 py-1 rounded"
                   >
                     
-                    <FaTrash className="w-5 h-5" ></FaTrash>
+                    <FaTrash className="w-6 h-6 text-red-500 hover:text-red-600 transition-all 0.2s ease-in-out" ></FaTrash>
 
                     
                   </button>

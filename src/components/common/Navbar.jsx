@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { FaSignOutAlt } from "react-icons/fa"; // Import the logout icon
+import { IoIosSettings } from "react-icons/io";
 import { MdOutlineIntegrationInstructions } from "react-icons/md";
+import { RiCloseFill } from "react-icons/ri";
+
+
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
@@ -30,7 +34,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
 
         console.log(getIpData.data);
       } catch (error) {
-        
+        setLoading(false);
       }
     };
 
@@ -65,7 +69,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
 
         <div className="relative hidden md:flex gap-5">
           {loading ? "Loading..." : <p>{info.city} - {info.ip}</p>}
-          <svg
+          {!isOpen ? (<svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer hover:text-yellow-200"
             onClick={toggleMenu}
@@ -74,7 +78,8 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
             stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
+          </svg>): (<RiCloseFill  onClick={toggleMenu} className='w-6 h-6 cursor-pointer hover:text-yellow-200'></RiCloseFill>)}
+          
           {isOpen && (
             <div className="absolute right-[0px] top-10 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-20">
               <button
@@ -83,6 +88,13 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
               >
                 <MdOutlineIntegrationInstructions className="mr-2" />
                 Instructions
+              </button>
+              <button
+                className="flex items-center w-full px-4 py-2 hover:bg-gray-600"
+                onClick={() => { window.location.href = "/settings"; }}
+              >
+                <IoIosSettings className="mr-2" />
+                Settings
               </button>
               <button
                 className="flex items-center w-full px-4 py-2 hover:bg-gray-600"
@@ -96,7 +108,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
 
         <div className="md:hidden">
-          <svg
+          {isOpen ? <RiCloseFill  onClick={toggleMenu} className='w-6 h-6 cursor-pointer hover:text-yellow-200'></RiCloseFill> : <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer"
             onClick={toggleMenu}
@@ -105,7 +117,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
             stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-          </svg>
+          </svg>}
         </div>
       </div>
 
@@ -135,6 +147,13 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         >
           <MdOutlineIntegrationInstructions className="mr-2" />
           Instructions
+        </button>
+        <button
+          className="flex items-center justify-center w-full px-4 py-2 rounded hover:bg-gray-700"
+          onClick={() => { window.location.href = "/settings"; }}
+        >
+          <IoIosSettings className="mr-2" />
+          Settings
         </button>
         <button
           className="flex items-center justify-center w-full px-4 py-2 rounded hover:bg-gray-700"
