@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { FaSignOutAlt } from "react-icons/fa"; // Import the logout icon
 import { MdOutlineIntegrationInstructions } from "react-icons/md";
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   const navigate = useNavigate();
@@ -10,6 +11,32 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
+
+  const [info, setInfo] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        setLoading(true);
+
+        const response = await axios.get("/dataRoute/ip");
+
+        const getIpData = await axios.get(`/dataRoute/ip/${response.data.ip}`);
+
+        setInfo({city: getIpData.data.city, ip: response.data.ip});
+
+        setLoading(false);
+
+
+        console.log(getIpData.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getIp();
+  }, []);
 
   return (
     <nav className="bg-gray-800 text-white">
@@ -37,7 +64,8 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
           </button>
         </div>
 
-        <div className="relative hidden md:flex">
+        <div className="relative hidden md:flex gap-5">
+          {loading ? "loading..." : <p>Your location: {info.city}, {info.ip}</p>}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer hover:text-yellow-200"
