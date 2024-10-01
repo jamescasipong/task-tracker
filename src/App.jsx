@@ -18,9 +18,10 @@ axios.defaults.baseURL = isLocal
 axios.defaults.withCredentials = true;
 
 function AppContent() {
+  const location = useLocation();
+
   const [currentView, setCurrentView] = useState(() => {
-    const savedView = localStorage.getItem("currentView");
-    return savedView ? JSON.parse(savedView) : "table";
+    return "table";
   });
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
     const savedAuth = localStorage.getItem("isAuthenticated");
@@ -32,15 +33,20 @@ function AppContent() {
   const [loading404, setLoading404] = useState(true);
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   useEffect(() => {
-    localStorage.setItem("currentView", JSON.stringify(currentView));
-  }, [currentView]);
+    if (location.pathname === "/table") {
+      setCurrentView("table");
+    } else if (location.pathname === "/paymentTable") {
+      setCurrentView("paymentTable");
+    } else if (location.pathname === "/upload") {
+      setCurrentView("upload");
+    }
+  }, [location.pathname]);
 
   useEffect(() => {
     localStorage.setItem("isAuthenticated", JSON.stringify(isAuthenticated));
-  }, [isAuthenticated]);
+  }, [isAuthenticated, location.pathname]);
 
   useEffect(() => {
     const fetchIp = async () => {
