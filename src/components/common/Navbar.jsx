@@ -48,19 +48,19 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
 
         <div className="hidden md:flex items-center space-x-4  mr-0"> {/* mr-0 is added to remove the margin-right */} {/*md:mr-[190px] */}
           <button
-            className={`px-3 py-2 rounded ${currentView === "table" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+            className={`px-3 py-2 rounded ${currentView === "table" ? "bg-gray-700" : "hover:bg-gray-700"}`}
             onClick={() => {navigate("table");setCurrentView("table")}}
           >
             Hardware Inventory
           </button>
           <button
-            className={`px-3 py-2 rounded ${currentView === "paymentTable" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+            className={`px-3 py-2 rounded ${currentView === "paymentTable" ? "bg-gray-700" : "hover:bg-gray-700"}`}
             onClick={() => {setCurrentView("paymentTable"); navigate("paymentTable")}}
           >
             Payments
           </button>
           <button
-            className={`px-3 py-2 rounded ${currentView === "upload" ? "bg-gray-600" : "hover:bg-gray-700"}`}
+            className={`px-3 py-2 rounded ${currentView === "upload" ? "bg-gray-700" : "hover:bg-gray-700"}`}
             onClick={() => {navigate("upload"); setCurrentView("upload")}}
           >
             ORsChecker
@@ -68,7 +68,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
         </div>
 
         <div className="relative hidden md:flex gap-5">
-          {loading ? "Loading..." : <p>{info.city} - {info.ip}</p>}
+          {loading ? "Loading..." : <p className='lg:block hidden'>{info.city} - {info.ip}</p>}
           {!isOpen ? (<svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 cursor-pointer hover:text-yellow-200"
