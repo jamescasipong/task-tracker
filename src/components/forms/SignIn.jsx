@@ -9,6 +9,31 @@ const SignIn = ({ onSignIn }) => {
   const [loading, setLoading] = useState(false);
   const usernameRef = useRef(null);
 
+  const [info, setInfo] = useState({});
+  const [loadings, setLoadings] = useState(true);
+
+
+  useEffect(() => {
+    const getIp = async () => {
+      try {
+        setLoadings(true);
+        const response = await axios.get("/dataRoute/ip");
+
+        const getIpData = await axios.get(`/dataRoute/ip/${response.data.ip}`);
+
+        setInfo({city: getIpData.data.city, ip: response.data.ip});
+
+        setLoadings(false);
+
+        console.log(getIpData.data);
+      } catch (error) {
+        setLoadings(false);
+      }
+    };
+
+    getIp();
+  }, []);
+
   useEffect(() => {
     // Focus the username input field when the component mounts
     if (usernameRef.current) {
@@ -47,6 +72,7 @@ const SignIn = ({ onSignIn }) => {
             <h2 className="text-gray-800 text-center text-2xl font-bold mb-6">
               Sign In
             </h2>
+            <p>Your location: {loadings ? "loading...": info.city}</p>
 
             <form onSubmit={handleSubmit} className="mt-8 space-y-6">
               <div>
