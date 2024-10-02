@@ -25,12 +25,7 @@ A web application built with the MERN stack (MongoDB, Express, React, Node.js) f
 4. **Download Data**: Export the data as an Excel file.
 5. **Authentication**: Use the set password to access the system.
 
-## API Endpoints
 
-- **POST /api/upload**: Upload an Excel file.
-- **GET /api/data**: Fetch data from the database.
-- **PUT /api/data**: Update data in the database.
-- **GET /api/download**: Download data as an Excel file.
 
 <!--## License
 
