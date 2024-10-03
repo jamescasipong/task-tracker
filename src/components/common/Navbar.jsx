@@ -15,7 +15,7 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  
   const [info, setInfo] = useState({});
   const [loading, setLoading] = useState(true);
 
@@ -32,7 +32,6 @@ const Navbar = ({ currentView, setCurrentView, onLogout }) => {
 
         setLoading(false);
 
-        console.log(getIpData.data);
       } catch (error) {
         setLoading(false);
       }
