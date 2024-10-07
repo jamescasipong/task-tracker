@@ -92,6 +92,26 @@ const FileUpload = () => {
     }
   }, [missingORNumbers, fileName, customAlert, totalORNumbers]);
 
+  const detectSequence = (array) =>{
+    let copiedArray = [...array];
+    const indexArray = [];
+    
+    for (let i = 0; i < array.length; i++){
+        let current = Number(array[i]);
+        let next = Number(array[i + 1]);
+
+        if (next - current == 1){
+            if (!indexArray.includes(current)){
+                indexArray.push(current);
+            }
+            
+        }
+        
+    }
+    
+    return indexArray;
+}
+
   const handleProcessFiles = async () => {
     setMissingORNumbers([]);
     setTotalORNumbers([]);
@@ -143,7 +163,7 @@ const FileUpload = () => {
 
         const maxORNumber = Math.max(...orNumbers);
         const minORNumber = Math.min(...orNumbers);
-        orNumbers.sort((a, b) => a - b);
+        //orNumbers.sort((a, b) => a - b);
 
         const withNumbering = orNumbers.map(
           (num, index) => `${index + 1}. ${num}`
@@ -154,31 +174,36 @@ const FileUpload = () => {
         const findMissingNumbers = async (array) => {
           const arrays = [...array];
           const arrayContainer = [];
-          //const numberTracker = [];
+          const missingTracker = [];
+          const numberTracker = [];
           //const skipNumbers = [];
+
+          let indexes = detectSequence(arrays);
+
           for (let i = 0; i < arrays.length - 1; i++) {
             const current = Number(arrays[i]);
             const next = Number(arrays[i + 1]);
+          
 
-            /*if (!numberTracker.includes(current) && array[0] < current) {
-              numberTracker.push(current);
+            if (!missingTracker.includes(current) && array[indexes[0]] < current) {
+              missingTracker.push(current);
             }
 
-            if (!numberTracker.includes(current) &&  next - current > 1 && array[0] > current){
+            if (!numberTracker.includes(current) &&  (next - current > 1 || -1 >= next - current)){
               const n = "0".repeat(20 - current.toString().length - 1) + Number(current);
 
               arrayContainer.push({
-                missing: [
+                skip: [
                   [n + ", skip numbers!"],
                   [name],
                   [`Min: ${minORNumber}`],
                   [`Max: ${maxORNumber}`],
                 ],
               }); 
-            }*/
+            }
 
 
-            if (next - current > 1 /*&& array[0] < current && array[0] < next && !numberTracker.includes(next)&& !numberTracker.includes(current)*/) {
+            /*if (next - current > 1 && array[0] < current && array[indexes[0]] < next && !numberTracker.includes(next)&& !numberTracker.includes(current)) {
               for (let j = current + 1; j < next; j++) {
                 const n = "0".repeat(20 - j.toString().length - 1) + j;
                 if (j === current + 1) {
@@ -194,10 +219,10 @@ const FileUpload = () => {
                   arrayContainer.push({ missing: [[n], [name]] });
                 }
               }
-            }
+            }*/
           }
 
-          /*numberTracker.forEach((element, index, array) => {
+          missingTracker.forEach((element, index, array) => {
               let current = array[index];
               let next = array[index + 1];
 
@@ -215,7 +240,7 @@ const FileUpload = () => {
                   ],
                 });
               }
-          });*/
+          });
 
           //console.log("numberTracker", numberTracker);
           return arrayContainer;
@@ -223,6 +248,8 @@ const FileUpload = () => {
 
         const missingORNumber = await findMissingNumbers(orNumbers);
         const _fileMissing = await generateMissing(missingORNumber);
+
+        console.log(missingORNumber)
 
         const objectNumbers = {
           fileName: name,
@@ -251,11 +278,11 @@ const FileUpload = () => {
   };
 
   return (
-    <div className="h-full w-[1700px] mt-4 mb-2 flex justify-center">
+    <div className={ `w-[1700px] mt-4 mb-2 flex justify-center  `}>
       <div
         className={`w-[1000px] ${
           showReview ? "hidden" : "bg-white"
-        } p-8 rounded-lg shadow-lg w-full max-w-md`}
+        } p-8 rounded-lg border-[1px] shadow-sm w-auto`}
       >
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
           Upload Files
@@ -329,14 +356,15 @@ const FileUpload = () => {
                 <button
                   className={` py-2 px-2 text-white justify-start rounded-md items-center flex gap-2 ${
                     previewUrl != null && previewIndex != null ? "hidden" : ""
-                  } bg-orange-500 hover:bg-orange-600 transition duration-200`}
+                  } border-[1px] bg-white hover:bg-slate-100 transition duration-200`}
                   onClick={() => {
                     setShowReview(false);
                     setPreviewUrl(null);
                     setPreviewIndex(null);
                   }}
                 >
-                  <IoArrowBackSharp />Go Back
+                  <IoArrowBackSharp className="text-slate-600"/>
+                  <p className="text-black">Go back</p>
                 </button>
                 <button
                   className={`py-2 px-2 text-white justify-start rounded-md items-center flex gap-2 ${
@@ -370,12 +398,12 @@ const FileUpload = () => {
                             previewUrl ? "" : "mt-4"
                           } bg-white rounded-lg shadow-md border border-radius ${
                             previewUrl != null && previewIndex != null
-                              ? "xl:w-[800px] w-full lg:w-[600px] md:w-[400px] sm:w-[485px] xsm:w-[200px]"
+                              ? "xl:w-[800px]  w-full lg:w-[600px] md:w-[400px] sm:w-[485px] xsm:w-[200px]"
                               : ""
                           }`}
                         >
                           <thead>
-                            <tr className="bg-blue-600 text-white">
+                            <tr className="border-[1px] bg-white text-white">
                               <th className="py-5 px-4 text-sm font-semibold rounded-lg flex items-center gap-2">
                                 <button
                                   onClick={() => {
@@ -398,25 +426,25 @@ const FileUpload = () => {
                                     setTotalORNumbers(newTotalORNumbers);
                                   }}
                                   title="Preview Original File"
-                                  className={`bg-blue-500 ${
+                                  className={`border-[1px] shadow-sm ${
                                     previewUrl != null && previewIndex != null
                                       ? "hidden"
                                       : ""
-                                  } text-white py-1 px-2 flex gap-1 text-center rounded-md hover:bg-blue-700 focus:outline-none transition duration-300`}
+                                  } text-white py-1 px-2 flex gap-1 text-center rounded-md hover:bg-slate-200 focus:outline-none transition duration-300`}
                                 >
-                                  View
-                                  <MdOutlineRemoveRedEye className="w-5 h-5" />
+                                  <p className="text-black font-medium">View</p>
+                                  <MdOutlineRemoveRedEye className="w-5 h-5 text-slate-700" />
                                 </button>
-                                <p>{value.fileName}</p>
+                                <p className="text-gray-700">{value.fileName}</p>
                                 {previewUrl == null &&
                                   value.fileMissing != null && (
                                     <div className="ml-4 py-1 px-2 rounded-md lg:flex hidden items-center bg-red-500 hover:bg-red-600">
-                                      <p>{value.missingNumbers.length} Miss!</p>
+                                      <p>{value.missingNumbers.length} Miss</p>
                                     </div>
                                   )}
                                 {value.orNumbers.length > 5 && (
                                   <span
-                                    className="hover:bg-blue-700 transition duration-200 cursor-pointer h-10 rounded-md items-center justify-center flex"
+                                    className={`${previewUrl ? "border" : ""}  transition duration-200 bg-white hover:bg-slate-100  cursor-pointer h-10 rounded-md items-center justify-center flex`}
                                     onClick={() => {
                                       const newTotalORNumbers = [
                                         ...totalORNumbers,
@@ -441,7 +469,7 @@ const FileUpload = () => {
                                           : "hidden"
                                       } font-medium py-2 px-4 text-sm text-white`}
                                     >
-                                      {value.showAll ? "Show Less" : "Show All"}
+                                      {value.showAll ? <p className="text-black">Show Less</p> :<p className="text-black">Show All</p>}
                                     </span>
                                   </span>
                                 )}
@@ -504,7 +532,7 @@ const FileUpload = () => {
                                   key={index}
                                   className="hover:bg-gray-100 transition duration-200"
                                 >
-                                  <td className="border-b border-gray-200 py-2 px-4 text-sm text-gray-700">
+                                  <td className="border-b bg-white border-gray-200 py-2 px-4 text-sm text-gray-700">
                                     {num}
                                   </td>
                                 </tr>
@@ -534,7 +562,7 @@ const FileUpload = () => {
                                           .showAll;
                                       setTotalORNumbers(newTotalORNumbers);
                                     }}
-                                    className="border-b border-gray-200 font-medium hover:bg-gray-300 cursor-pointer py-2 px-4 text-sm text-gray-700"
+                                    className="border-b border-gray-200 font-medium hover:bg-gray-300 transition-all 0.2s cursor-pointer py-2 px-4 text-sm text-gray-700"
                                   >
                                     {value.showAll
                                       ? null

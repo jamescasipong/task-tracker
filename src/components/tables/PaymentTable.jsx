@@ -9,6 +9,7 @@ import {
   FaTrash,
 } from "react-icons/fa";
 import { FaFilePdf } from "react-icons/fa6";
+import { IoMdAdd } from "react-icons/io";
 
 
 import { MdCancelPresentation, MdFileDownload } from "react-icons/md";
@@ -22,6 +23,7 @@ const PaymentTable = () => {
   const [editingTableIndex, setEditingTableIndex] = useState(null);
   const [editedTableName, setEditedTableName] = useState("");
   const [loading, setLoading] = useState(true);
+  const [initial, setInitial] = useState("opacity-0")
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark" ? true : false
   );
@@ -70,88 +72,88 @@ const PaymentTable = () => {
   const exportToXLSX = async () => {
     try {
       if (confirm("Are you sure you want to export this data?")) {
-      const response = await axios.get("/payments/get", {
-        responseType: "json",
-      });
-      const tablesData = response.data.tables;
-      const exportData = [];
-      const merges = [];
+        const response = await axios.get("/payments/get", {
+          responseType: "json",
+        });
+        const tablesData = response.data.tables;
+        const exportData = [];
+        const merges = [];
 
-      let rowIndex = 0;
+        let rowIndex = 0;
 
-      tablesData.forEach((table) => {
-        exportData.push(Array(12).fill(""));
-        exportData[rowIndex][0] = table.name;
+        tablesData.forEach((table) => {
+          exportData.push(Array(12).fill(""));
+          exportData[rowIndex][0] = table.name;
 
-        merges.push({
-          s: { r: rowIndex, c: 0 },
-          e: { r: rowIndex, c: 11 },
+          merges.push({
+            s: { r: rowIndex, c: 0 },
+            e: { r: rowIndex, c: 11 },
+          });
+
+          rowIndex += 1;
+
+          table.rows.forEach((row) => {
+            exportData.push(row.months);
+            exportData.push(row.values);
+            rowIndex += 2;
+          });
+
+          exportData.push(Array(12).fill(""));
+          rowIndex += 1;
         });
 
-        rowIndex += 1;
+        const worksheet = XLSX.utils.aoa_to_sheet(exportData);
 
-        table.rows.forEach((row) => {
-          exportData.push(row.months);
-          exportData.push(row.values);
-          rowIndex += 2;
+        const headerStyle = {
+          font: { bold: true, sz: 14 },
+          fill: { fgColor: { rgb: "FFFF00" } },
+          alignment: { horizontal: "center", vertical: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "000000" } },
+            bottom: { style: "thin", color: { rgb: "000000" } },
+            left: { style: "thin", color: { rgb: "000000" } },
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
+        };
+
+        const cellStyle = {
+          font: { sz: 12 },
+          alignment: { horizontal: "center", vertical: "center" },
+          border: {
+            top: { style: "thin", color: { rgb: "000000" } },
+            bottom: { style: "thin", color: { rgb: "000000" } },
+            left: { style: "thin", color: { rgb: "000000" } },
+            right: { style: "thin", color: { rgb: "000000" } },
+          },
+        };
+
+        const keys = Object.keys(worksheet);
+        keys.forEach((key) => {
+          if (key[0] === "!") return;
+          const cell = worksheet[key];
+          cell.s = cellStyle;
         });
 
-        exportData.push(Array(12).fill(""));
-        rowIndex += 1;
-      });
+        worksheet["!merges"] = merges;
 
-      const worksheet = XLSX.utils.aoa_to_sheet(exportData);
+        const columnWidths = exportData.reduce((widths, row) => {
+          row.forEach((cell, colIndex) => {
+            if (cell) {
+              const cellLength = cell.toString().length;
+              widths[colIndex] = Math.max(widths[colIndex] || 0, cellLength);
+            }
+          });
+          return widths;
+        }, []);
 
-      const headerStyle = {
-        font: { bold: true, sz: 14 },
-        fill: { fgColor: { rgb: "FFFF00" } },
-        alignment: { horizontal: "center", vertical: "center" },
-        border: {
-          top: { style: "thin", color: { rgb: "000000" } },
-          bottom: { style: "thin", color: { rgb: "000000" } },
-          left: { style: "thin", color: { rgb: "000000" } },
-          right: { style: "thin", color: { rgb: "000000" } },
-        },
-      };
+        worksheet["!cols"] = columnWidths.map((width) => ({
+          wch: width + 2,
+        }));
 
-      const cellStyle = {
-        font: { sz: 12 },
-        alignment: { horizontal: "center", vertical: "center" },
-        border: {
-          top: { style: "thin", color: { rgb: "000000" } },
-          bottom: { style: "thin", color: { rgb: "000000" } },
-          left: { style: "thin", color: { rgb: "000000" } },
-          right: { style: "thin", color: { rgb: "000000" } },
-        },
-      };
-
-      const keys = Object.keys(worksheet);
-      keys.forEach((key) => {
-        if (key[0] === "!") return;
-        const cell = worksheet[key];
-        cell.s = cellStyle;
-      });
-
-      worksheet["!merges"] = merges;
-
-      const columnWidths = exportData.reduce((widths, row) => {
-        row.forEach((cell, colIndex) => {
-          if (cell) {
-            const cellLength = cell.toString().length;
-            widths[colIndex] = Math.max(widths[colIndex] || 0, cellLength);
-          }
-        });
-        return widths;
-      }, []);
-
-      worksheet["!cols"] = columnWidths.map((width) => ({
-        wch: width + 2,
-      }));
-
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Payment Data");
-      XLSX.writeFile(workbook, "Payment Data.xlsx");
-    }
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Payment Data");
+        XLSX.writeFile(workbook, "Payment Data.xlsx");
+      }
     } catch (error) {
       //console.error("Error exporting data:", error.message);
     }
@@ -316,269 +318,294 @@ const PaymentTable = () => {
 
   return (
     <div
-      className={`clg:w-[1700px] w-full min-h-screen p-4 ${
-        darkMode ? "dark bg-gray-800 text-white" : "light bg-white text-black"
-      }`}
+      className={`clg:w-[1700px]  w-full min-h-screen p-4 
+      `}
     >
-      <div className="flex justify-between items-center">
-        {/*<button
+      <div className="p-6 bg-white border-[1px] rounded-lg shadow-sm">
+        <div className="flex justify-between items-center shadow-sm">
+          {/*<button
           className="px-4 py-2 bg-indigo-500 text-white rounded-md"
           onClick={() => setDarkMode(!darkMode)}
         >
           Toggle {darkMode ? "Light" : "Dark"} Mode
         </button>*/}
-      </div>
+        </div>
 
-      {loading ? (
-        <LoadingTable />
-      ) : (
-        <>
-          <div className="sm:block hidden">
-            <input
-              type="text"
-              value={newTableName}
-              onChange={(e) => setNewTableName(e.target.value)}
-              placeholder="Enter new table name"
-              className={`border rounded-md p-2 mr-2 w-full md:w-[250px] ${
-                darkMode
-                  ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                  : "text-black"
-              }`}
-            />
-            <button
-              onClick={addTable}
-              className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-[14px] text-white px-3 py-2 rounded-md"
-            >
-              <FaPlus className="inline-block mr-2" />
-              Add
-            </button>
+        {loading ? (
+          <LoadingTable />
+        ) : (
+          <>
 
-            <button
-              onClick={exportToXLSX}
-              className="px-3 py-2 bg-green-500 hover:bg-green-600 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
-            >
-              <MdFileDownload className="inline-block mr-2" />
-              Export
-            </button>
+              <div className="ogFadein sm:flex hidden justify-between">
+                <div>
+                  <input
+                    type="text"
+                    value={newTableName}
+                    onChange={(e) => setNewTableName(e.target.value)}
+                    placeholder="Enter new table name"
+                    className={`border rounded-md p-2 mr-2 w-full md:w-[250px] ${
+                      darkMode
+                        ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                        : "text-black"
+                    }`}
+                  />
+                </div>
+                <div className="flex flex-row">
+                  <button
+                    onClick={addTable}
+                    className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
+                  >
+                    <IoMdAdd className="flex text-gray-700" />
+                    <p className="font-medium text-black">Add</p>
+                  </button>
 
-            <button
-              onClick={saveData}
-              className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-[14px] text-white px-3 py-2 rounded-md mt-4 ml-2"
-            >
-              <FaRegSave className="inline-block mr-2" />
-              Save
-            </button>
-          </div>
+                  <button
+                    onClick={exportToXLSX}
+                    className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
+                  >
+                    <MdFileDownload className="flex text-gray-700" />
+                    <p className="font-medium text-black">Export</p>
+                  </button>
 
-          <div className="flex sm:hidden flex-col gap-4 p-2 max-w-md mx-auto">
-            <input
-              type="text"
-              value={newTableName}
-              onChange={(e) => setNewTableName(e.target.value)}
-              placeholder="Enter new table name"
-              className={`border rounded-md p-2 w-full ${
-                darkMode
-                  ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                  : "text-black border-gray-300"
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-            />
-
-            <div className="flex flex-row sm:flex-row justify-center sm:justify-between gap-2">
-              <button
-                onClick={addTable}
-                className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
-              >
-                <FaPlus className="" />
-                
-              </button>
-
-              <button
-                onClick={exportToXLSX}
-                className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
-              >
-                <MdFileDownload className="" />
-                
-              </button>
-
-              <button
-                onClick={saveData}
-                className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
-              >
-                <FaRegSave className="" />
-                
-              </button>
-            </div>
-          </div>
-
-          {tables.map((table, tableIndex) => (
-            <div
-              key={tableIndex}
-              className="mt-4 border p-4 rounded-md overflow-auto"
-            >
-              <div className={`flex gap-5 items-center  ${editingTableIndex === tableIndex ? "sm:flex-row flex-col ": ""} `}>
-                {editingTableIndex === tableIndex ? (
-                  <>
-                    <input
-                      type="text"
-                      value={editedTableName}
-                      placeholder="Enter a new name"
-                      onChange={(e) => setEditedTableName(e.target.value)}
-                      className={`border p-2 ${
-                        darkMode
-                          ? "dark:bg-gray-800 dark:text-white border-gray-600"
-                          : "text-black "
-                      }`}
-                    />
-                    <div>
-                      <button
-                        onClick={() => renameTable(tableIndex)}
-                        className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-3 py-2 rounded-md mr-2"
-                      >
-                        <FaRegSave />
-                      </button>
-                      <button
-                        onClick={() => setEditingTableIndex(null)}
-                        className="bg-red-500 hover:bg-red-600 transition-colors duration-300  text-white px-3 py-2 rounded-md"
-                      >
-                        <MdCancelPresentation />
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <h2 className="text-[18px] font-bold">{table.name}</h2>
-                    <div>
-                      <button
-                        onClick={() => setEditingTableIndex(tableIndex)}
-                        className="bg-yellow-500 text-white px-3 py-2 hover:bg-yellow-600 transition-colors duration-300 ease-in-out rounded-md mr-2"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        onClick={() => removeTable(tableIndex)}
-                        className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-3 py-2 rounded-md"
-                      >
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </>
-                )}
+                  <button
+                    onClick={saveData}
+                    className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
+                  >
+                    <FaRegSave className="flex text-gray-700" />
+                    <p className="font-medium text-black">Save</p>
+                  </button>
+                </div>
               </div>
 
-              <button
-                onClick={() => toggleTableVisibility(tableIndex)}
-                className="bg-indigo-500 hover:bg-indigo-600 transition-colors duration-300 text-white px-3 py-2 rounded-md mb-4 text-[14px]"
-              >
-                {isTableVisible[tableIndex] ? (
-                  <>
-                    <FaEyeSlash className="inline-block mr-2" />
-                    Hide Table
-                  </>
-                ) : (
-                  <>
-                    <FaEye className="inline-block mr-2" />
-                    Show Table
-                  </>
-                )}
-              </button>
 
-              <button
-                onClick={() => addRow(tableIndex)}
-                className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-3 py-2 rounded-md mt-4 ml-2 text-[14px]"
-              >
-                <FaPlus className="inline-block mr-2" />
-                Add Row
-              </button>
+            <div className="flex sm:hidden flex-col gap-4 p-2 max-w-md mx-auto">
+              <input
+                type="text"
+                value={newTableName}
+                onChange={(e) => setNewTableName(e.target.value)}
+                placeholder="Enter new table name"
+                className={`border rounded-md p-2 w-full ${
+                  darkMode
+                    ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                    : "text-black border-gray-300"
+                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              />
 
-              <div className={`${isTableVisible[tableIndex] ? "overflow-x-auto" : "overflow-x-hidden"}`}>
-                <table className="min-w-full border flex flex-col">
-                  <tbody
-                    style={getTableBodyStyle(tableIndex)}
-                    className="transition-all duration-500 ease-in-out"
-                  >
-                    {table.rows
-                      .sort((a, b) => {
-                        const yearA = parseInt(a.months[0].split(" ")[1], 10);
-                        const yearB = parseInt(b.months[0].split(" ")[1], 10);
-                        return yearA - yearB;
-                      })
-                      .map((row, rowIndex) => (
-                        <React.Fragment key={rowIndex}>
-                          <tr>
-                            {row.months.map((month, monthIndex) => (
+              <div className="flex flex-row sm:flex-row justify-center sm:justify-between gap-2">
+                <button
+                  onClick={addTable}
+                  className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
+                >
+                  <FaPlus className="" />
+                </button>
+
+                <button
+                  onClick={exportToXLSX}
+                  className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
+                >
+                  <MdFileDownload className="" />
+                </button>
+
+                <button
+                  onClick={saveData}
+                  className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-4 py-2 rounded-md flex items-center justify-center"
+                >
+                  <FaRegSave className="" />
+                </button>
+              </div>
+            </div>
+
+            {tables.map((table, tableIndex) => (
+              <div
+                key={tableIndex}
+                className={`mt-4 border p-5 fade-in rounded-md overflow-auto `}
+                style={{ animationDelay: `${tableIndex * 0.2}s` }}
+              >
+                <div
+                  className={`flex gap-5   items-center  ${
+                    editingTableIndex === tableIndex
+                      ? "sm:flex-row flex-col "
+                      : ""
+                  } `}
+                >
+                  {editingTableIndex === tableIndex ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editedTableName}
+                        placeholder="Enter a new name"
+                        onChange={(e) => setEditedTableName(e.target.value)}
+                        className={`border p-2 ${
+                          darkMode
+                            ? "dark:bg-gray-800 dark:text-white border-gray-600"
+                            : "text-black "
+                        }`}
+                      />
+                      <div>
+                        <button
+                          onClick={() => renameTable(tableIndex)}
+                          className="bg-green-500 hover:bg-green-600 transition-colors duration-300 text-white px-3 py-2 rounded-md mr-2"
+                        >
+                          <FaRegSave />
+                        </button>
+                        <button
+                          onClick={() => setEditingTableIndex(null)}
+                          className="bg-red-500 hover:bg-red-600 transition-colors duration-300  text-white px-3 py-2 rounded-md"
+                        >
+                          <MdCancelPresentation />
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <h2 className="text-[18px] font-bold">{table.name}</h2>
+                      <div>
+                        <button
+                          onClick={() => setEditingTableIndex(tableIndex)}
+                          className="bg-yellow-500 text-white px-3 py-2 hover:bg-yellow-600 transition-colors duration-300 ease-in-out rounded-md mr-2"
+                        >
+                          <FaEdit />
+                        </button>
+                        <button
+                          onClick={() => removeTable(tableIndex)}
+                          className="bg-red-500 hover:bg-red-600 transition-colors duration-300 text-white px-3 py-2 rounded-md"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+
+                <button
+                  onClick={() => toggleTableVisibility(tableIndex)}
+                  className="bg-indigo-500 hover:bg-indigo-600 transition-colors duration-300 text-white px-3 py-2 rounded-md mb-4 text-[14px]"
+                >
+                  {isTableVisible[tableIndex] ? (
+                    <>
+                      <FaEyeSlash className="inline-block mr-2" />
+                      Hide Table
+                    </>
+                  ) : (
+                    <>
+                      <FaEye className="inline-block mr-2" />
+                      Show Table
+                    </>
+                  )}
+                </button>
+
+                <button
+                  onClick={() => addRow(tableIndex)}
+                  className="bg-blue-500 hover:bg-blue-600 transition-colors duration-300 text-white px-3 py-2 rounded-md mt-4 ml-2 text-[14px]"
+                >
+                  <FaPlus className="inline-block mr-2" />
+                  Add Row
+                </button>
+
+                <div
+                  className={`${
+                    isTableVisible[tableIndex]
+                      ? "overflow-x-auto"
+                      : "overflow-x-hidden"
+                  }`}
+                >
+                  <table className="min-w-full border flex flex-col rounded-lg">
+                    <tbody
+                      style={getTableBodyStyle(tableIndex)}
+                      className="transition-all duration-500 ease-in-out "
+                    >
+                      {table.rows
+                        .sort((a, b) => {
+                          const yearA = parseInt(a.months[0].split(" ")[1], 10);
+                          const yearB = parseInt(b.months[0].split(" ")[1], 10);
+                          return yearA - yearB;
+                        })
+                        .map((row, rowIndex) => (
+                          <React.Fragment key={rowIndex}>
+                            <tr>
+                              {row.months.map((month, monthIndex) => (
+                                <th
+                                  key={monthIndex}
+                                  className={`py-2 px-5   min-w-[100px] text-center ${
+                                    darkMode
+                                      ? "dark:bg-gray-700 dark:text-white"
+                                      : "bg-slate-100 text-[13px]"
+                                  }`}
+                                >
+                                  {month}
+                                </th>
+                              ))}
                               <th
-                                key={monthIndex}
-                                className={`py-2 px-4 border min-w-[100px] text-center ${
+                                className={`py-2 px-5 text-center ${
                                   darkMode
                                     ? "dark:bg-gray-700 dark:text-white"
-                                    : "bg-gray-200 text-[13px]"
+                                    : "bg-slate-100 text-[13px]"
                                 }`}
                               >
-                                {month}
+                                Actions
                               </th>
-                            ))}
-                            <th
-                              className={`py-2 px-4 border text-center ${
-                                darkMode
-                                  ? "dark:bg-gray-700 dark:text-white"
-                                  : "bg-gray-200 text-[13px]"
-                              }`}
-                            >
-                              Actions
-                            </th>
-                          </tr>
-                          <tr>
-                            {row.values.map((value, monthIndex) => (
-                              <td
-                                key={monthIndex}
-                                className={`py-2 px-2 border text-[13px] ${
-                                  darkMode
-                                    ? "dark:border-gray-600"
-                                    : "border-gray-200"
-                                }`}
-                              >
-                               <div className="flex flex-row gap-2 items-center">
-                                <input
-                                  type="text"
-                                  placeholder={`Amount`}
-                                  value={value}
-                                  onChange={(event) =>
-                                    handleInputChange(
-                                      tableIndex,
-                                      rowIndex,
-                                      monthIndex,
-                                      event
-                                    )
-                                  }
-                                  className={`w-full px-2 py-2 text-center border rounded ${
+                            </tr>
+                            <tr>
+                              {row.values.map((value, monthIndex) => (
+                                <td
+                                  key={monthIndex}
+                                  className={`py-2 px-2 text-[13px] ${
                                     darkMode
-                                      ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                                      : "text-black"
+                                      ? "dark:border-gray-600"
+                                      : "border-gray-200"
                                   }`}
-                                />
-                                <div className=" h-full rounde-lg "><FaFilePdf onClick={() => {location.href="#"}} className="w-5 h-5 text-gray-500 cursor-pointer hover:text-gray-600"></FaFilePdf></div>
-                                
-                                </div> 
+                                >
+                                  <div className="flex rounded-lg border p-1 flex-row gap-2 items-center">
+                                    <input
+                                      type="text"
+                                      placeholder={`Amount`}
+                                      value={value}
+                                      onChange={(event) =>
+                                        handleInputChange(
+                                          tableIndex,
+                                          rowIndex,
+                                          monthIndex,
+                                          event
+                                        )
+                                      }
+                                      className={`w-full px-2 py-2 text-center border rounded ${
+                                        darkMode
+                                          ? "dark:bg-gray-800 dark:text-white "
+                                          : "text-black"
+                                      }`}
+                                    />
+                                    <div className=" h-full rounded-lg ">
+                                      <FaFilePdf
+                                        onClick={() => {
+                                          location.href = "#";
+                                        }}
+                                        className="w-5 h-5 text-gray-500 cursor-pointer hover:text-gray-600"
+                                      ></FaFilePdf>
+                                    </div>
+                                  </div>
+                                </td>
+                              ))}
+                              <td className="py-2 px-4  text-center">
+                                <button
+                                  onClick={() =>
+                                    deleteRow(tableIndex, rowIndex)
+                                  }
+                                  className="px-2 py-1  "
+                                >
+                                  <FaTrash className="w-5 h-5 text-red-500 hover:text-red-600" />
+                                </button>
                               </td>
-                            ))}
-                            <td className="py-2 px-4 border text-center">
-                              <button
-                                onClick={() => deleteRow(tableIndex, rowIndex)}
-                                className="px-2 py-1  "
-                              >
-                                <FaTrash className="w-5 h-5 text-red-500 hover:text-red-600" />
-                              </button>
-                            </td>
-                          </tr>
-                        </React.Fragment>
-                      ))}
-                  </tbody>
-                </table>
+                            </tr>
+                          </React.Fragment>
+                        ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          ))}
-        </>
-      )}
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 };

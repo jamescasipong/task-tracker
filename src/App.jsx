@@ -29,7 +29,7 @@ function AppContent() {
   });
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState("");
-  const [hasAccess, setAccess] = useState(false);
+  const [hasAccess, setAccess] = useState(true);
   const [loading404, setLoading404] = useState(true);
 
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ function AppContent() {
         setLoading404(false);
         console.error("Error fetching IP:", error.response.data);
         if (error.response.data === "Access denied") {
-          setAccess(false);
+           setAccess(false)
         }
       }
     };
@@ -123,7 +123,7 @@ function AppContent() {
                   />
                 ) : null)
               }
-              <div className="bg-primary flex justify-center items-start">
+              <div className="bg-primary flex justify-center items-start w-full bg-gray-50">
                 <Routes>
                   <Route path="/" element={<SignIn onSignIn={handleSignIn} />} />
                   <Route
