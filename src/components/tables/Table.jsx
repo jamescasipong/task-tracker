@@ -314,7 +314,6 @@ const Table = () => {
   };
 
   const deleteRow = (rowIndex) => {
-    
     setNewRows(newRows.filter((_, index) => index !== rowIndex));
   };
 
@@ -507,87 +506,86 @@ const Table = () => {
     return style;
   };
 
-
-
   return (
     <div
       className="md:w-[1700px] w-full overflow-x-auto p-4 
     "
     >
-       <div className="sm:p-6 p-3 bg-white rounded-lg border-[1px] ">
+      <div className="sm:p-6 p-3 bg-white border-[2px] rounded-lg shadow-md ">
+        {loading ? (
+          <LoadingTable />
+        ) : (
+          <div className="">
+            {(error && alerts === "Not Found!" && dangerAlerts(alerts)) ||
+              (error &&
+                alerts === "Saved Success!" &&
+                successAlerts("Saved Successfully!")) ||
+              (error &&
+                alerts === "Deleted Success!" &&
+                successAlerts("Deleted Successfully!")) ||
+              (error &&
+                alerts === "Exported Success!" &&
+                successAlerts("Exported Successfully!"))}
+            <div className="flex sm:justify-between justify-center hd:flex-row flex-col ">
+              <div className="mb-4 flex items-center  sm:flex-row flex-col">
+                <input
+                  type="text"
+                  ref={findRef}
+                  placeholder="Search..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="border rounded-md border-gray-300 p-2 sm:mr-4 lg:w-[700px] w-full sm:m-0 m-4"
+                />
+                <select
+                  value={selectedBrand}
+                  onChange={handleBrandFilterChange}
+                  className="border border-gray-300 rounded-md sm:max-w-[125px] w-full p-2 items-center"
+                >
+                  <option value="All">All Brands</option>
+                  <option value="APPLE">APPLE</option>
+                  <option value="HP">HP</option>
+                  <option value="ACER">ACER</option>
+                  <option value="ASUS">ASUS</option>
+                  <option value="WINDOWS">WINDOWS</option>
+                  <option value="LENOVO">LENOVO</option>
+                </select>
+              </div>
+              <div className="flex md:flex-row mb-5 gap-2 mr-2 sm:justify-normal justify-center">
+                <button
+                  onClick={openModal}
+                  className="text-[14px] flex items-center gap-2 border-[1px]  transition-all duration-300 hover:bg-slate-100 text-white px-4 py-2 rounded-md"
+                >
+                  <IoMdAdd className="text-black" />
+                  <p className="text-black font-medium sm:flex hidden">Add</p>
+                </button>
+                <button
+                  onClick={exportToXlsx}
+                  className=" text-[14px] flex items-center gap-2 border-[1px]  transition-all duration-300 hover:bg-slate-100 text-white px-3 py-2 rounded-md"
+                >
+                  <FaRegFileExcel className="text-black" />
+                  <p className="text-black font-medium sm:flex hidden">
+                    Export
+                  </p>
+                </button>
 
-       {loading ? <LoadingTable/> : <div className="">
-        {(error && alerts === "Not Found!" && dangerAlerts(alerts)) ||
-          (error &&
-            alerts === "Saved Success!" &&
-            successAlerts("Saved Successfully!")) ||
-          (error &&
-            alerts === "Deleted Success!" &&
-            successAlerts("Deleted Successfully!")) ||
-          (error &&
-            alerts === "Exported Success!" &&
-            successAlerts("Exported Successfully!"))}
-        <div className="flex sm:justify-between justify-center hd:flex-row flex-col ">
-          <div className="mb-4 flex items-center  sm:flex-row flex-col">
-            <input
-              type="text"
-              ref={findRef}
-              placeholder="Search..."
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="border rounded-md border-gray-300 p-2 sm:mr-4 lg:w-[700px] w-full sm:m-0 m-4"
-            />
-            <select
-              value={selectedBrand}
-              onChange={handleBrandFilterChange}
-              className="border border-gray-300 rounded-md sm:max-w-[125px] w-full p-2 items-center"
-            >
-              <option value="All">All Brands</option>
-              <option value="APPLE">APPLE</option>
-              <option value="HP">HP</option>
-              <option value="ACER">ACER</option>
-              <option value="ASUS">ASUS</option>
-              <option value="WINDOWS">WINDOWS</option>
-              <option value="LENOVO">LENOVO</option>
+                <button
+                  onClick={saveChanges}
+                  className=" text-[14px] flex items-center gap-2 border-[1px]  transition-all duration-300 hover:bg-slate-100 text-white px-3 py-2 rounded-md"
+                >
+                  <FaRegSave className="text-black "></FaRegSave>
+                  <p className="text-black font-medium sm:flex hidden">Save</p>
+                </button>
 
-            </select>
-          </div>
-          <div className="flex md:flex-row mb-5 gap-2 mr-2 sm:justify-normal justify-center">
-            <button
-              onClick={openModal}
-              className="text-[14px] flex items-center gap-2 border-[1px]  transition-all duration-300 hover:bg-slate-100 text-white px-4 py-2 rounded-md"
-            >
-              <IoMdAdd className="text-black"/>
-              <p className="text-black font-medium sm:flex hidden">Add</p>
-            </button>
-            <button
-              onClick={exportToXlsx}
-              className=" text-[14px] flex items-center gap-2 border-[1px]  transition-all duration-300 hover:bg-slate-100 text-white px-3 py-2 rounded-md"
-            >
-              <FaRegFileExcel className="text-black"/>
-              <p className="text-black font-medium sm:flex hidden">Export</p>
-            </button>
+                <button
+                  onClick={deleteRows}
+                  className="bg-red-500 text-[14px] hover:bg-red-600 flex items-center gap-2 transition-all duration-300 text-white px-3 py-2 rounded-md"
+                >
+                  <FaTrash></FaTrash>
+                  <p className="sm:flex hidden">Delete</p>
+                </button>
+              </div>
 
-            <button
-              onClick={saveChanges}
-              className=" text-[14px] flex items-center gap-2 border-[1px]  transition-all duration-300 hover:bg-slate-100 text-white px-3 py-2 rounded-md"
-            >
-              <FaRegSave className="text-black "></FaRegSave>
-              <p className="text-black font-medium sm:flex hidden">Save</p>
-            </button>
-
-            <button
-              onClick={deleteRows}
-              className="bg-red-500 text-[14px] hover:bg-red-600 flex items-center gap-2 transition-all duration-300 text-white px-3 py-2 rounded-md"
-            >
-              <FaTrash ></FaTrash>
-              <p className="sm:flex hidden">Delete</p>
-            </button>
-          </div>
-
-          
-
-          {/*pendingChanges.updates.length > 0 ||
+              {/*pendingChanges.updates.length > 0 ||
         pendingChanges.additions.length > 0 ? (
           <button
             onClick={saveChanges}
@@ -596,177 +594,203 @@ const Table = () => {
             Save Changes
           </button>
         ) : null*/}
-        </div>
-        <div
-          className={` ${
-            isModalOpen
-              ? "bg-gray-800 pointer-events-auto"
-              : "pointer-events-none"
-          } transition bg-opacity-50 top-0 left-0 items-center w-full h-full fixed justify-center `}
-        >
-          <div
-            className={`flex transition-transform ${
-              isModalOpen ? " opacity-1" : " opacity-0"
-            } items-center bg-opacity-50 w-full h-full  justify-center`}
-            style={{transform: isModalOpen ? `scale(1)` : `scale(1.02)`}}
-          >
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-h-[90vh] overflow-y-auto ">
-              <div className="flex">
-                <h2 className="text-lg font-semibold mb-4">Add New Devices</h2>
-              </div>
-
-              {newRows.length == 0? <div>Add row please!</div> : newRows.map((row, rowIndex) => (
-                <div key={rowIndex} className="mb-4bg-slate-100 p-5 rounded-md fade-in">
-                  <h3 className="text-md font-medium mb-2">
-                    Device {rowIndex + 1}
-                  </h3>
-                  <div className="md:flex md:flex-wrap gap-4 ">
-                    {Object.keys(row).map((key) => (
-                      <div key={key} className="md:flex-1  grid md:grid-cols-1">
-                        <label className="block text-sm font-medium text-gray-700">
-                          {key}
-                        </label>
-                        <input
-                          type="text"
-                          value={row[key]}
-                          onChange={(e) =>
-                            handleRowInputChange(rowIndex, key, e.target.value)
-                          }
-                          className="border border-gray-300 p-2 mt-1 w-full rounded-md"
-                        />
-                      </div>
-                    ))}
+            </div>
+            <div
+              className={` ${
+                isModalOpen
+                  ? "bg-gray-800 pointer-events-auto"
+                  : "pointer-events-none"
+              } transition bg-opacity-50 top-0 left-0 items-center w-full h-full fixed justify-center `}
+            >
+              <div
+                className={`flex transition-transform ${
+                  isModalOpen ? " opacity-1" : " opacity-0"
+                } items-center bg-opacity-50 w-full h-full  justify-center`}
+                style={{ transform: isModalOpen ? `scale(1)` : `scale(1.02)` }}
+              >
+                <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-h-[90vh] overflow-y-auto ">
+                  <div className="flex">
+                    <h2 className="text-lg font-semibold mb-4">
+                      Add New Devices
+                    </h2>
                   </div>
+
+                  {newRows.length == 0 ? (
+                    <div>Add row please!</div>
+                  ) : (
+                    newRows.map((row, rowIndex) => (
+                      <div
+                        key={rowIndex}
+                        className="mb-4bg-slate-100 p-5 rounded-md fade-in"
+                      >
+                        <h3 className="text-md font-medium mb-2">
+                          Device {rowIndex + 1}
+                        </h3>
+                        <div className="md:flex md:flex-wrap gap-4 ">
+                          {Object.keys(row).map((key) => (
+                            <div
+                              key={key}
+                              className="md:flex-1  grid md:grid-cols-1"
+                            >
+                              <label className="block text-sm font-medium text-gray-700">
+                                {key}
+                              </label>
+                              <input
+                                type="text"
+                                value={row[key]}
+                                onChange={(e) =>
+                                  handleRowInputChange(
+                                    rowIndex,
+                                    key,
+                                    e.target.value
+                                  )
+                                }
+                                className="border border-gray-300 p-2 mt-1 w-full rounded-md"
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <button
+                          onClick={() => deleteRow(rowIndex)}
+                          className="bg-red-500 hover:bg-red-600 transition-colors 0.2s ease-in-out text-white px-4 py-1 rounded mt-2"
+                        >
+                          Delete Row
+                        </button>
+                      </div>
+                    ))
+                  )}
                   <button
-                    onClick={() => deleteRow(rowIndex)}
-                    className="bg-red-500 hover:bg-red-600 transition-colors 0.2s ease-in-out text-white px-4 py-1 rounded mt-2"
+                    onClick={() =>
+                      setNewRows([
+                        ...newRows,
+                        {
+                          No:
+                            Math.max(
+                              ...newRows.map((item) => Number(item.No) || 0),
+                              0
+                            ) + 1,
+                          SerialNumber: "",
+                          Brand: "",
+                          Model: "",
+                          Owner: "",
+                          Department: "",
+                          Owner_1: "",
+                          Department_1: "",
+                          Owner_2: "",
+                          Department_2: "",
+                        },
+                      ])
+                    }
+                    className="bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-2 rounded mt-4"
                   >
-                    Delete Row
+                    Add Row
+                  </button>
+                  <button
+                    onClick={addNewRows}
+                    className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
+                  >
+                    {addLoading ? (
+                      <div className="flex gap-2">
+                        <div>Loading...</div>
+                      </div>
+                    ) : (
+                      <div>Save</div>
+                    )}
+                  </button>
+                  <button
+                    onClick={closeModal}
+                    className="bg-gray-500 hover:bg-gray-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
+                  >
+                    Cancel
                   </button>
                 </div>
-              ))}
-              <button
-                onClick={() =>
-                  setNewRows([
-                    ...newRows,
-                    {
-                      No:
-                        Math.max(
-                          ...newRows.map((item) => Number(item.No) || 0),
-                          0
-                        ) + 1,
-                      SerialNumber: "",
-                      Brand: "",
-                      Model: "",
-                      Owner: "",
-                      Department: "",
-                      Owner_1: "",
-                      Department_1: "",
-                      Owner_2: "",
-                      Department_2: "",
-                    },
-                  ])
-                }
-                className="bg-green-500 hover:bg-green-600 transition-colors text-white px-4 py-2 rounded mt-4"
-              >
-                Add Row
-              </button>
-              <button
-                onClick={addNewRows}
-                className="bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
-              >
-                {addLoading ? (
-                  <div className="flex gap-2">
-                    <div>Loading...</div>
-                  </div>
-                ) : (
-                  <div>Save</div>
-                )}
-              </button>
-              <button
-                onClick={closeModal}
-                className="bg-gray-500 hover:bg-gray-600 transition-colors text-white px-4 py-2 rounded mt-4 ml-2"
-              >
-                Cancel
-              </button>
+              </div>
+            </div>
+            <div
+              className={`w-full overflow-x-auto border border-gray-300 rounded-md ${
+                loading ? "" : "opacity-100"
+              } transition-all 0.5s`}
+            >
+              <table className="min-w-full  border-gray-200 ">
+                <thead>
+                  <tr className="">
+                    {[
+                      "No",
+                      "SerialNumber",
+                      "Brand",
+                      "Model",
+                      "Owner",
+                      "Department",
+                      "Owner_1",
+                      "Department_1",
+                      "Owner_2",
+                      "Department_2",
+                      "Action",
+                    ].map((header) => (
+                      <th
+                        key={header}
+                        className="px-2 py-5 border-b-[1px] text-left text-sm font-semibold text-gray-700 cursor-pointer"
+                        onClick={() => handleSort(header)}
+                      >
+                        {header}{" "}
+                        {sortConfig.key === header
+                          ? sortConfig.direction === "asc"
+                            ? "▲"
+                            : "▼"
+                          : ""}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {sortedData.map((device, index, array) => (
+                    <tr key={device._id} className="hover:bg-gray-100 ">
+                      {[
+                        "No",
+                        "SerialNumber",
+                        "Brand",
+                        "Model",
+                        "Owner",
+                        "Department",
+                        "Owner_1",
+                        "Department_1",
+                        "Owner_2",
+                        "Department_2",
+                      ].map((key) => (
+                        <td
+                          key={key}
+                          className={`py-1 ${
+                            array.length - 1 != index ? "border-b" : ""
+                          } text-sm text-gray-700 `}
+                        >
+                          <input
+                            type="text"
+                            value={device[key] || ""}
+                            onChange={(e) => handleInputChange(index, key, e)}
+                            style={styleInput(key)}
+                            className={`lg:w-full w-[200px] ${key} rounded p-2`}
+                          />
+                        </td>
+                      ))}
+                      <td
+                        className={`py-1 ${
+                          array.length - 1 != index ? "border-b" : ""
+                        } text-center text-sm text-gray-700 `}
+                      >
+                        <button
+                          onClick={() => deleteDevice(device._id)}
+                          className="  text-white px-2 py-1 rounded"
+                        >
+                          <FaTrash className="w-6 h-6 text-red-500 hover:text-red-600 transition-all 0.2s ease-in-out"></FaTrash>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-        <div className={`w-full overflow-x-auto border border-gray-300 rounded-md ${loading ? "" : "opacity-100" } transition-all 0.5s`}>
-          <table className="min-w-full  border-gray-200 ">
-            <thead>
-              <tr className="">
-                {[
-                  "No",
-                  "SerialNumber",
-                  "Brand",
-                  "Model",
-                  "Owner",
-                  "Department",
-                  "Owner_1",
-                  "Department_1",
-                  "Owner_2",
-                  "Department_2",
-                  "Action",
-                ].map((header) => (
-                  <th
-                    key={header}
-                    className="px-2 py-5 border-b-[1px] text-left text-sm font-semibold text-gray-700 cursor-pointer"
-                    onClick={() => handleSort(header)}
-                  >
-                    {header}{" "}
-                    {sortConfig.key === header
-                      ? sortConfig.direction === "asc"
-                        ? "▲"
-                        : "▼"
-                      : ""}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sortedData.map((device, index, array) => (
-                <tr key={device._id} className="hover:bg-gray-100 ">
-                  {[
-                    "No",
-                    "SerialNumber",
-                    "Brand",
-                    "Model",
-                    "Owner",
-                    "Department",
-                    "Owner_1",
-                    "Department_1",
-                    "Owner_2",
-                    "Department_2",
-                  ].map((key) => (
-                    <td
-                      key={key}
-                      className={`py-1 ${array.length-1 != index ? "border-b" : ""} text-sm text-gray-700 `}
-                      
-                    >
-                      <input
-                        type="text"
-                        value={device[key] || ""}
-                        onChange={(e) => handleInputChange(index, key, e)}
-                        style={styleInput(key)}
-                        className={`lg:w-full w-[200px] ${key} rounded p-2`}
-                      />
-                    </td>
-                  ))}
-                  <td className={ `py-1 ${array.length-1 != index ? "border-b" : ""} text-center text-sm text-gray-700 `}>
-                    <button
-                      onClick={() => deleteDevice(device._id)}
-                      className="  text-white px-2 py-1 rounded"
-                    >
-                      <FaTrash className="w-6 h-6 text-red-500 hover:text-red-600 transition-all 0.2s ease-in-out"></FaTrash>
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        </div>}
+        )}
       </div>
     </div>
   );

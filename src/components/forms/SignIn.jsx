@@ -43,18 +43,19 @@ const SignIn = ({ onSignIn }) => {
 
   return (
     <div className="w-full bg-gray-100 font-sans">
-      <div className="min-h-screen flex flex-col items-center justify-center py-6 px-4">
-        <div className="max-w-lg w-full">
-          <div className="p-8 rounded-2xl bg-white shadow-lg">
-            <h2 className="text-gray-800 text-center text-2xl font-bold mb-6">
-              Sign In
-            </h2>
+      <div className="min-h-screen flex flex-col items-center justify-center py-6 px-2">
+        <div className="max-w-md w-full">
+          <div className="sm:px-8 sm:py-8 px-5 py-8 rounded-2xl bg-white shadow-lg">
+            <div className="flex justify-center mb-0">
+              <img src="/favico.png" alt="Logo" className="h-28 w-28" />
+            </div>
+
             {/*<p className="text-center">{ipData?.city && "You're in "}{ipLoadings ? "loading..." : (ipData?.city || "loading...")}</p>
             {error && <p className="text-red-500">{error.message}</p>}*/}
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+            <form onSubmit={handleSubmit} className="mt-4 space-y-6">
               <div>
-                <label className="text-gray-600 text-sm mb-2 block">
+                <label className="font-medium text-gray-600 text-sm mb-2 block">
                   User Name
                 </label>
                 <input
@@ -64,13 +65,13 @@ const SignIn = ({ onSignIn }) => {
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className="w-full font-serif text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                   placeholder="Enter user name"
                 />
               </div>
 
               <div>
-                <label className="text-gray-600 text-sm mb-2 block">
+                <label className="font-medium text-gray-600 text-sm mb-2 block">
                   Password
                 </label>
                 <div className="relative flex items-center">
@@ -87,7 +88,7 @@ const SignIn = ({ onSignIn }) => {
                     onClick={togglePasswordVisibility}
                     xmlns="http://www.w3.org/2000/svg"
                     fill={showPassword ? "#000" : "#bbb"}
-                    className="w-4 h-4 absolute right-4 cursor-pointer"
+                    className="w-5 h-5 absolute right-4 cursor-pointer font-medium"
                     viewBox="0 0 128 128"
                   >
                     <path d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z" />
@@ -125,9 +126,7 @@ const SignIn = ({ onSignIn }) => {
 
           {/* Footer */}
           <footer className="text-center text-gray-600 mt-6">
-            <p className="text-sm">
-              © 2024 Monitoring System All Rights Reserved.
-            </p>
+            <p className="text-sm">© 2024 Monitor360 All Rights Reserved.</p>
           </footer>
         </div>
       </div>

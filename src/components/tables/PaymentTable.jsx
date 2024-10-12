@@ -11,7 +11,6 @@ import {
 import { FaFilePdf } from "react-icons/fa6";
 import { IoMdAdd } from "react-icons/io";
 
-
 import { MdCancelPresentation, MdFileDownload } from "react-icons/md";
 import XLSX from "xlsx-js-style"; // Import xlsx
 import LoadingTable from "../loading/LoadingTable";
@@ -23,7 +22,7 @@ const PaymentTable = () => {
   const [editingTableIndex, setEditingTableIndex] = useState(null);
   const [editedTableName, setEditedTableName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [initial, setInitial] = useState("opacity-0")
+  const [initial, setInitial] = useState("opacity-0");
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("theme") === "dark" ? true : false
   );
@@ -321,7 +320,7 @@ const PaymentTable = () => {
       className={`clg:w-[1700px]  w-full min-h-screen p-4 
       `}
     >
-      <div className="p-6 bg-white border-[1px] rounded-lg shadow-sm">
+      <div className="p-6 bg-white border-[2px] rounded-lg shadow-md">
         <div className="flex justify-between items-center shadow-sm">
           {/*<button
           className="px-4 py-2 bg-indigo-500 text-white rounded-md"
@@ -335,48 +334,46 @@ const PaymentTable = () => {
           <LoadingTable />
         ) : (
           <>
-
-              <div className="ogFadein sm:flex hidden justify-between">
-                <div>
-                  <input
-                    type="text"
-                    value={newTableName}
-                    onChange={(e) => setNewTableName(e.target.value)}
-                    placeholder="Enter new table name"
-                    className={`border rounded-md p-2 mr-2 w-full md:w-[250px] ${
-                      darkMode
-                        ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
-                        : "text-black"
-                    }`}
-                  />
-                </div>
-                <div className="flex flex-row">
-                  <button
-                    onClick={addTable}
-                    className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
-                  >
-                    <IoMdAdd className="flex text-gray-700" />
-                    <p className="font-medium text-black">Add</p>
-                  </button>
-
-                  <button
-                    onClick={exportToXLSX}
-                    className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
-                  >
-                    <MdFileDownload className="flex text-gray-700" />
-                    <p className="font-medium text-black">Export</p>
-                  </button>
-
-                  <button
-                    onClick={saveData}
-                    className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
-                  >
-                    <FaRegSave className="flex text-gray-700" />
-                    <p className="font-medium text-black">Save</p>
-                  </button>
-                </div>
+            <div className="ogFadein sm:flex hidden justify-between">
+              <div>
+                <input
+                  type="text"
+                  value={newTableName}
+                  onChange={(e) => setNewTableName(e.target.value)}
+                  placeholder="Enter new table name"
+                  className={`border rounded-md p-2 mr-2 w-full md:w-[250px] ${
+                    darkMode
+                      ? "dark:bg-gray-800 dark:text-white dark:border-gray-600"
+                      : "text-black"
+                  }`}
+                />
               </div>
+              <div className="flex flex-row">
+                <button
+                  onClick={addTable}
+                  className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
+                >
+                  <IoMdAdd className="flex text-gray-700" />
+                  <p className="font-medium text-black">Add</p>
+                </button>
 
+                <button
+                  onClick={exportToXLSX}
+                  className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
+                >
+                  <MdFileDownload className="flex text-gray-700" />
+                  <p className="font-medium text-black">Export</p>
+                </button>
+
+                <button
+                  onClick={saveData}
+                  className="px-4 flex items-center gap-2 py-2 border border-slate-300 hover:bg-slate-100 transition-colors text-[14px] duration-300 text-white rounded-md mb-4 ml-2"
+                >
+                  <FaRegSave className="flex text-gray-700" />
+                  <p className="font-medium text-black">Save</p>
+                </button>
+              </div>
+            </div>
 
             <div className="flex sm:hidden flex-col gap-4 p-2 max-w-md mx-auto">
               <input
@@ -418,7 +415,7 @@ const PaymentTable = () => {
             {tables.map((table, tableIndex) => (
               <div
                 key={tableIndex}
-                className={`mt-4 border p-5 fade-in rounded-md overflow-auto `}
+                className={`mt-4  p-5 fade-in  overflow-auto border-[1px] rounded-lg shadow-md`}
                 style={{ animationDelay: `${tableIndex * 0.2}s` }}
               >
                 <div
