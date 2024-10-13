@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import Navbar from "./components/common/Navbar";
 import FileUpload from "./components/FileUpload";
 import SignIn from "./components/forms/SignIn";
@@ -60,7 +66,7 @@ function AppContent() {
         setLoading404(false);
         console.error("Error fetching IP:", error.response.data);
         if (error.response.data === "Access denied") {
-           setAccess(false)
+          setAccess(false);
         }
       }
     };
@@ -113,19 +119,23 @@ function AppContent() {
             <LoadingSignIn message={state} />
           ) : (
             <>
-              {location.pathname !== "/" && 
-                (location.pathname === "/table" || location.pathname === "/paymentTable" || location.pathname === "/upload") &&
+              {location.pathname !== "/" &&
+                (location.pathname === "/table" ||
+                  location.pathname === "/paymentTable" ||
+                  location.pathname === "/upload") &&
                 (isAuthenticated ? (
                   <Navbar
                     currentView={currentView}
                     setCurrentView={handleViewChange}
                     onLogout={handleLogout}
                   />
-                ) : null)
-              }
+                ) : null)}
               <div className="bg-primary flex justify-center items-start w-full bg-gray-50">
                 <Routes>
-                  <Route path="/" element={<SignIn onSignIn={handleSignIn} />} />
+                  <Route
+                    path="/"
+                    element={<SignIn onSignIn={handleSignIn} />}
+                  />
                   <Route
                     path="/table"
                     element={
@@ -150,14 +160,17 @@ function AppContent() {
                       </PrivateRoute>
                     }
                   />
-                  <Route path="*" element={<NotFound message="This page not exist :)"/>} />
+                  <Route
+                    path="*"
+                    element={<NotFound message="This page not exist :)" />}
+                  />
                 </Routes>
               </div>
             </>
           )}
         </div>
       ) : (
-        <NotFound message="This site is only authorized to specific ISP. You have no access to this!"/>
+        <NotFound message="This site is only authorized to specific ISP. You have no access to this!" />
       )}
     </>
   );
