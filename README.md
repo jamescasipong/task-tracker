@@ -45,16 +45,3 @@ A web application built with the MERN stack (MongoDB, Express, React, Node.js) f
 4. **Download Data**: Export the data as an Excel file.
 5. **Authentication**: Use the set password to access the system.
 
-## License
-
-MIT License. See [LICENSE](LICENSE) for details.
-
-## Contact
-
-For questions, contact:
-
-- **Your Name** - [your-email@example.com](mailto:your-email@example.com)
-- **Repository**: [GitHub](https://github.com/your-username/employee-data-management-system)
-```
-
-Feel free to replace placeholders with your specific details! If you need any more adjustments, just let me know.
