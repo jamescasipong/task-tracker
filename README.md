@@ -24,12 +24,12 @@ A web application built with the MERN stack (MongoDB, Express, React, Node.js) f
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/employee-data-management-system.git
+   git clone https://github.com/jamescasipong/task-tracker
    ```
 
 2. **Navigate to the Project Directory**:
    ```bash
-   cd employee-data-management-system
+   cd task-tracker
    ```
 
 3. **Install Dependencies**:
