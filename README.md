@@ -3,7 +3,7 @@ Here’s a structured format for your GitHub README that follows common conventi
 
 # Employee Data Management System
 
-A web application built with the MERN stack (MongoDB, Express, React, Node.js) for managing employee data. This app allows users to convert Excel files to JSON, view and edit data, update the database, and download the data as Excel files.
+A web application built with the MERN stack (MongoDB, Laravel REST, React, Node.js) for managing employee data. This app allows users to convert Excel files to JSON, view and edit data, update the database, and download the data as Excel files.
 
 ## Features
 
